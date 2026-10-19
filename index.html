@@ -88,7 +88,25 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
 #countNumber .digit-depth{stroke:none}
 #countNumber .digit-face{stroke:#f9fdff;stroke-width:1px;stroke-opacity:.5;paint-order:stroke fill;vector-effect:non-scaling-stroke}
 #countNumber .digit-facet{pointer-events:none}
-</style></head><body><div id="app"><header><button id="homeButton" title="Home">⌂</button><button id="restart" title="Ricomincia partita">↺</button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.13.0</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="I miei progressi" aria-label="I miei progressi">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p>Seleziona una modalità di gioco</p><button data-mode="1">Livello 1 <small>10 forme · 60 secondi</small></button><button data-mode="2">Livello 2 <small>10 forme avanzate · 60 secondi</small></button><button data-mode="3">Overall <small>Livelli 1 + 2 · 120 secondi</small></button><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Statistiche</button></div></section><div class="pedestal"></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>I miei progressi</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><button id="again">Rigioca</button><button id="finishHome">Home</button><button id="nextLevel" style="display:none;margin-top:12px;background:#236b55">Vai al livello 2 →</button></div></main><footer><span id="msg" aria-live="polite"></span><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></footer></div>
+/* Central top matches the board: smooth, subtly striped, not a circular target. */
+#board.game-screen .pedestal:before{
+ inset:7%;border:0;
+ background:radial-gradient(ellipse at 50% 46%,#66748b,#3c526e 70%,#243751);
+ box-shadow:inset 0 2px 5px #091a2d55;
+}
+#board.game-screen .pedestal:after{
+ inset:7%;border-radius:50%;
+ background:repeating-linear-gradient(35deg,transparent 0 21px,#ffffff 22px 23px);
+ opacity:.075;box-shadow:none;
+}
+#board.level-two.game-screen .pedestal:before{
+ background:radial-gradient(ellipse at 50% 46%,#766886,#504063 70%,#302b4c);
+}
+/* Numerals use exactly the same material language as the 3D pieces. */
+#countNumber{filter:drop-shadow(2px 7px 3px #061b31b0) drop-shadow(0 10px 8px #071e3880)}
+#countNumber .digit-depth{stroke:none!important}
+#countNumber .digit-face{stroke:#f5faff;stroke-width:1px;stroke-opacity:.5;vector-effect:non-scaling-stroke}
+</style></head><body><div id="app"><header><button id="homeButton" title="Home">⌂</button><button id="restart" title="Ricomincia partita">↺</button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.13.1</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="I miei progressi" aria-label="I miei progressi">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p>Seleziona una modalità di gioco</p><button data-mode="1">Livello 1 <small>10 forme · 60 secondi</small></button><button data-mode="2">Livello 2 <small>10 forme avanzate · 60 secondi</small></button><button data-mode="3">Overall <small>Livelli 1 + 2 · 120 secondi</small></button><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Statistiche</button></div></section><div class="pedestal"></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>I miei progressi</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><button id="again">Rigioca</button><button id="finishHome">Home</button><button id="nextLevel" style="display:none;margin-top:12px;background:#236b55">Vai al livello 2 →</button></div></main><footer><span id="msg" aria-live="polite"></span><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></footer></div>
 <script>
 (function(){
 const board=document.getElementById('board'),clock=document.getElementById('clock'),progress=document.getElementById('progress'),msg=document.getElementById('msg'),best=document.getElementById('best'),NS='http://www.w3.org/2000/svg';
@@ -355,34 +373,44 @@ function renderCountdownDigit(n){
  const target=document.getElementById("countNumber");
  if(!target.querySelector("svg")){
   target.innerHTML=`<svg viewBox="0 0 180 190" aria-hidden="true">
-  <defs>
-   <linearGradient id="digitMetal" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="#ffe4a0"/><stop offset="25%" stop-color="#fff4df"/><stop offset="52%" stop-color="#76dfff"/><stop offset="78%" stop-color="#169ce2"/><stop offset="100%" stop-color="#133c85"/>
-   </linearGradient>
-   <linearGradient id="digitPurple" x1="0%" y1="0%" x2="100%" y2="100%">
-    <stop offset="0%" stop-color="#fbd9ff"/><stop offset="27%" stop-color="#fff0ff"/><stop offset="53%" stop-color="#91e4ff"/><stop offset="80%" stop-color="#9279eb"/><stop offset="100%" stop-color="#3b2a88"/>
-   </linearGradient>
-   <linearGradient id="digitSide" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d6a866"/><stop offset="50%" stop-color="#406e9e"/><stop offset="100%" stop-color="#091a42"/></linearGradient>
-   <clipPath id="digitClip"><text x="90" y="143" text-anchor="middle" font-family="system-ui,Arial" font-size="160" font-weight="950" class="digit-clip">3</text></clipPath>
-  </defs>
-  <g class="digit-layers"></g>
-  <text class="digit-face" x="90" y="143" text-anchor="middle" font-family="system-ui,Arial" font-size="160" font-weight="950" fill="url(#digitMetal)">3</text>
-  <g clip-path="url(#digitClip)" class="digit-facet">
-   <path d="M0 0 H124 L48 105 L0 140Z" fill="#fff5df" opacity=".25"/>
-   <path d="M124 0 H180 V190 H132 L48 105Z" fill="#051b54" opacity=".28"/>
-   <path d="M0 140 L48 105 L132 190 H0Z" fill="#50e5ff" opacity=".18"/>
-   <path d="M0 140 L48 105 L124 0 M48 105 L132 190" fill="none" stroke="#ffffff" stroke-opacity=".24" stroke-width="1"/>
-  </g></svg>`;
+   <defs>
+    <linearGradient id="digitMetal" x1="5%" y1="4%" x2="95%" y2="96%">
+     <stop offset="0%" stop-color="#ffe7ad"/><stop offset="24%" stop-color="#f8f1e5"/><stop offset="47%" stop-color="#79d5f0"/><stop offset="73%" stop-color="#18b5f5"/><stop offset="100%" stop-color="#153c85"/>
+    </linearGradient>
+    <linearGradient id="digitPurple" x1="5%" y1="4%" x2="95%" y2="96%">
+     <stop offset="0%" stop-color="#f9d7ff"/><stop offset="26%" stop-color="#eae6ff"/><stop offset="51%" stop-color="#8ce7ff"/><stop offset="77%" stop-color="#8b7ae8"/><stop offset="100%" stop-color="#322c80"/>
+    </linearGradient>
+    <linearGradient id="digitSide" x1="0%" y1="0%" x2="100%" y2="100%">
+     <stop offset="0%" stop-color="#d1a66d"/><stop offset="38%" stop-color="#447aa3"/><stop offset="100%" stop-color="#071c40"/>
+    </linearGradient>
+    <linearGradient id="digitSidePurple" x1="0%" y1="0%" x2="100%" y2="100%">
+     <stop offset="0%" stop-color="#c99ad6"/><stop offset="45%" stop-color="#6b659e"/><stop offset="100%" stop-color="#201b51"/>
+    </linearGradient>
+    <linearGradient id="digitShine" x1="0%" y1="0%" x2="90%" y2="100%">
+     <stop offset="0%" stop-color="#fffaf0"/><stop offset="60%" stop-color="#d2f6ff"/><stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="digitClip"><text x="90" y="143" text-anchor="middle" font-family="system-ui,Arial" font-size="160" font-weight="950" class="digit-clip">3</text></clipPath>
+   </defs>
+   <g class="digit-layers"></g>
+   <text class="digit-face" x="90" y="143" text-anchor="middle" font-family="system-ui,Arial" font-size="160" font-weight="950" fill="url(#digitMetal)">3</text>
+   <g clip-path="url(#digitClip)" class="digit-facet">
+    <polygon points="0,0 135,0 56,105 0,150" fill="url(#digitShine)" opacity=".60"/>
+    <polygon points="56,105 135,0 180,0 180,190 126,190" fill="#031d53" opacity=".30"/>
+    <polygon points="0,150 56,105 126,190 0,190" fill="#55e7ff" opacity=".24"/>
+    <path d="M0 150 L56 105 L135 0 M56 105 L126 190" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity=".28"/>
+   </g>
+  </svg>`;
   const layers=target.querySelector(".digit-layers");
   for(let i=8;i>=1;i--){
-   const text=document.createElementNS(NS,"text");
-   for(const [key,value] of Object.entries({x:90,y:143,"text-anchor":"middle","font-family":"system-ui,Arial","font-size":160,"font-weight":950,transform:"translate("+(i*.62)+" "+(i*.88)+")",fill:"url(#digitSide)",class:"digit-depth"}))text.setAttribute(key,value);
-   layers.appendChild(text)
+   const glyph=document.createElementNS(NS,"text");
+   for(const [key,value] of Object.entries({x:90,y:143,"text-anchor":"middle","font-family":"system-ui,Arial","font-size":160,"font-weight":950,transform:"translate("+(i*.62)+" "+(i*.88)+")",fill:"url(#digitSide)",class:"digit-depth"}))glyph.setAttribute(key,value);
+   layers.appendChild(glyph);
   }
  }
  const svg=target.querySelector("svg");
- svg.querySelectorAll("text").forEach(text=>text.textContent=String(n));
+ svg.querySelectorAll("text").forEach(glyph=>glyph.textContent=String(n));
  svg.querySelector(".digit-face").setAttribute("fill",level===2?"url(#digitPurple)":"url(#digitMetal)");
+ svg.querySelectorAll(".digit-depth").forEach(glyph=>glyph.setAttribute("fill",level===2?"url(#digitSidePurple)":"url(#digitSide)"));
 }
 function clearCountdown(){countdownTimers.forEach(clearTimeout);countdownTimers=[]}function begin(){if(phase!=="ready")return;audioReady();phase="countdown";const btn=document.getElementById("startButton"),number=document.getElementById("countNumber");btn.style.display="none";number.style.display="block";renderCountdownDigit(3);countdownTick();[2,1].forEach((n,i)=>countdownTimers.push(setTimeout(()=>{if(phase==="countdown")renderCountdownDigit(n);countdownTick()},(i+1)*1000)));countdownTimers.push(setTimeout(()=>{if(phase!=="countdown")return;document.getElementById("countdown").style.display="none";phase="playing";board.classList.add("board-live");start=performance.now();countdownTick(true);startMusic();next();update()},3000))}function next(){if(count===10){finishLevel(true);return}
 let piece=document.createElement('div');piece.className='piece';piece.appendChild(shape3D(paths[ids[count]]));board.appendChild(piece);active=piece;piece.addEventListener('pointerdown',down)}
