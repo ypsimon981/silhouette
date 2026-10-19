@@ -52,7 +52,14 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
  stroke-opacity:.5;
  vector-effect:non-scaling-stroke;
 }
-</style></head><body><div id="app"><header><button id="homeButton" title="Home">⌂</button><button id="restart" title="Ricomincia partita">↺</button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.11.1</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="I miei progressi" aria-label="I miei progressi">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p>Seleziona una modalità di gioco</p><button data-mode="1">Livello 1 <small>10 forme · 60 secondi</small></button><button data-mode="2">Livello 2 <small>10 forme avanzate · 60 secondi</small></button><button data-mode="3">Overall <small>Livelli 1 + 2 · 120 secondi</small></button><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Statistiche</button></div></section><div class="pedestal"></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>I miei progressi</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><button id="again">Rigioca</button><button id="finishHome">Home</button><button id="nextLevel" style="display:none;margin-top:12px;background:#236b55">Vai al livello 2 →</button></div></main><footer><span id="msg" aria-live="polite"></span><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></footer></div>
+/* Faceted extruded pieces: depth layers, bright top face, and internal planes. */
+#board .piece .shape-3d .extrusion{stroke:none!important;stroke-width:0!important;filter:none}
+#board .piece .shape-3d .front-face{stroke:#f5faff;stroke-width:1px;stroke-opacity:.5;vector-effect:non-scaling-stroke;filter:none}
+#board .piece .shape-3d .facets polygon,#board .piece .shape-3d .facets .facet-seam{stroke:none;filter:none}
+#board .piece .shape-3d .facets .facet-seam{stroke:#fff;stroke-width:.75;stroke-opacity:.28}
+#board.level-two .piece .shape-3d{--shape-front:url(#shapeMetal2)}
+#board .piece{filter:drop-shadow(2px 7px 3px #061b31b0) drop-shadow(0 10px 8px #071e3880)}
+</style></head><body><div id="app"><header><button id="homeButton" title="Home">⌂</button><button id="restart" title="Ricomincia partita">↺</button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.12.0</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="I miei progressi" aria-label="I miei progressi">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p>Seleziona una modalità di gioco</p><button data-mode="1">Livello 1 <small>10 forme · 60 secondi</small></button><button data-mode="2">Livello 2 <small>10 forme avanzate · 60 secondi</small></button><button data-mode="3">Overall <small>Livelli 1 + 2 · 120 secondi</small></button><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Statistiche</button></div></section><div class="pedestal"></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>I miei progressi</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><button id="again">Rigioca</button><button id="finishHome">Home</button><button id="nextLevel" style="display:none;margin-top:12px;background:#236b55">Vai al livello 2 →</button></div></main><footer><span id="msg" aria-live="polite"></span><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></footer></div>
 <script>
 (function(){
 const board=document.getElementById('board'),clock=document.getElementById('clock'),progress=document.getElementById('progress'),msg=document.getElementById('msg'),best=document.getElementById('best'),NS='http://www.w3.org/2000/svg';
@@ -207,6 +214,50 @@ function shape(path){
  svg.appendChild(p);
  return svg
 }
+let shape3DSerial=0;
+function shape3D(path){
+ const svg=document.createElementNS(NS,"svg");
+ svg.setAttribute("viewBox","0 0 100 100");
+ svg.classList.add("shape-3d");
+ const unique="sh3d-"+(++shape3DSerial);
+ const el=(tag,attrs,parent)=>{
+  const node=document.createElementNS(NS,tag);
+  for(const [k,v] of Object.entries(attrs||{}))node.setAttribute(k,v);
+  if(parent)parent.appendChild(node);
+  return node;
+ };
+ const defs=el("defs",{},svg);
+ const gradient=(name,stops,x1,y1,x2,y2)=>{
+  const g=el("linearGradient",{id:unique+"-"+name,x1,y1,x2,y2},defs);
+  for(const [offset,color] of stops)el("stop",{offset,"stop-color":color},g);
+  return "url(#"+unique+"-"+name+")";
+ };
+ const face=gradient("face",[["0%","#ffe7ad"],["24%","#f8f1e5"],["47%","#79d5f0"],["73%","#18b5f5"],["100%","#153c85"]],"5%","4%","95%","96%");
+ const facePurple=gradient("face2",[["0%","#f9d7ff"],["26%","#eae6ff"],["51%","#8ce7ff"],["77%","#8b7ae8"],["100%","#322c80"]],"5%","4%","95%","96%");
+ const depth=gradient("depth",[["0%","#d1a66d"],["38%","#447aa3"],["100%","#071c40"]],"0%","0%","100%","100%");
+ const depthPurple=gradient("depth2",[["0%","#c99ad6"],["45%","#6b659e"],["100%","#201b51"]],"0%","0%","100%","100%");
+ const shine=gradient("shine",[["0%","#fffaf0"],["60%","#d2f6ff"],["100%","#ffffff00"]],"0%","0%","90%","100%");
+ const group=el("g",{transform:"rotate("+path.rotation+" 50 50)"},svg);
+ // Five offset layers produce a real visible sidewall, not just a drop shadow.
+ for(let i=5;i>=1;i--){
+  el("path",{d:path.path,"fill-rule":"evenodd",transform:"translate("+(i*.62)+" "+(i*.88)+")",fill:depth,class:"extrusion"},group)
+ }
+ const front=el("path",{d:path.path,"fill-rule":"evenodd",fill:face,class:"front-face"},group);
+ front.setAttribute("data-face-purple",facePurple);
+ const clip=el("clipPath",{id:unique+"-clip",clipPathUnits:"userSpaceOnUse"},defs);
+ el("path",{d:path.path,"clip-rule":"evenodd","fill-rule":"evenodd"},clip);
+ const facets=el("g",{"clip-path":"url(#"+unique+"-clip)",class:"facets"},group);
+ el("polygon",{points:"0,0 75,0 31,55 0,85",fill:shine,opacity:".60"},facets);
+ el("polygon",{points:"31,55 75,0 100,0 100,100 70,100",fill:"#031d53",opacity:".30"},facets);
+ el("polygon",{points:"0,85 31,55 70,100 0,100",fill:"#55e7ff",opacity:".24"},facets);
+ el("path",{d:"M0 85 L31 55 L75 0 M31 55 L70 100",fill:"none",stroke:"#ffffff","stroke-width":".75","stroke-opacity":".28",class:"facet-seam"},facets);
+ // Level 2 colors are switched by CSS variables on the board.
+ front.style.fill=level===2?facePurple:face;
+ for(const p of group.querySelectorAll(".extrusion"))p.style.fill=level===2?depthPurple:depth;
+ svg.style.setProperty("--face-purple",facePurple);
+ svg.style.setProperty("--depth-purple",depthPurple);
+ return svg;
+}
 function time(t){let m=Math.floor(t/60000),s=Math.floor(t/1000)%60,ms=Math.floor(t%1000);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+String(ms).padStart(3,'0')}
 function update(){if(start!==null){elapsed=Math.min(timeLimit(),overallAccum+performance.now()-start);clock.textContent=time(elapsed);if(elapsed>=timeLimit()){finishLevel(false);return}frame=requestAnimationFrame(update)}}
 // One-time reset of the old rule set: records and local attempt graphs restart together.
@@ -272,7 +323,7 @@ function finishLevel(won){
 }
 
 function clearCountdown(){countdownTimers.forEach(clearTimeout);countdownTimers=[]}function begin(){if(phase!=="ready")return;audioReady();phase="countdown";const btn=document.getElementById("startButton"),number=document.getElementById("countNumber");btn.style.display="none";number.style.display="block";number.textContent="3";countdownTick();[2,1].forEach((n,i)=>countdownTimers.push(setTimeout(()=>{if(phase==="countdown")number.textContent=String(n);countdownTick()},(i+1)*1000)));countdownTimers.push(setTimeout(()=>{if(phase!=="countdown")return;document.getElementById("countdown").style.display="none";phase="playing";board.classList.add("board-live");start=performance.now();countdownTick(true);startMusic();next();update()},3000))}function next(){if(count===10){finishLevel(true);return}
-let piece=document.createElement('div');piece.className='piece';piece.appendChild(shape(paths[ids[count]]));board.appendChild(piece);active=piece;piece.addEventListener('pointerdown',down)}
+let piece=document.createElement('div');piece.className='piece';piece.appendChild(shape3D(paths[ids[count]]));board.appendChild(piece);active=piece;piece.addEventListener('pointerdown',down)}
 function setup(){stopMusic();showLevelTheme();document.getElementById("levelTitle").textContent=mode===3?"OVERALL · 1/2":"LIVELLO "+level;clearCountdown();phase="ready";document.getElementById("countdown").style.display="flex";document.getElementById("startButton").style.display="block";document.getElementById("countNumber").style.display="none";cancelAnimationFrame(frame);start=null;elapsed=0;overallAccum=0;count=0;offset=null;board.classList.remove('complete','board-live');board.querySelectorAll('.slot,.piece').forEach(e=>e.remove());clock.textContent='00:00.000';progress.textContent='0 / 10 forme';msg.textContent='Trascina la forma nella sagoma corrispondente.';let record=Number(localStorage.getItem(recordKey())||0);best.textContent=record?time(record):'—';ids=selectShapes();let ps=shuffled(positions());slots=ids.map((id,i)=>{let s=document.createElement('div');s.className='slot';s.style.left=ps[i][0]+'%';s.style.top=ps[i][1]+'%';s.appendChild(shape(paths[id]));board.appendChild(s);return s});msg.textContent="Premi START per iniziare."}
 function down(e){if(phase!=="playing")return;e.preventDefault();active.setPointerCapture(e.pointerId);active.classList.add('drag');let r=active.getBoundingClientRect();offset={x:e.clientX-(r.left+r.width/2),y:e.clientY-(r.top+r.height/2)};active.addEventListener('pointermove',move);active.addEventListener('pointerup',up);active.addEventListener('pointercancel',up)}
 function move(e){if(!offset)return;let b=board.getBoundingClientRect();active.style.left=Math.max(0,Math.min(b.width,e.clientX-b.left-offset.x))+'px';active.style.top=Math.max(0,Math.min(b.height,e.clientY-b.top-offset.y))+'px'}
