@@ -2615,7 +2615,7 @@ document.getElementById("finishHome").onclick=goHome;
 document.getElementById("finishRanking").onclick=()=>{rankMode=mode;showRanking()};
 document.getElementById("finishProgress").onclick=()=>{statsMode=mode;showProgress()};
 document.getElementById("homeRanking").onclick=()=>{rankMode=mode;showRanking()};
-document.getElementById("homeStats").onclick=()=>{statsMode=mode;showProgress()};
+// Performance analysis is reached through the ranking section switch.
 document.getElementById("rankingButton").onclick=()=>{rankMode=document.getElementById("myProgress").style.display!=="none"?statsMode:mode;showRanking()};
 document.getElementById("progressButton").onclick=()=>{statsMode=document.getElementById("ranking").style.display!=="none"?rankMode:mode;showProgress()};
 document.getElementById("statsToRanking").onclick=()=>{rankMode=statsMode;showRanking()};
