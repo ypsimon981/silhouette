@@ -917,6 +917,7 @@ footer{display:block;padding:9px 12px calc(9px + env(safe-area-inset-bottom));mi
 #app.show-hand-controls #handControls{display:flex}
 #adSlot{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px}
 #app.show-hand-controls #adSlot{display:none}
+#app.game-toolbar #adSlot{display:none!important}
 .adPlaceholder{
  position:relative;box-sizing:border-box;overflow:hidden;
  width:min(100%,360px);height:54px;
@@ -2728,7 +2729,100 @@ document.getElementById("rankingButton").onclick=()=>{rankMode=document.getEleme
 document.getElementById("progressButton").onclick=()=>{statsMode=document.getElementById("ranking").style.display!=="none"?rankMode:mode;showProgress()};
 document.getElementById("statsToRanking").onclick=()=>{rankMode=statsMode;showRanking()};
 document.getElementById("rankingToStats").onclick=()=>{statsMode=rankMode;showProgress()};
-applyLanguage();setup();goHome();
+
+/*
+ * Temporary developer-only advertising navigation test.
+ * Enable with ?adtest=1 on the web preview. No ad network is called;
+ * these are QUALIFIED OPPORTUNITIES, never real billable impressions.
+ */
+function initAdOpportunityTest(){
+ if(new URLSearchParams(location.search).get("adtest")!=="1")return;
+ const slot=document.getElementById("adSlot");
+ const rankPanel=document.getElementById("ranking");
+ const progressPanel=document.getElementById("myProgress");
+ const homePanel=document.getElementById("homePage");
+ const profilePanel=document.getElementById("profileOverlay");
+ let start=Date.now();
+ const report={startedAt:new Date(start).toISOString(),pageVisits:0,qualifiedOpportunities:0,bannerAppearances:0,byPage:{},events:[]};
+ let currentKey=null,currentVisible=false,version=0;
+ const hud=document.createElement("div");
+ hud.id="adtestHud";
+ hud.setAttribute("role","status");
+ hud.style.cssText="position:fixed;z-index:9999;left:50%;bottom:calc(75px + env(safe-area-inset-bottom));transform:translateX(-50%);max-width:96vw;display:flex;align-items:center;gap:7px;padding:7px 9px;border:1px solid #7fdadd;background:#112a36f5;color:#e5fcff;border-radius:11px;font:12px/1.25 system-ui,Arial;box-shadow:0 4px 16px #0008";
+ const textNode=document.createElement("span");
+ textNode.style.cssText="min-width:122px;white-space:nowrap;font-variant-numeric:tabular-nums";
+ const reset=document.createElement("button");
+ reset.type="button";reset.textContent="Azzera";
+ reset.style.cssText="font-size:11px;padding:7px 8px;border-radius:7px";
+ const copy=document.createElement("button");
+ copy.type="button";copy.textContent="Report";
+ copy.style.cssText="font-size:11px;padding:7px 8px;border-radius:7px";
+ hud.append(textNode,reset,copy);document.body.appendChild(hud);
+ function screen(){
+   if(!profilePanel.hidden)return "profilo";
+   if(rankPanel.style.display!=="none")return "classifica:"+rankMode+":"+rankScope;
+   if(progressPanel.style.display!=="none")return "performance:"+statsMode;
+   if(board.classList.contains("game-screen"))return null;
+   if(homePanel.style.display!=="none")return "livelli";
+   return null;
+ }
+ function visible(){
+   if(!slot || document.visibilityState!=="visible")return false;
+   const css=getComputedStyle(slot),rect=slot.getBoundingClientRect();
+   if(css.display==="none"||css.visibility==="hidden"||rect.width<20||rect.height<20)return false;
+   const px=Math.max(0,Math.min(innerWidth-1,rect.left+rect.width/2));
+   const py=Math.max(0,Math.min(innerHeight-1,rect.top+rect.height/2));
+   const top=document.elementFromPoint(px,py);
+   return !!top && (top===slot || slot.contains(top));
+ }
+ function addEvent(type,page){
+   if(report.events.length<1000)report.events.push({second:Math.round((Date.now()-start)/1000),type,page});
+ }
+ function render(){
+   const elapsed=Math.floor((Date.now()-start)/1000);
+   textNode.textContent="TEST "+Math.floor(elapsed/60)+":"+String(elapsed%60).padStart(2,"0")+" · "+report.qualifiedOpportunities+" pot. / "+report.pageVisits+" visite";
+   hud.style.display=screen()?"flex":"none";
+ }
+ function inspect(){
+   const key=screen(),isVisible=!!key&&visible();
+   if(key===currentKey && isVisible===currentVisible)return;
+   const changed=key!==currentKey;
+   if(changed&&key){report.pageVisits++;addEvent("page_view",key)}
+   if(isVisible&&!currentVisible){report.bannerAppearances++;addEvent("banner_visible",key)}
+   currentKey=key;currentVisible=isVisible;
+   const localVersion=++version;
+   if(isVisible&&(changed||!currentVisible)){/* handled below for initial appearance */}
+   if(isVisible){
+     setTimeout(()=>{
+       if(localVersion!==version||screen()!==key||!visible())return;
+       report.qualifiedOpportunities++;
+       report.byPage[key]=(report.byPage[key]||0)+1;
+       addEvent("qualified_opportunity",key);
+       render();
+     },1000);
+   }
+   render();
+ }
+ reset.onclick=()=>{
+   start=Date.now();report.startedAt=new Date(start).toISOString();report.pageVisits=0;report.qualifiedOpportunities=0;report.bannerAppearances=0;report.byPage={};report.events=[];
+   currentKey=null;currentVisible=false;version++;inspect();
+ };
+ copy.onclick=async()=>{
+   const data=JSON.stringify({...report,elapsedSeconds:Math.floor((Date.now()-start)/1000),note:"Non sono impression AdMob: sono opportunita simulate con banner segnaposto, almeno 1s visibile."},null,2);
+   try{await navigator.clipboard.writeText(data);copy.textContent="Copiato";setTimeout(()=>copy.textContent="Report",1500)}
+   catch(e){window.prompt("Copia il report del test",data)}
+ };
+ // The game uses a single HTML page: view changes, not browser reloads.
+ document.addEventListener("click",()=>setTimeout(inspect,0));
+ for(const node of [rankPanel,progressPanel,homePanel,profilePanel,board]){
+   new MutationObserver(()=>setTimeout(inspect,0)).observe(node,{attributes:true,attributeFilter:["style","class","hidden"]});
+ }
+ document.addEventListener("visibilitychange",inspect);
+ setInterval(()=>{inspect();render()},1000);
+ setTimeout(inspect,0);
+}
+
+applyLanguage();setup();goHome();initAdOpportunityTest();
 if(localStorage.getItem("10shapes_profile_setup")!=="yes"){if(!/^Player-\d+$/.test(playerNick)&&playerNick.length>=2){localStorage.setItem("10shapes_profile_setup","yes")}else openProfile(true)}
 })();
 </script></body></html>
