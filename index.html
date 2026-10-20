@@ -1821,6 +1821,40 @@ function musicTick(){
  const elapsedMs=overallAccum+performance.now()-start;
  const tension=Math.max(0,Math.min(1,elapsedMs/timeLimit()));
  const now=audioCtx.currentTime;
+ // Selectable soundtracks share the same audio engine and master bus.
+ if(musicStyle==="ambient"){
+  const interval=2.15,root=level%2===0?65.406:55;
+  const sequence=[0,7,3,10,7,5,3,12];
+  while(nextBeat<now+.15){
+   const step=beatCount%8;
+   if(step===0){
+    cinematicVoice(root*2,nextBeat,16.4,.036,"pad");
+    cinematicVoice(root*3,nextBeat+.4,15.6,.021,"pad");
+    cinematicVoice(root*4,nextBeat+.8,14.8,.014,"pad");
+   }
+   const hz=root*8*Math.pow(2,sequence[step]/12);
+   cinematicVoice(hz,nextBeat+.25,2.65,.028+tension*.004,"bell");
+   if(step%4===0)cinematicVoice(root,nextBeat,2.2,.028,"bass");
+   beatCount++;nextBeat+=interval;
+  }
+  return;
+ }
+ if(musicStyle==="techno"){
+  const interval=.49,root=level%2===0?65.406:55;
+  const melody=[0,3,7,5,0,10,7,3];
+  while(nextBeat<now+.15){
+   const step=beatCount%16;
+   if(step%4===0)cinematicVoice(root,nextBeat,.38,.105,"bass");
+   if(step%4===2)cinematicVoice(root*2,nextBeat,.20,.028,"bell");
+   if(step%2===1){
+    const hz=root*4*Math.pow(2,melody[Math.floor(step/2)]/12);
+    cinematicVoice(hz,nextBeat,.32,.026+tension*.009,"bell");
+   }
+   if(step===0)cinematicVoice(root*2,nextBeat,7.4,.018,"pad");
+   beatCount++;nextBeat+=interval;
+  }
+  return;
+ }
  const interval=1.8; // No accelerating arcade melody.
  // Two closely related tonal centers, to distinguish levels subtly.
  const root=level%2===0?65.406:55;
