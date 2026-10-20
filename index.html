@@ -173,7 +173,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
  font-size:27px;
 }
 #app.game-toolbar #refresh{border-color:#7595c480;background:#1c3556dd;font-size:17px}
-/* v0.19.2 — noticeable reduction of visual clutter. */
+/* v0.19.3 — noticeable reduction of visual clutter. */
 #board:before{opacity:.032}
 #board.game-screen .pedestal{
  width:33%;
@@ -205,7 +205,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
 #board.game-screen .pedestal:after{
  border-radius:23%;
 }
-/* v0.19.2: extended hand-side landing platform; piece stays centered. */
+/* v0.19.3: extended hand-side landing platform; piece stays centered. */
 #board.game-screen .pedestal{
  width:51%;
  aspect-ratio:51 / 33;
@@ -220,7 +220,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
 }
 #board.game-screen .pedestal:before,
 #board.game-screen .pedestal:after{border-radius:inherit}
-/* v0.19.2: asymmetrical platform fitted to the unoccupied 3x5 grid cells. */
+/* v0.19.3: asymmetrical platform fitted to the unoccupied 3x5 grid cells. */
 #board.game-screen .pedestal{
  left:50%;top:50%;width:65%;height:58%;aspect-ratio:auto;
  transform:translate(-70.8%,-50%);
@@ -238,7 +238,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
 }
 #board.level-two.game-screen .pedestal{background:none;border:0;box-shadow:none}
 #board.level-two.game-screen .pedestal-shape{stroke:#e1d5ff;stroke-opacity:.20}
-/* v0.19.2: restore the original centered rounded-square platform. */
+/* v0.19.3: restore the original centered rounded-square platform. */
 #board.game-screen .pedestal,
 #board.game-screen.hand-left .pedestal{
  left:50%;top:50%;width:33%;height:auto;aspect-ratio:1;
@@ -257,7 +257,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
  box-shadow:0 3px 0 #2118313d,0 8px 12px #100b243d,inset 0 1px 1px #ffffff18;
 }
 
-/* v0.19.2 — navigation surfaces inspired by the 10Shapes metallic cyan/gold emblem.
+/* v0.19.3 — navigation surfaces inspired by the 10Shapes metallic cyan/gold emblem.
    Applied to navigation only: game board, targets and staging remain unchanged. */
 #homePage,#myProgress,#ranking{
  background:
@@ -377,7 +377,7 @@ footer{
  .homeLinks button{font-size:12px}
 }
 
-/* v0.19.2: the START inscription belongs to the raised platform itself. */
+/* v0.19.3: the START inscription belongs to the raised platform itself. */
 #board.game-screen .pedestal{
  transition:transform .68s cubic-bezier(.2,.75,.23,1),background .68s ease,border-color .68s ease,box-shadow .68s ease;
  will-change:transform;
@@ -453,7 +453,7 @@ footer{
  #board.game-screen .pedestal{transition-duration:.01ms}
 }
 
-/* v0.19.2 — golden player row, one-tap rank navigation and gap to the leader. */
+/* v0.19.3 — golden player row, one-tap rank navigation and gap to the leader. */
 #rankSpotlight{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:10px;border-radius:15px;border:1px solid #91d4ee66;background:linear-gradient(140deg,#274968e8,#10243bdc);box-shadow:inset 0 1px 0 #f3faff2e,0 5px 11px #030f2380}
 #rankSpotlight .rankMetric{min-width:0;display:flex;flex-direction:column;gap:5px;padding:5px 2px;text-align:center}
 #rankSpotlight .rankMetric span{font-size:10px;letter-spacing:.6px;font-weight:850;color:#b7d4e7}
@@ -475,7 +475,7 @@ footer{
 @keyframes rankFocus{0%,45%{box-shadow:0 0 0 3px #fff9d4,0 0 25px #ffda66bd}100%{box-shadow:inset 0 1px 0 #fff9dbb3,0 3px 9px #07132375}}
 @media(max-width:360px){#rankSpotlight{padding:7px;gap:5px}#rankSpotlight .rankMetric span{font-size:9px}#ranking{padding:12px;gap:7px}}
 
-/* v0.19.2 — faceted neon metal replaces the flat gold leaderboard highlight. */
+/* v0.19.3 — faceted neon metal replaces the flat gold leaderboard highlight. */
 #rankRows .rankline.me,#rankRows .rankline.me.demo{
  position:relative;isolation:isolate;overflow:hidden;
  color:#f0faff;opacity:1;
@@ -511,7 +511,7 @@ footer{
  100%{box-shadow:inset 0 1px 0 #e4fcff9c,inset 0 -2px 0 #091e3e8c,0 3px 9px #07132380,0 0 12px #34d9ff42}
 }
 
-/* v0.19.2 — finish screen navigation */
+/* v0.19.3 — finish screen navigation */
 #finish .finishActions{
  display:flex;flex-direction:column;align-items:center;gap:12px;
  width:min(100%,350px);margin:6px auto 0;
@@ -534,7 +534,7 @@ footer{
  #finish .finishActions #again{min-height:54px;padding:10px 20px}
  #finish .finishNav button{min-height:43px}
 }
-/* v0.19.2 — synchronized stage lighting: one broad pulse per countdown digit.
+/* v0.19.3 — synchronized stage lighting: one broad pulse per countdown digit.
    No rapid strobing; stronger on 3, tapering down to 1. */
 #launchFx{
  position:absolute;inset:0;z-index:8;pointer-events:none;overflow:hidden;
@@ -608,7 +608,7 @@ footer{
  #board.countdown-light .pedestal{box-shadow:0 3px 0 #091d313d,0 7px 12px #06162860}
 }
 
-/* v0.19.2 — the arena goes almost black before launch.
+/* v0.19.3 — the arena goes almost black before launch.
    The raised illuminated START platform is the only bright object. */
 #board.game-screen::after{
  content:"";position:absolute;inset:0;z-index:0;
@@ -712,7 +712,7 @@ footer{
  #launchFx .launchHalo,#launchFx .launchBeams,#launchFx .launchSweep,#launchFx .launchCore{animation:none!important;opacity:0!important}
 }
 
-/* v0.19.2 — unmistakable metallic-neon selection in BOTH ranking filter rows. */
+/* v0.19.3 — unmistakable metallic-neon selection in BOTH ranking filter rows. */
 #ranking #rankTabs button.selected,
 #ranking #rankScopes button.selected{
  position:relative;isolation:isolate;overflow:hidden;
@@ -738,7 +738,7 @@ footer{
  opacity:.78;filter:saturate(.67) brightness(.86);
 }
 
-/* v0.19.2 — deeper, translucent faceted metal for legible white filter labels. */
+/* v0.19.3 — deeper, translucent faceted metal for legible white filter labels. */
 #ranking #rankTabs button.selected,
 #ranking #rankScopes button.selected{
  background:
@@ -756,7 +756,7 @@ footer{
 }
 button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 
-/* v0.19.2 — restart LEFT, refresh center, exit-to-levels RIGHT.
+/* v0.19.3 — restart LEFT, refresh center, exit-to-levels RIGHT.
    Matched faceted metal buttons with clean vector icons. */
 #app.game-toolbar header{
  grid-template-columns:minmax(0,1fr) 60px 44px 60px;
@@ -806,7 +806,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #app.game-toolbar #restart svg,#app.game-toolbar #homeButton svg{width:28px;height:28px}
 }
 
-/* v0.19.2 — time first, then PERSONAL BEST leaderboard placements. */
+/* v0.19.3 — time first, then PERSONAL BEST leaderboard placements. */
 #finish{padding:16px 19px;overflow-y:auto;justify-content:safe center;gap:0}
 #finish h2{font-size:clamp(23px,6vw,29px);margin:5px 0 10px}
 #finishTimePanel[hidden]{display:none!important}
@@ -835,7 +835,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #finish .finishNav button{min-height:45px}
 @media(max-height:740px){#finish h2{margin:3px 0 5px}#recordPositions{gap:5px;margin:3px auto 5px}#recordPositions .rankingPosition{min-height:41px;padding:7px 10px}#finish .finishActions #again{min-height:52px;padding:9px 15px}}
 
-/* v0.19.2 — subtle mode and stage identity in the dark pre-game scene. */
+/* v0.19.3 — subtle mode and stage identity in the dark pre-game scene. */
 #preGameIdentity[hidden]{display:none!important}
 #preGameIdentity{
  position:absolute;left:8%;right:8%;top:clamp(38px,12%,140px);
@@ -863,7 +863,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #preGameIdentity.purple #preGameDetail{color:#a59bc0}
 @media(max-height:620px){#preGameIdentity{top:5%;gap:3px}#preGameLevel{font-size:23px}}
 
-/* v0.19.2 — Overall split against stage-one time of the best Overall run. */
+/* v0.19.3 — Overall split against stage-one time of the best Overall run. */
 #overallSplit[hidden]{display:none!important}
 #overallSplit{
  display:flex;flex-direction:column;align-items:center;gap:4px;
@@ -885,7 +885,7 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #overallSplit .splitReference{display:block;margin-top:3px;font-size:10px;font-weight:600;color:#a9bcd0;text-shadow:none}
 @media(max-height:650px){#overallSplit{margin-top:7px;padding:7px 12px;gap:2px}#overallSplit .splitTime{font-size:23px}}
 
-/* v0.19.2 — separate split from mode heading and START platform.
+/* v0.19.3 — separate split from mode heading and START platform.
    Place it in the empty space BELOW the platform, including on small phones. */
 #board.game-screen #overallSplit{
  position:absolute;z-index:20;
@@ -905,11 +905,11 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
  #board.game-screen #overallSplit .splitLabel{font-size:9px}
 }
 
-/* v0.19.2: make real ranking gains visible without overpowering the results. */
+/* v0.19.3: make real ranking gains visible without overpowering the results. */
 #recordPositions .rankingPosition.rankImproved{border-color:#72d8c9aa;background:linear-gradient(110deg,#1b4261c7,#18375ac9 60%,#20315ac9);box-shadow:inset 2px 0 0 #8af2df,0 0 12px #40d4c422}
 #recordPositions .rankGain{font-size:12px;font-weight:900;color:#e5fff6;border-color:#92f4d2;background:linear-gradient(135deg,#247d73,#154f78);box-shadow:0 0 11px #51dfc47a}
 
-/* v0.19.2 — Reserved ad inventory in all navigation/summary screens. */
+/* v0.19.3 — Reserved ad inventory in all navigation/summary screens. */
 footer{display:block;padding:9px 12px calc(9px + env(safe-area-inset-bottom));min-height:77px;box-sizing:border-box}
 #handControls{display:none;align-items:center;justify-content:space-between;gap:6px;width:100%;min-height:56px}
 #handControls button{flex:1;min-width:0}
@@ -932,7 +932,7 @@ footer{display:block;padding:9px 12px calc(9px + env(safe-area-inset-bottom));mi
 .adCaption{color:#8caabd}
 @media(max-width:360px){.adPlaceholder{gap:5px}.adBrand{font-size:10px}.adCaption{font-size:10px}}
 
-/* v0.19.2 — balanced recap navigation: one main button and two icon actions. */
+/* v0.19.3 — balanced recap navigation: one main button and two icon actions. */
 #finish .finishNav{
  display:grid;grid-template-columns:minmax(0,1fr) 58px 58px;
  gap:9px;width:100%;align-items:stretch;
@@ -959,7 +959,7 @@ footer{display:block;padding:9px 12px calc(9px + env(safe-area-inset-bottom));mi
  #finish .finishNav #finishProgress{height:50px;min-height:50px}
 }
 
-/* v0.19.2 — controlled light show: one pulse from the stage for each digit.
+/* v0.19.3 — controlled light show: one pulse from the stage for each digit.
    Remove the old off-center firework spots, sweeping bars and static halos. */
 #launchFx{z-index:9;isolation:isolate;filter:none!important;opacity:0;visibility:hidden}
 #board.countdown-light #launchFx,
@@ -1047,7 +1047,7 @@ footer{display:block;padding:9px 12px calc(9px + env(safe-area-inset-bottom));mi
  #board.game-screen.countdown-light.platform-beat .pedestal{animation:none!important}
 }
 
-/* v0.19.2 — completion controls: replay + rankings + progress, then level navigation. */
+/* v0.19.3 — completion controls: replay + rankings + progress, then level navigation. */
 #finish .finishActions{width:100%;display:flex;flex-direction:column;gap:12px;align-items:stretch}
 #finish .finishPrimary{
  display:grid;grid-template-columns:54px minmax(0,1fr) 54px;
@@ -1106,7 +1106,7 @@ footer{display:block;padding:9px 12px calc(9px + env(safe-area-inset-bottom));mi
  #finish .finishNav .finishLevelArrow .levelCaption{font-size:8px}
 }
 
-/* v0.19.2: all ten level tiles, first three playable. */
+/* v0.19.3: all ten level tiles, first three playable. */
 #homePage{justify-content:flex-start;gap:10px;padding:clamp(14px,4vw,26px);padding-bottom:25px;overscroll-behavior:contain}
 #homePage .homeLogo{margin:3px 0 0;font-size:clamp(27px,7vw,38px);color:#b8f7ff;text-shadow:0 0 15px #44cde955}
 #homePage .homeSubtitle{margin:0;text-align:center;font-weight:750;color:#bfd2e8}
@@ -1127,7 +1127,15 @@ footer{display:block;padding:9px 12px calc(9px + env(safe-area-inset-bottom));mi
 #board.level-three.game-screen.stage-raised .pedestal{background:linear-gradient(145deg,#7de7d1b8,#1e8e9fc7 42%,#164e81dd)}
 #finish .level3Local{margin:8px 4px 0;font-size:13px;line-height:1.45;color:#b7d4e5;text-align:center}
 @media(max-height:720px){#homePage .levelGrid button{min-height:59px;padding:7px}#homePage{gap:8px}}
-</style></head><body><div id="app"><header><button id="homeButton" title="Esci dal gioco e torna ai livelli" aria-label="Esci dal gioco e torna ai livelli"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 9 L23 23 M23 9 L9 23"/></svg></button><button id="restart" title="Rigioca dall'inizio" aria-label="Rigioca dall'inizio"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9.2 12.3a10 10 0 1 1-2.1 7.1"/><path d="M9.2 5.7v7.2H16"/></svg></button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.19.2</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="Miglioramenti" aria-label="Miglioramenti">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p class="homeSubtitle">Scegli il tuo livello</p><div class="levelGrid" aria-label="Selezione dei dieci livelli"><button data-mode="1" class=""><b>01</b><span>Livello 1<small>Fondamentali</small></span></button><button data-mode="2" class=""><b>02</b><span>Livello 2<small>Orientamento</small></span></button><button data-mode="4" class="levelNew"><b>03</b><span>Livello 3<small>Nuove sagome</small></span></button><button disabled class=""><b>04</b><span>Livello 4<small>In preparazione</small></span></button><button disabled class=""><b>05</b><span>Livello 5<small>In preparazione</small></span></button><button disabled class=""><b>06</b><span>Livello 6<small>In preparazione</small></span></button><button disabled class=""><b>07</b><span>Livello 7<small>In preparazione</small></span></button><button disabled class=""><b>08</b><span>Livello 8<small>In preparazione</small></span></button><button disabled class=""><b>09</b><span>Livello 9<small>In preparazione</small></span></button><button disabled class=""><b>10</b><span>Livello 10<small>In preparazione</small></span></button></div><button data-mode="3" class="overallLaunch">✦ OVERALL <small>Per ora livelli 1 + 2 · 120 secondi</small></button><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Miglioramenti</button></div></section><div class="pedestal"></div><div id="launchFx" aria-hidden="true"><div class="pulseWash"></div><div class="pulseRays"></div><div class="pulseGlow"></div></div><div id="preGameIdentity" aria-live="polite"><div id="preGameMode"></div><div id="preGameLevel"></div><div id="preGameDetail"></div></div><div id="overallSplit" hidden><div class="splitLabel">INTERTEMPO · LIVELLO 1</div><div id="splitTime" class="splitTime"></div><div id="splitDelta" class="splitDelta"></div></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>Miglioramenti</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankSpotlight" aria-live="polite"><div class="rankMetric"><span id="rankMetricLabel">LA MIA POSIZIONE</span><strong id="rankMetricValue">—</strong></div><div class="rankMetric rankGap"><span id="rankGapLabel">DISTACCO DAL PRIMO</span><strong id="rankGapValue">—</strong></div><button id="jumpToMe" type="button" disabled>↓ La mia posizione</button></div><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="finishTimePanel" hidden><div class="finishTimeLabel">TEMPO REALIZZATO</div><div class="finishTimeValue" id="finishTimeValue"></div><div class="finishTimeDelta" id="finishTimeDelta"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><div class="finishActions"><div class="finishPrimary"><button id="finishRanking" title="Classifiche" aria-label="Apri le classifiche">🏆</button><button id="again">↻ Rigioca</button><button id="finishProgress" title="Miglioramenti" aria-label="Apri i miglioramenti">📈</button></div><div class="finishNav"><button id="previousLevel" class="finishLevelArrow" aria-label="Vai al livello precedente"><span class="levelArrow">‹</span><span class="levelCaption">LIVELLO 1</span></button><button id="finishHome">◈ Livelli</button><button id="nextLevel" class="finishLevelArrow" aria-label="Vai al livello successivo"><span class="levelArrow">›</span><span class="levelCaption">LIVELLO 2</span></button></div></div></div></main><footer><span id="msg" aria-live="polite"></span><div id="handControls"><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></div><div id="adSlot" role="complementary" aria-label="Spazio riservato alla pubblicità"><div class="adPlaceholder"><span class="adTag">PUBBLICITÀ</span><span class="adBrand">10SHAPES</span><span class="adCaption">Spazio riservato al banner</span></div></div></footer></div>
+
+/* v0.19.3 — game mode strip: 50% Overall, 25% Odd, 25% Even. */
+#homePage .seriesModes{display:grid;grid-template-columns:2fr 1fr 1fr;gap:7px;width:100%;min-width:0}
+#homePage .seriesModes button{box-sizing:border-box;min-width:0;min-height:62px;margin:0;padding:9px 4px;border-radius:13px;color:#f0ffff;font-size:clamp(11px,3.1vw,15px);font-weight:900;letter-spacing:.25px;white-space:nowrap;text-align:center}
+#homePage .seriesModes button small{display:block;margin-top:6px;font-size:clamp(9px,2.5vw,11px);font-weight:600;letter-spacing:0;opacity:.85}
+#homePage .seriesModes .overallLaunch{border:1.5px solid #9cece7;background:linear-gradient(135deg,#248a97,#14556f 60%,#193e66);box-shadow:inset 0 1px 0 #eaffff88,0 3px 8px #03132780}
+#homePage .seriesModes .seriesOdd{border:1px solid #d5b8ff;background:linear-gradient(145deg,#6c559d,#383c76 65%,#212d59);box-shadow:inset 0 1px 0 #fff9ff6b,0 3px 8px #07112b80}
+#homePage .seriesModes .seriesEven{border:1px solid #95d8ff;background:linear-gradient(145deg,#356f9b,#24456e 65%,#162e52);box-shadow:inset 0 1px 0 #f4ffff69,0 3px 8px #07112b80}
+</style></head><body><div id="app"><header><button id="homeButton" title="Esci dal gioco e torna ai livelli" aria-label="Esci dal gioco e torna ai livelli"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 9 L23 23 M23 9 L9 23"/></svg></button><button id="restart" title="Rigioca dall'inizio" aria-label="Rigioca dall'inizio"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9.2 12.3a10 10 0 1 1-2.1 7.1"/><path d="M9.2 5.7v7.2H16"/></svg></button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.19.3</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="Miglioramenti" aria-label="Miglioramenti">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p class="homeSubtitle">Scegli il tuo livello</p><div class="levelGrid" aria-label="Selezione dei dieci livelli"><button data-mode="1" class=""><b>01</b><span>Livello 1<small>Fondamentali</small></span></button><button data-mode="2" class=""><b>02</b><span>Livello 2<small>Orientamento</small></span></button><button data-mode="4" class="levelNew"><b>03</b><span>Livello 3<small>Nuove sagome</small></span></button><button disabled class=""><b>04</b><span>Livello 4<small>In preparazione</small></span></button><button disabled class=""><b>05</b><span>Livello 5<small>In preparazione</small></span></button><button disabled class=""><b>06</b><span>Livello 6<small>In preparazione</small></span></button><button disabled class=""><b>07</b><span>Livello 7<small>In preparazione</small></span></button><button disabled class=""><b>08</b><span>Livello 8<small>In preparazione</small></span></button><button disabled class=""><b>09</b><span>Livello 9<small>In preparazione</small></span></button><button disabled class=""><b>10</b><span>Livello 10<small>In preparazione</small></span></button></div><div class="seriesModes" aria-label="Modalità a più livelli"><button data-mode="3" class="overallLaunch">✦ OVERALL<small>1 + 2</small></button><button data-mode="5" class="seriesOdd">DISPARI<small>1 + 3</small></button><button data-mode="6" class="seriesEven">PARI<small>Livello 2</small></button></div><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Miglioramenti</button></div></section><div class="pedestal"></div><div id="launchFx" aria-hidden="true"><div class="pulseWash"></div><div class="pulseRays"></div><div class="pulseGlow"></div></div><div id="preGameIdentity" aria-live="polite"><div id="preGameMode"></div><div id="preGameLevel"></div><div id="preGameDetail"></div></div><div id="overallSplit" hidden><div class="splitLabel">INTERTEMPO · LIVELLO 1</div><div id="splitTime" class="splitTime"></div><div id="splitDelta" class="splitDelta"></div></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>Miglioramenti</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankSpotlight" aria-live="polite"><div class="rankMetric"><span id="rankMetricLabel">LA MIA POSIZIONE</span><strong id="rankMetricValue">—</strong></div><div class="rankMetric rankGap"><span id="rankGapLabel">DISTACCO DAL PRIMO</span><strong id="rankGapValue">—</strong></div><button id="jumpToMe" type="button" disabled>↓ La mia posizione</button></div><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="finishTimePanel" hidden><div class="finishTimeLabel">TEMPO REALIZZATO</div><div class="finishTimeValue" id="finishTimeValue"></div><div class="finishTimeDelta" id="finishTimeDelta"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><div class="finishActions"><div class="finishPrimary"><button id="finishRanking" title="Classifiche" aria-label="Apri le classifiche">🏆</button><button id="again">↻ Rigioca</button><button id="finishProgress" title="Miglioramenti" aria-label="Apri i miglioramenti">📈</button></div><div class="finishNav"><button id="previousLevel" class="finishLevelArrow" aria-label="Vai al livello precedente"><span class="levelArrow">‹</span><span class="levelCaption">LIVELLO 1</span></button><button id="finishHome">◈ Livelli</button><button id="nextLevel" class="finishLevelArrow" aria-label="Vai al livello successivo"><span class="levelArrow">›</span><span class="levelCaption">LIVELLO 2</span></button></div></div></div></main><footer><span id="msg" aria-live="polite"></span><div id="handControls"><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></div><div id="adSlot" role="complementary" aria-label="Spazio riservato alla pubblicità"><div class="adPlaceholder"><span class="adTag">PUBBLICITÀ</span><span class="adBrand">10SHAPES</span><span class="adCaption">Spazio riservato al banner</span></div></div></footer></div>
 <script>
 (function(){
 const board=document.getElementById('board'),clock=document.getElementById('clock'),progress=document.getElementById('progress'),msg=document.getElementById('msg'),best=document.getElementById('best'),NS='http://www.w3.org/2000/svg';
@@ -1167,7 +1175,7 @@ function selectShapes(){
  }
  return shuffled(selected)
 }
-function setLevel(n){if(![1,2,3,4].includes(n))return;mode=n;level=n===3?1:n===4?3:n;overallStage=1;overallAccum=0;document.getElementById("homePage").style.display="none";board.classList.add("game-screen");updateToolbar();setup()}
+function setLevel(n){if(![1,2,3,4,5,6].includes(n))return;mode=n;level=[3,5].includes(n)?1:n===6?2:n===4?3:n;overallStage=1;overallAccum=0;document.getElementById("homePage").style.display="none";board.classList.add("game-screen");updateToolbar();setup()}
 function updateToolbar(){
  const overlayOpen=document.getElementById("ranking").style.display!=="none"||document.getElementById("myProgress").style.display!=="none";
  const gameVisible=board.classList.contains("game-screen")&&!overlayOpen;
@@ -1181,7 +1189,7 @@ function goHome(){finishRankRequest++;stopMusic();clearCountdown();cancelAnimati
 
 let handed=localStorage.getItem("silhouette_hand")==="left"?"left":"right";function positions(){const cells=[[0,0],[1,0],[2,0],[0,1],[2,1],[2,2],[2,3],[0,4],[1,4],[2,4]];return cells.map(([col,row])=>{const actualCol=handed==="left"?col:2-col;return [(actualCol+0.5)*100/3,(row+0.5)*100/5]})} function handLabel(){document.getElementById("leftHand").classList.toggle("selected",handed==="left");document.getElementById("rightHand").classList.toggle("selected",handed==="right");board.classList.toggle("hand-left",handed==="left");board.classList.toggle("hand-right",handed==="right")}
 let ids=[],slots=[],count=0,active=null,start=null,elapsed=0,frame=0,offset=null,phase="ready",countdownTimers=[];
-const MAX_TIME=60000;function timeLimit(){return mode===3?120000:MAX_TIME}let audioCtx=null,musicTimer=null,musicOn=localStorage.getItem("10shapes_music")!=="off",nextBeat=0,beatCount=0,reverbInput=null;
+const MAX_TIME=60000;function timeLimit(){return [3,5].includes(mode)?120000:MAX_TIME}let audioCtx=null,musicTimer=null,musicOn=localStorage.getItem("10shapes_music")!=="off",nextBeat=0,beatCount=0,reverbInput=null;
 function audioReady(){if(!musicOn)return;try{if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();
 // A diffuse room tail rather than a single repeating echo.
 const room=audioCtx.createConvolver(),seconds=1.6,length=Math.ceil(audioCtx.sampleRate*seconds),impulse=audioCtx.createBuffer(2,length,audioCtx.sampleRate);
@@ -1278,7 +1286,7 @@ async function showRanking(){
 /* Snapshot the actual leaderboard BEFORE and AFTER uploading a new PB.
    Never infer a gained rank from the local record, which can have been reset. */
 let finishRankRequest=0;
-async function showBestPositions(which,previousBest,isRecord){if(which===4){const panel=document.getElementById("recordPositions");panel.hidden=false;panel.innerHTML='<div class="bestRankHeading">I MIEI MIGLIORI PIAZZAMENTI</div><p class="level3Local">Livello 3: record e progressi salvati sul dispositivo. Classifiche online in preparazione.</p>';return}
+async function showBestPositions(which,previousBest,isRecord){if([4,5,6].includes(which)){const panel=document.getElementById("recordPositions");panel.hidden=false;panel.innerHTML='<div class="bestRankHeading">RECORD PERSONALE</div><p class="level3Local">Tempo e tentativi salvati sul dispositivo. Classifiche online in preparazione per questa modalità.</p>';return}
  const panel=document.getElementById("recordPositions"),request=++finishRankRequest;
  panel.hidden=false;panel.textContent="Aggiornamento delle tue migliori classifiche…";
  const labels=[["friends","Amici (demo)"],["national","Nazionale ("+playerCountry+")"],["world","Mondiale"]];
@@ -1332,7 +1340,7 @@ async function showBestPositions(which,previousBest,isRecord){if(which===4){cons
  }
 }
 async function sendScore(){const note=document.getElementById("rankMessage"),nick=document.getElementById("nick").value.trim(),country=document.getElementById("country").value.trim().toUpperCase();note.textContent="Salvataggio...";try{const r=await fetch(rankingApi,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"rename",player_id:playerId,nickname:nick,country})});const d=await r.json();if(!r.ok)throw Error(d.error||"Errore");playerNick=nick;playerCountry=country;localStorage.setItem("10shapes_nick",nick);localStorage.setItem("10shapes_country",country);await showRanking();note.textContent="Nome aggiornato nella classifica."}catch(e){note.textContent=e.message||"Errore"}}
-async function autoScore(ms,scoreLevel=mode){if(scoreLevel===4)return {saved:false,localOnly:true};try{const r=await fetch(rankingApi,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"score",player_id:playerId,nickname:playerNick,country:playerCountry,level:scoreLevel,time_ms:Math.round(ms)})});if(!r.ok)throw Error("invio");return await r.json()}catch(e){console.warn("10Shapes: record non inviato",e);return null}}
+async function autoScore(ms,scoreLevel=mode){if([4,5,6].includes(scoreLevel))return {saved:false,localOnly:true};try{const r=await fetch(rankingApi,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"score",player_id:playerId,nickname:playerNick,country:playerCountry,level:scoreLevel,time_ms:Math.round(ms)})});if(!r.ok)throw Error("invio");return await r.json()}catch(e){console.warn("10Shapes: record non inviato",e);return null}}
 function shuffled(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
 function shape(path){
  const svg=document.createElementNS(NS,"svg");
@@ -1427,7 +1435,7 @@ if(localStorage.getItem(RESET_KEY)!=="done"){
   "10shapes_attempt_history_v1"].forEach(k=>localStorage.removeItem(k));
  localStorage.setItem(RESET_KEY,"done");
 }
-// v0.19.2: one-time fresh start for the owner's test records.
+// v0.19.3: one-time fresh start for the owner's test records.
 // Do not reset player identity: the server record is removed separately.
 const FRESH_START_KEY="10shapes_fresh_start_v0184";
 if(localStorage.getItem(FRESH_START_KEY)!=="done"){
@@ -1474,9 +1482,9 @@ function updateOverallSplit(){
 }
 function updatePreGameIdentity(){
  const panel=document.getElementById("preGameIdentity");
- document.getElementById("preGameMode").textContent=mode===3?"MODALITÀ OVERALL":"PARTITA SINGOLA";
- document.getElementById("preGameLevel").textContent=mode===3?"LIVELLO "+overallStage+" DI 2":"LIVELLO "+level;
- document.getElementById("preGameDetail").textContent=mode===3?"2 LIVELLI · 20 FORME":"10 FORME · 60 SECONDI";
+ document.getElementById("preGameMode").textContent=mode===3?"MODALITÀ OVERALL":mode===5?"MODALITÀ DISPARI":mode===6?"MODALITÀ PARI":"PARTITA SINGOLA";
+ document.getElementById("preGameLevel").textContent=[3,5].includes(mode)?"LIVELLO "+level+" · TAPPA "+overallStage+" DI 2":"LIVELLO "+level;
+ document.getElementById("preGameDetail").textContent=[3,5].includes(mode)?"2 LIVELLI · 20 FORME":"10 FORME · 60 SECONDI";
  panel.classList.toggle("purple",level===2);
  panel.hidden=false;
  updateOverallSplit();
@@ -1501,17 +1509,17 @@ function updateFinishNavigation(){
  next.setAttribute("aria-label",right<=3?"Vai al livello "+right:"Nessun livello successivo")
 }
 function finishLevel(won){
- if(won&&mode===3&&overallStage===1){
+ if(won&&[3,5].includes(mode)&&overallStage===1){
   completionChime(false);
   saveAttempt(true,1,elapsed,10);saveResultFor(1,elapsed);
   overallStage=2;overallAccum=elapsed;cancelAnimationFrame(frame);stopMusic();start=null;phase="ready";board.classList.remove("board-live");board.classList.add("stage-raised");
   document.getElementById("countdown").style.display="flex";document.getElementById("startButton").style.display="block";document.getElementById("countNumber").style.display="none";
-  level=2;showLevelTheme();updatePreGameIdentity();count=0;active=null;board.querySelectorAll(".slot,.piece").forEach(e=>e.remove());ids=selectShapes();const ps=shuffled(positions());
+  level=mode===5?3:2;showLevelTheme();updatePreGameIdentity();count=0;active=null;board.querySelectorAll(".slot,.piece").forEach(e=>e.remove());ids=selectShapes();const ps=shuffled(positions());
   slots=ids.map((id,i)=>{const s=document.createElement("div");s.className="slot";s.style.left=ps[i][0]+"%";s.style.top=ps[i][1]+"%";s.appendChild(shape(paths[id]));board.appendChild(s);return s});
-  document.getElementById("levelTitle").textContent="OVERALL · 2/2";progress.textContent="0 / 10 forme";msg.textContent="Premi START per il livello 2.";return
+  document.getElementById("levelTitle").textContent=(mode===5?"DISPARI":"OVERALL")+" · 2/2";progress.textContent="0 / 10 forme";msg.textContent="Premi START per il livello "+level+".";return
  }
- if(mode===3&&overallStage===2){const stageMs=Math.max(0,elapsed-overallAccum);saveAttempt(won,2,stageMs,count);if(won)saveResultFor(2,stageMs)}
- else if(mode===3&&overallStage===1){saveAttempt(false,1,elapsed,count)}
+ if([3,5].includes(mode)&&overallStage===2){const stageMs=Math.max(0,elapsed-overallAccum);saveAttempt(won,level,stageMs,count);if(won)saveResultFor(level,stageMs)}
+ else if([3,5].includes(mode)&&overallStage===1){saveAttempt(false,1,elapsed,count)}
  saveAttempt(won);if(won)completionChime(true);cancelAnimationFrame(frame);stopMusic();start=null;phase="finished";
  const record=Number(localStorage.getItem(recordKey())||0);
  const finish=document.getElementById("finish"),celebration=document.getElementById("recordCelebration"),positionsPanel=document.getElementById("recordPositions");
@@ -1533,7 +1541,7 @@ function finishLevel(won){
   showBestPositions(mode,record,isRecord);
  }else{
   document.querySelector("#finish h2").textContent="Tempo scaduto";
-  document.getElementById("summary").textContent=(mode===3?"120":"60")+" secondi · "+count+" / 10 forme"
+  document.getElementById("summary").textContent=([3,5].includes(mode)?"120":"60")+" secondi · "+count+" / 10 forme"
  }
  updateFinishNavigation();board.classList.add("complete");updateToolbar()
 }
@@ -1583,7 +1591,7 @@ function renderCountdownDigit(n){
 function clearCountdown(){countdownTimers.forEach(clearTimeout);countdownTimers=[];board.classList.remove("countdown-light","light-3","light-2","light-1","platform-beat");document.getElementById("launchFx").classList.remove("pulse-active")}
 function lightBeat(n){const fx=document.getElementById("launchFx");board.classList.remove("light-3","light-2","light-1","platform-beat");fx.classList.remove("pulse-active");void fx.offsetWidth;board.classList.add("countdown-light","light-"+n,"platform-beat");fx.classList.add("pulse-active")}function begin(){if(phase!=="ready")return;audioReady();phase="countdown";board.classList.remove("stage-raised");lightBeat(3);const btn=document.getElementById("startButton"),number=document.getElementById("countNumber");btn.style.display="none";number.style.display="block";renderCountdownDigit(3);countdownTick();[2,1].forEach((n,i)=>countdownTimers.push(setTimeout(()=>{if(phase==="countdown"){renderCountdownDigit(n);lightBeat(n)}countdownTick()},(i+1)*1000)));countdownTimers.push(setTimeout(()=>{if(phase!=="countdown")return;document.getElementById("countdown").style.display="none";board.classList.remove("countdown-light","light-3","light-2","light-1","platform-beat");document.getElementById("launchFx").classList.remove("pulse-active");phase="playing";document.getElementById("preGameIdentity").hidden=true;document.getElementById("overallSplit").hidden=true;board.classList.add("board-live");start=performance.now();countdownTick(true);startMusic();next();update()},3000))}function next(){if(count===10){finishLevel(true);return}
 let piece=document.createElement('div');piece.className='piece';piece.appendChild(shape3D(paths[ids[count]]));board.appendChild(piece);active=piece;piece.addEventListener('pointerdown',down)}
-function setup(){stopMusic();showLevelTheme();updatePreGameIdentity();document.getElementById("levelTitle").textContent=mode===3?"OVERALL · 1/2":"LIVELLO "+level;clearCountdown();phase="ready";document.getElementById("countdown").style.display="flex";document.getElementById("startButton").style.display="block";document.getElementById("countNumber").style.display="none";cancelAnimationFrame(frame);start=null;elapsed=0;overallAccum=0;count=0;offset=null;board.classList.remove('complete','board-live');board.classList.add('stage-raised');board.querySelectorAll('.slot,.piece').forEach(e=>e.remove());clock.textContent='00:00.000';progress.textContent='0 / 10 forme';msg.textContent='Trascina la forma nella sagoma corrispondente.';let record=Number(localStorage.getItem(recordKey())||0);best.textContent=record?time(record):'—';ids=selectShapes();let ps=shuffled(positions());slots=ids.map((id,i)=>{let s=document.createElement('div');s.className='slot';s.style.left=ps[i][0]+'%';s.style.top=ps[i][1]+'%';s.appendChild(shape(paths[id]));board.appendChild(s);return s});msg.textContent="Premi START per iniziare.";updateToolbar()}
+function setup(){stopMusic();showLevelTheme();updatePreGameIdentity();document.getElementById("levelTitle").textContent=mode===3?"OVERALL · 1/2":mode===5?"DISPARI · 1/2":mode===6?"PARI · LIVELLO 2":"LIVELLO "+level;clearCountdown();phase="ready";document.getElementById("countdown").style.display="flex";document.getElementById("startButton").style.display="block";document.getElementById("countNumber").style.display="none";cancelAnimationFrame(frame);start=null;elapsed=0;overallAccum=0;count=0;offset=null;board.classList.remove('complete','board-live');board.classList.add('stage-raised');board.querySelectorAll('.slot,.piece').forEach(e=>e.remove());clock.textContent='00:00.000';progress.textContent='0 / 10 forme';msg.textContent='Trascina la forma nella sagoma corrispondente.';let record=Number(localStorage.getItem(recordKey())||0);best.textContent=record?time(record):'—';ids=selectShapes();let ps=shuffled(positions());slots=ids.map((id,i)=>{let s=document.createElement('div');s.className='slot';s.style.left=ps[i][0]+'%';s.style.top=ps[i][1]+'%';s.appendChild(shape(paths[id]));board.appendChild(s);return s});msg.textContent="Premi START per iniziare.";updateToolbar()}
 function down(e){if(phase!=="playing")return;e.preventDefault();active.setPointerCapture(e.pointerId);active.classList.add('drag');let r=active.getBoundingClientRect();offset={x:e.clientX-(r.left+r.width/2),y:e.clientY-(r.top+r.height/2)};active.addEventListener('pointermove',move);active.addEventListener('pointerup',up);active.addEventListener('pointercancel',up)}
 function move(e){if(!offset)return;let b=board.getBoundingClientRect();active.style.left=Math.max(0,Math.min(b.width,e.clientX-b.left-offset.x))+'px';active.style.top=Math.max(0,Math.min(b.height,e.clientY-b.top-offset.y))+'px'}
 function up(e){if(!offset)return;offset=null;let p=active;p.classList.remove('drag');p.removeEventListener('pointermove',move);p.removeEventListener('pointerup',up);p.removeEventListener('pointercancel',up);let target=slots[count],a=p.getBoundingClientRect(),b=target.getBoundingClientRect();let d=Math.hypot(a.left+a.width/2-b.left-b.width/2,a.top+a.height/2-b.top-b.height/2);if(d<a.width*.46){p.style.left=target.style.left;p.style.top=target.style.top;p.classList.add('done');target.classList.add('done');count++;progress.textContent=count+' / 10 forme';active=null;next()}else{p.style.left='50%';p.style.top='50%';msg.textContent='Riprova: cerca la sagoma esatta.'}}
@@ -1610,7 +1618,7 @@ function chooseHand(value){if(handed===value)return;handed=value;localStorage.se
 
 document.getElementById("leftHand").onclick=()=>chooseHand("left");document.getElementById("rightHand").onclick=()=>chooseHand("right");
 document.getElementById("refresh").onclick=()=>{const url=new URL(location.href);url.searchParams.set("refresh",Date.now().toString());location.replace(url.toString())};handLabel();document.getElementById('restart').onclick=()=>{if(mode===3){overallStage=1;overallAccum=0;level=1}setup()};document.getElementById('again').onclick=()=>{if(mode===3){overallStage=1;level=1}setup()};document.getElementById("nextLevel").onclick=()=>{const n=Number(document.getElementById("nextLevel").dataset.target);if([1,2,4].includes(n))setLevel(n)};document.getElementById("previousLevel").onclick=()=>{const n=Number(document.getElementById("previousLevel").dataset.target);if([1,2,4].includes(n))setLevel(n)};
-function modeName(n){return n===3?"Overall":"Livello "+(n===4?3:n)}
+function modeName(n){return n===3?"Overall":n===5?"Dispari":n===6?"Pari":"Livello "+(n===4?3:n)}
 function markTabs(){document.querySelectorAll("[data-rank]").forEach(b=>b.classList.toggle("selected",Number(b.dataset.rank)===rankMode));document.querySelectorAll("[data-stat]").forEach(b=>b.classList.toggle("selected",Number(b.dataset.stat)===statsMode));document.querySelectorAll("[data-scope]").forEach(b=>b.classList.toggle("selected",b.dataset.scope===rankScope))}
 document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>setLevel(Number(b.dataset.mode)));
 document.querySelectorAll("[data-rank]").forEach(b=>b.onclick=()=>{rankMode=Number(b.dataset.rank);showRanking()});
@@ -1624,7 +1632,7 @@ document.getElementById("jumpToMe").onclick=()=>{
 };
 document.getElementById("homeButton").onclick=goHome;
 document.getElementById("finishHome").onclick=goHome;
-document.getElementById("finishRanking").onclick=()=>{if(mode===4){alert("Classifiche online del livello 3 in preparazione. I tuoi record e progressi sono salvati sul dispositivo.");return}rankMode=mode;showRanking()};
+document.getElementById("finishRanking").onclick=()=>{if([4,5,6].includes(mode)){alert("Classifiche online di questa modalità in preparazione. I tuoi record e progressi sono salvati sul dispositivo.");return}rankMode=mode;showRanking()};
 document.getElementById("finishProgress").onclick=()=>{statsMode=mode;showProgress()};
 document.getElementById("homeRanking").onclick=()=>{rankMode=mode;showRanking()};
 document.getElementById("homeStats").onclick=()=>{statsMode=mode;showProgress()};
