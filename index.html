@@ -173,7 +173,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
  font-size:27px;
 }
 #app.game-toolbar #refresh{border-color:#7595c480;background:#1c3556dd;font-size:17px}
-/* v0.17.0 — noticeable reduction of visual clutter. */
+/* v0.17.1 — noticeable reduction of visual clutter. */
 #board:before{opacity:.032}
 #board.game-screen .pedestal{
  width:33%;
@@ -205,7 +205,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
 #board.game-screen .pedestal:after{
  border-radius:23%;
 }
-/* v0.17.0: extended hand-side landing platform; piece stays centered. */
+/* v0.17.1: extended hand-side landing platform; piece stays centered. */
 #board.game-screen .pedestal{
  width:51%;
  aspect-ratio:51 / 33;
@@ -220,7 +220,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
 }
 #board.game-screen .pedestal:before,
 #board.game-screen .pedestal:after{border-radius:inherit}
-/* v0.17.0: asymmetrical platform fitted to the unoccupied 3x5 grid cells. */
+/* v0.17.1: asymmetrical platform fitted to the unoccupied 3x5 grid cells. */
 #board.game-screen .pedestal{
  left:50%;top:50%;width:65%;height:58%;aspect-ratio:auto;
  transform:translate(-70.8%,-50%);
@@ -238,7 +238,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
 }
 #board.level-two.game-screen .pedestal{background:none;border:0;box-shadow:none}
 #board.level-two.game-screen .pedestal-shape{stroke:#e1d5ff;stroke-opacity:.20}
-/* v0.17.0: restore the original centered rounded-square platform. */
+/* v0.17.1: restore the original centered rounded-square platform. */
 #board.game-screen .pedestal,
 #board.game-screen.hand-left .pedestal{
  left:50%;top:50%;width:33%;height:auto;aspect-ratio:1;
@@ -257,7 +257,7 @@ header{grid-template-columns:minmax(0,1fr) repeat(6,minmax(0,40px))}header>div:n
  box-shadow:0 3px 0 #2118313d,0 8px 12px #100b243d,inset 0 1px 1px #ffffff18;
 }
 
-/* v0.17.0 — navigation surfaces inspired by the 10Shapes metallic cyan/gold emblem.
+/* v0.17.1 — navigation surfaces inspired by the 10Shapes metallic cyan/gold emblem.
    Applied to navigation only: game board, targets and staging remain unchanged. */
 #homePage,#myProgress,#ranking{
  background:
@@ -377,7 +377,7 @@ footer{
  .homeLinks button{font-size:12px}
 }
 
-/* v0.17.0: the START inscription belongs to the raised platform itself. */
+/* v0.17.1: the START inscription belongs to the raised platform itself. */
 #board.game-screen .pedestal{
  transition:transform .68s cubic-bezier(.2,.75,.23,1),background .68s ease,border-color .68s ease,box-shadow .68s ease;
  will-change:transform;
@@ -453,7 +453,7 @@ footer{
  #board.game-screen .pedestal{transition-duration:.01ms}
 }
 
-/* v0.17.0 — golden player row, one-tap rank navigation and gap to the leader. */
+/* v0.17.1 — golden player row, one-tap rank navigation and gap to the leader. */
 #rankSpotlight{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:10px;border-radius:15px;border:1px solid #91d4ee66;background:linear-gradient(140deg,#274968e8,#10243bdc);box-shadow:inset 0 1px 0 #f3faff2e,0 5px 11px #030f2380}
 #rankSpotlight .rankMetric{min-width:0;display:flex;flex-direction:column;gap:5px;padding:5px 2px;text-align:center}
 #rankSpotlight .rankMetric span{font-size:10px;letter-spacing:.6px;font-weight:850;color:#b7d4e7}
@@ -475,7 +475,7 @@ footer{
 @keyframes rankFocus{0%,45%{box-shadow:0 0 0 3px #fff9d4,0 0 25px #ffda66bd}100%{box-shadow:inset 0 1px 0 #fff9dbb3,0 3px 9px #07132375}}
 @media(max-width:360px){#rankSpotlight{padding:7px;gap:5px}#rankSpotlight .rankMetric span{font-size:9px}#ranking{padding:12px;gap:7px}}
 
-/* v0.17.0 — faceted neon metal replaces the flat gold leaderboard highlight. */
+/* v0.17.1 — faceted neon metal replaces the flat gold leaderboard highlight. */
 #rankRows .rankline.me,#rankRows .rankline.me.demo{
  position:relative;isolation:isolate;overflow:hidden;
  color:#f0faff;opacity:1;
@@ -511,7 +511,7 @@ footer{
  100%{box-shadow:inset 0 1px 0 #e4fcff9c,inset 0 -2px 0 #091e3e8c,0 3px 9px #07132380,0 0 12px #34d9ff42}
 }
 
-/* v0.17.0 — finish screen navigation */
+/* v0.17.1 — finish screen navigation */
 #finish .finishActions{
  display:flex;flex-direction:column;align-items:center;gap:12px;
  width:min(100%,350px);margin:6px auto 0;
@@ -534,7 +534,7 @@ footer{
  #finish .finishActions #again{min-height:54px;padding:10px 20px}
  #finish .finishNav button{min-height:43px}
 }
-/* v0.17.0 — synchronized stage lighting: one broad pulse per countdown digit.
+/* v0.17.1 — synchronized stage lighting: one broad pulse per countdown digit.
    No rapid strobing; stronger on 3, tapering down to 1. */
 #launchFx{
  position:absolute;inset:0;z-index:8;pointer-events:none;overflow:hidden;
@@ -607,7 +607,111 @@ footer{
  #launchFx .launchHalo,#launchFx .launchBeams,#launchFx .launchSweep,#launchFx .launchCore{animation:none!important;opacity:0!important}
  #board.countdown-light .pedestal{box-shadow:0 3px 0 #091d313d,0 7px 12px #06162860}
 }
-</style></head><body><div id="app"><header><button id="homeButton" title="Home">⌂</button><button id="restart" title="Ricomincia partita">↺</button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.17.0</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="I miei progressi" aria-label="I miei progressi">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p>Seleziona una modalità di gioco</p><button data-mode="1">Livello 1 <small>10 forme · 60 secondi</small></button><button data-mode="2">Livello 2 <small>10 forme avanzate · 60 secondi</small></button><button data-mode="3">Overall <small>Livelli 1 + 2 · 120 secondi</small></button><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Statistiche</button></div></section><div class="pedestal"></div><div id="launchFx" aria-hidden="true"><div class="launchHalo"></div><div class="launchBeams"></div><div class="launchSweep"></div><div class="launchCore"></div></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>I miei progressi</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankSpotlight" aria-live="polite"><div class="rankMetric"><span id="rankMetricLabel">LA MIA POSIZIONE</span><strong id="rankMetricValue">—</strong></div><div class="rankMetric rankGap"><span id="rankGapLabel">DISTACCO DAL PRIMO</span><strong id="rankGapValue">—</strong></div><button id="jumpToMe" type="button" disabled>↓ La mia posizione</button></div><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><div class="finishActions"><button id="again">↻ Rigioca</button><div class="finishNav"><button id="finishHome">◈ Livelli</button><button id="finishRanking">🏆 Classifiche</button></div></div><button id="nextLevel" style="display:none;margin-top:12px;background:#236b55">Vai al livello 2 →</button></div></main><footer><span id="msg" aria-live="polite"></span><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></footer></div>
+
+/* v0.17.1 — the arena goes almost black before launch.
+   The raised illuminated START platform is the only bright object. */
+#board.game-screen::after{
+ content:"";position:absolute;inset:0;z-index:0;
+ pointer-events:none;
+ background:linear-gradient(150deg,#020510f8 0%,#05071af6 50%,#010410f9 100%);
+ opacity:0;transition:opacity .42s ease;
+}
+#board.game-screen.stage-raised::after,
+#board.game-screen.countdown-light::after{opacity:1}
+#board.game-screen.stage-raised::before,
+#board.game-screen.countdown-light::before{opacity:.015}
+#board.game-screen.stage-raised .pedestal{
+ z-index:2;
+ box-shadow:
+ inset 0 2px 1px #ffffffa8,inset 0 -5px 7px #062d5d8a,
+ 0 5px 0 #0e7797,0 11px 0 #075474,0 18px 0 #063450,
+ 0 22px 15px #010716dd,0 0 24px #54f8e9b0,0 0 65px #0a9ad17d;
+}
+#board.level-two.game-screen.stage-raised .pedestal{
+ box-shadow:
+ inset 0 2px 1px #ffffffb5,inset 0 -5px 7px #2819599c,
+ 0 5px 0 #6657b3,0 11px 0 #493c88,0 18px 0 #2c265f,
+ 0 22px 15px #010416df,0 0 24px #b9a1ffba,0 0 65px #8061f17d;
+}
+#board.game-screen.countdown-light .pedestal{z-index:2;background:#10233b42;border-color:#90c8f24f}
+#board.level-two.game-screen.countdown-light .pedestal{background:#24204442;border-color:#ad9ef24f}
+/* Broad colored fireworks with separate starburst clusters at the 3, 2 and 1. */
+#launchFx{z-index:9;isolation:isolate}
+#launchFx .launchHalo{
+ background:
+ radial-gradient(circle at 20% 21%,#ffca5ac9 0%,#ff5b9e78 7%,transparent 27%),
+ radial-gradient(circle at 80% 25%,#7afaffc9 0%,#14b7ff8a 8%,transparent 28%),
+ radial-gradient(circle at 21% 76%,#ad75ffd4 0%,#5a53ed85 8%,transparent 29%),
+ radial-gradient(circle at 82% 75%,#91ffb1b8 0%,#13cbdf82 9%,transparent 28%),
+ radial-gradient(ellipse at 50% 48%,#f9f6ff9c 0%,#6cc9ff7d 12%,#7b57e54f 30%,transparent 57%);
+ animation:launchBloom .93s ease-out both;
+}
+#launchFx .launchBeams{
+ inset:-12%;
+ background:conic-gradient(from 8deg at 50% 50%,
+ transparent 0deg 9deg,#f8b1ffbf 12deg,transparent 16deg 43deg,
+ #6df9ffc4 47deg,transparent 52deg 80deg,
+ #ffdb89c9 85deg,transparent 90deg 127deg,
+ #bb95ffb8 132deg,transparent 138deg 171deg,
+ #83fff2c4 175deg,transparent 181deg 216deg,
+ #ffa8cebc 220deg,transparent 225deg 266deg,
+ #a9c5ffc9 271deg,transparent 277deg 310deg,
+ #ffe69dbd 315deg,transparent 322deg 360deg);
+ filter:blur(2px);animation:launchSpin .92s ease-out both;
+}
+#launchFx .launchSweep{
+ inset:-10%;
+ background:
+ radial-gradient(circle at 12% 31%,#ffffffed 0 2px,#9cfaffd9 3px 5px,transparent 9px),
+ radial-gradient(circle at 75% 17%,#ffffffed 0 2px,#ffa1e6df 3px 6px,transparent 10px),
+ radial-gradient(circle at 84% 63%,#fff4c5e8 0 2px,#ffbd64cb 3px 6px,transparent 10px),
+ radial-gradient(circle at 23% 83%,#ffffffef 0 2px,#a29affdf 3px 6px,transparent 10px),
+ radial-gradient(circle at 51% 14%,#b6fffce9 0 2px,transparent 9px),
+ radial-gradient(circle at 43% 72%,#f8b5ffdf 0 2px,transparent 9px),
+ radial-gradient(circle at 93% 40%,#fff5a6dc 0 2px,transparent 9px),
+ radial-gradient(circle at 8% 55%,#94d5ffde 0 2px,transparent 9px);
+ filter:drop-shadow(0 0 7px #b2eeff);
+ animation:launchSparks .94s ease-out both;
+}
+#launchFx .launchCore{
+ inset:8%;
+ background:
+ radial-gradient(circle at 50% 50%,#ffffffd8 0%,#7cf5ffc2 7%,#ee8fffa0 16%,#5c69ff6d 26%,transparent 49%),
+ radial-gradient(circle at 35% 37%,#ffe6a47d,transparent 31%);
+ animation:launchBloom .88s ease-out both;
+}
+#board.light-2 #launchFx .launchHalo{transform:rotate(115deg)}
+#board.light-2 #launchFx .launchBeams{animation-direction:normal}
+#board.light-2 #launchFx .launchSweep{transform:rotate(70deg)}
+#board.light-1 #launchFx .launchHalo{filter:saturate(.8)}
+#board.light-3 #launchFx{opacity:1}
+#board.light-2 #launchFx{opacity:.75}
+#board.light-1 #launchFx{opacity:.48}
+@keyframes launchSparks{
+ 0%{opacity:0;transform:scale(.35) rotate(-15deg)}
+ 18%{opacity:1}
+ 55%{opacity:.8}
+ 100%{opacity:0;transform:scale(1.38) rotate(18deg)}
+}
+/* Equal-sized secondary navigation buttons, including the same bevel. */
+#finish .finishNav{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+#finish .finishNav #finishHome,
+#finish .finishNav #finishRanking{
+ width:100%;height:52px;min-height:52px;
+ padding:8px 5px;box-sizing:border-box;
+ display:flex;align-items:center;justify-content:center;
+ font-size:14px;font-weight:800;line-height:1.1;
+ border:1px solid #8ecfe8b3;border-radius:13px;
+ background:linear-gradient(135deg,#244869,#2c718a 46%,#1c335a);
+ box-shadow:inset 0 1px 0 #e8fbff5c,inset 0 -2px 0 #0b1a38,0 4px 8px #04112688;
+}
+@media(max-height:680px){
+ #finish .finishNav #finishHome,#finish .finishNav #finishRanking{height:45px;min-height:45px}
+}
+@media(prefers-reduced-motion:reduce){
+ #launchFx .launchHalo,#launchFx .launchBeams,#launchFx .launchSweep,#launchFx .launchCore{animation:none!important;opacity:0!important}
+}
+</style></head><body><div id="app"><header><button id="homeButton" title="Home">⌂</button><button id="restart" title="Ricomincia partita">↺</button><div><strong><span id="levelTitle">LIVELLO 1</span> <span style="font-size:10px;color:#9bb5d5">v0.17.1</span></strong><small id="progress">0 / 10 forme</small></div><div id="clock">00:00.000</div><div><small>RECORD</small><strong id="best">—</strong></div><button id="soundToggle" title="Disattiva musica" aria-label="Disattiva musica">♫</button><button id="progressButton" title="I miei progressi" aria-label="I miei progressi">📈</button><button id="rankingButton" title="Classifiche">🏆</button><button id="refresh" title="Aggiorna app" aria-label="Aggiorna app">⟳</button></header><main id="board"><section id="homePage"><div class="homeLogo">◢ <strong>10Shapes</strong></div><p>Seleziona una modalità di gioco</p><button data-mode="1">Livello 1 <small>10 forme · 60 secondi</small></button><button data-mode="2">Livello 2 <small>10 forme avanzate · 60 secondi</small></button><button data-mode="3">Overall <small>Livelli 1 + 2 · 120 secondi</small></button><div class="homeLinks"><button id="homeRanking">🏆 Classifiche</button><button id="homeStats">📈 Statistiche</button></div></section><div class="pedestal"></div><div id="launchFx" aria-hidden="true"><div class="launchHalo"></div><div class="launchBeams"></div><div class="launchSweep"></div><div class="launchCore"></div></div><div id="countdown" aria-live="polite"><button id="startButton">START</button><strong id="countNumber"></strong></div><div id="myProgress" style="display:none"><button id="closeProgress" style="align-self:flex-end">✕</button><h2>I miei progressi</h2><div class="modeTabs" id="statsTabs"><button data-stat="1">Livello 1</button><button data-stat="2">Livello 2</button><button data-stat="3">Overall</button></div><div id="progressStats"></div><div id="progressGraph"></div><p class="progressNote">Ogni punto è un tentativo. I punti arancioni indicano le partite scadute a 60 secondi.</p></div><div id="ranking" style="display:none"><button id="closeRanking" style="align-self:flex-end">✕</button><h2>🏆 Classifica mondiale</h2><div class="modeTabs" id="rankTabs"><button data-rank="1">Livello 1</button><button data-rank="2">Livello 2</button><button data-rank="3">Overall</button></div><div class="modeTabs" id="rankScopes"><button data-scope="friends">Amici (demo)</button><button data-scope="national">Italia / Paese</button><button data-scope="world">Mondo</button></div><p style="font-size:12px;color:#b8c8df"><span id="rankingLevel">Livello 1</span> · <span id="rankingScopeLabel">Mondo</span> · Classifica di prova con profili DEMO</p><div id="rankSpotlight" aria-live="polite"><div class="rankMetric"><span id="rankMetricLabel">LA MIA POSIZIONE</span><strong id="rankMetricValue">—</strong></div><div class="rankMetric rankGap"><span id="rankGapLabel">DISTACCO DAL PRIMO</span><strong id="rankGapValue">—</strong></div><button id="jumpToMe" type="button" disabled>↓ La mia posizione</button></div><div id="rankRows">Caricamento...</div><div id="rankSubmit"><p>Il tuo profilo · il record viene inviato automaticamente</p><input id="nick" maxlength="20" placeholder="Nickname (2–20 caratteri)"><input id="country" maxlength="2" placeholder="IT" value="IT"><button id="sendScore">Salva nome</button><p id="rankMessage"></p></div></div><div id="finish"><h2>Livello completato</h2><div id="recordCelebration" hidden><div id="recordCelebrationTime"></div><div id="recordCelebrationGain"></div></div><div id="recordPositions" hidden aria-live="polite"></div><p id="summary"></p><div class="finishActions"><button id="again">↻ Rigioca</button><div class="finishNav"><button id="finishHome">◈ Livelli</button><button id="finishRanking">🏆 Classifiche</button></div></div><button id="nextLevel" style="display:none;margin-top:12px;background:#236b55">Vai al livello 2 →</button></div></main><footer><span id="msg" aria-live="polite"></span><button id="leftHand">Sinistra</button><span class="handLabel">Mano dominante</span><button id="rightHand">Destra</button></footer></div>
 <script>
 (function(){
 const board=document.getElementById('board'),clock=document.getElementById('clock'),progress=document.getElementById('progress'),msg=document.getElementById('msg'),best=document.getElementById('best'),NS='http://www.w3.org/2000/svg';
