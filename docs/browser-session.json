@@ -1,0 +1,826 @@
+{
+  "schemaVersion": 2,
+  "startedAt": "2026-10-20T22:39:01.750Z",
+  "pageVisits": 40,
+  "eligibleOpportunities": 31,
+  "qualifiedOpportunities": 31,
+  "contextChanges": 4,
+  "bannerAppearances": 10,
+  "gamesStarted": 9,
+  "gamesCompleted": 9,
+  "gamesTimedOut": 0,
+  "gamesAbandoned": 0,
+  "foregroundMs": 600077.0000000001,
+  "backgroundMs": 0,
+  "gameplayMs": 318815.1,
+  "adScreenMs": 221201.00000000047,
+  "bannerVisibleMs": 221201.00000000047,
+  "byPage": {
+    "livelli": {
+      "visits": 11,
+      "opportunities": 11,
+      "qualified": 11,
+      "dwellMs": 77277.60000000033,
+      "bannerVisibleMs": 77277.60000000033
+    },
+    "gioco": {
+      "visits": 9,
+      "opportunities": 0,
+      "qualified": 0,
+      "dwellMs": 378875.99999999965,
+      "bannerVisibleMs": 0
+    },
+    "classifica": {
+      "visits": 10,
+      "opportunities": 10,
+      "qualified": 10,
+      "dwellMs": 72954,
+      "bannerVisibleMs": 72954
+    },
+    "performance": {
+      "visits": 10,
+      "opportunities": 10,
+      "qualified": 10,
+      "dwellMs": 70969.40000000014,
+      "bannerVisibleMs": 70969.40000000014
+    }
+  },
+  "byContext": {
+    "livelli": {
+      "visits": 11,
+      "opportunities": 11,
+      "qualified": 11,
+      "dwellMs": 77277.60000000033,
+      "bannerVisibleMs": 77277.60000000033
+    },
+    "gioco": {
+      "visits": 9,
+      "opportunities": 0,
+      "qualified": 0,
+      "dwellMs": 378875.99999999965,
+      "bannerVisibleMs": 0
+    },
+    "classifica:1:world": {
+      "visits": 1,
+      "opportunities": 1,
+      "qualified": 1,
+      "dwellMs": 7123.800000000047,
+      "bannerVisibleMs": 7123.800000000047
+    },
+    "performance:1": {
+      "visits": 5,
+      "opportunities": 5,
+      "qualified": 5,
+      "dwellMs": 32373,
+      "bannerVisibleMs": 32373
+    },
+    "classifica:2:world": {
+      "visits": 1,
+      "opportunities": 1,
+      "qualified": 1,
+      "dwellMs": 5077.20000000007,
+      "bannerVisibleMs": 5077.20000000007
+    },
+    "classifica:2:national": {
+      "visits": 5,
+      "opportunities": 3,
+      "qualified": 3,
+      "dwellMs": 34956.40000000002,
+      "bannerVisibleMs": 34956.40000000002
+    },
+    "performance:2": {
+      "visits": 7,
+      "opportunities": 5,
+      "qualified": 5,
+      "dwellMs": 38596.40000000014,
+      "bannerVisibleMs": 38596.40000000014
+    },
+    "classifica:1:national": {
+      "visits": 5,
+      "opportunities": 5,
+      "qualified": 5,
+      "dwellMs": 25796.59999999986,
+      "bannerVisibleMs": 25796.59999999986
+    }
+  },
+  "native": {
+    "request": 0,
+    "loaded": 0,
+    "failed": 0,
+    "shown": 0,
+    "impression": 0,
+    "paid": 0,
+    "revenueMicrosByCurrency": {}
+  },
+  "events": [
+    {
+      "ms": 13,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 1,
+      "returnVisit": false,
+      "eligible": true
+    },
+    {
+      "ms": 13,
+      "type": "placeholder_visible",
+      "page": "livelli"
+    },
+    {
+      "ms": 3542,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 1
+    },
+    {
+      "ms": 5239,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 2,
+      "returnVisit": false,
+      "eligible": false
+    },
+    {
+      "ms": 8871,
+      "type": "game_start",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 50932,
+      "type": "game_complete",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 54185,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 3,
+      "returnVisit": false,
+      "eligible": true
+    },
+    {
+      "ms": 54185,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 55377,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 3
+    },
+    {
+      "ms": 61309,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 4,
+      "returnVisit": false,
+      "eligible": true
+    },
+    {
+      "ms": 62711,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 4
+    },
+    {
+      "ms": 69091,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 5,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 70539,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 5
+    },
+    {
+      "ms": 80262,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 6,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 89467,
+      "type": "game_start",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 137705,
+      "type": "game_complete",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 140483,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 7,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 140485,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 141503,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 7
+    },
+    {
+      "ms": 145561,
+      "type": "context_change",
+      "page": "classifica",
+      "context": "classifica:2:national",
+      "visitId": 7
+    },
+    {
+      "ms": 149110,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 8,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 150252,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 8
+    },
+    {
+      "ms": 155175,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 9,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 156252,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 9
+    },
+    {
+      "ms": 160252,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 10,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 163326,
+      "type": "game_start",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 197498,
+      "type": "game_complete",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 200223,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 11,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 200223,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 201253,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 11
+    },
+    {
+      "ms": 205612,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 12,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 206755,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 12
+    },
+    {
+      "ms": 211832,
+      "type": "context_change",
+      "page": "performance",
+      "context": "performance:2",
+      "visitId": 12
+    },
+    {
+      "ms": 214956,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 13,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 216002,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 13
+    },
+    {
+      "ms": 220088,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 14,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 223213,
+      "type": "game_start",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 257291,
+      "type": "game_complete",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 259940,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 15,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 259940,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 261002,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 15
+    },
+    {
+      "ms": 268658,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 16,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 269753,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 16
+    },
+    {
+      "ms": 274729,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 17,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 275751,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 17
+    },
+    {
+      "ms": 279839,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 18,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 283001,
+      "type": "game_start",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 314164,
+      "type": "game_complete",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 316814,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 19,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 316814,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 317880,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 19
+    },
+    {
+      "ms": 321991,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 20,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 323002,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 20
+    },
+    {
+      "ms": 328111,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 21,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 329255,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 21
+    },
+    {
+      "ms": 333182,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 22,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 336332,
+      "type": "game_start",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 368872,
+      "type": "game_complete",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 371547,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 23,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 371547,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 372753,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 23
+    },
+    {
+      "ms": 380269,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 24,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 381502,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 24
+    },
+    {
+      "ms": 389429,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 25,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 390504,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 25
+    },
+    {
+      "ms": 394495,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 26,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 397624,
+      "type": "game_start",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 428642,
+      "type": "game_complete",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 431359,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 27,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 431359,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 432503,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 27
+    },
+    {
+      "ms": 436439,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 28,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 437503,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 28
+    },
+    {
+      "ms": 442526,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 29,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 443752,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 29
+    },
+    {
+      "ms": 447614,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 30,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 450694,
+      "type": "game_start",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 481445,
+      "type": "game_complete",
+      "mode": 2,
+      "level": 2
+    },
+    {
+      "ms": 484299,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 31,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 484299,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 485507,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 31
+    },
+    {
+      "ms": 493211,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 32,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 494252,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 32
+    },
+    {
+      "ms": 499262,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 33,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 500502,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 33
+    },
+    {
+      "ms": 504382,
+      "type": "page_view",
+      "page": "gioco",
+      "visitId": 34,
+      "returnVisit": true,
+      "eligible": false
+    },
+    {
+      "ms": 507549,
+      "type": "game_start",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 542318,
+      "type": "game_complete",
+      "mode": 1,
+      "level": 1
+    },
+    {
+      "ms": 545381,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 35,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 545381,
+      "type": "placeholder_visible",
+      "page": "classifica"
+    },
+    {
+      "ms": 546503,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 35
+    },
+    {
+      "ms": 550451,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 36,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 551502,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 36
+    },
+    {
+      "ms": 556617,
+      "type": "context_change",
+      "page": "performance",
+      "context": "performance:2",
+      "visitId": 36
+    },
+    {
+      "ms": 559674,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 37,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 560752,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 37
+    },
+    {
+      "ms": 564741,
+      "type": "page_view",
+      "page": "classifica",
+      "visitId": 38,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 565752,
+      "type": "qualified_opportunity",
+      "page": "classifica",
+      "visitId": 38
+    },
+    {
+      "ms": 569820,
+      "type": "context_change",
+      "page": "classifica",
+      "context": "classifica:2:national",
+      "visitId": 38
+    },
+    {
+      "ms": 574874,
+      "type": "page_view",
+      "page": "performance",
+      "visitId": 39,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 576379,
+      "type": "qualified_opportunity",
+      "page": "performance",
+      "visitId": 39
+    },
+    {
+      "ms": 579942,
+      "type": "page_view",
+      "page": "livelli",
+      "visitId": 40,
+      "returnVisit": true,
+      "eligible": true
+    },
+    {
+      "ms": 581002,
+      "type": "qualified_opportunity",
+      "page": "livelli",
+      "visitId": 40
+    },
+    {
+      "ms": 600090,
+      "type": "session_end"
+    }
+  ],
+  "eventsDropped": 0,
+  "elapsedSeconds": 600.0899000000002,
+  "stopped": true,
+  "note": "Placeholder visibility >=1s is a custom opportunity threshold, not an AdMob impression. Native counters only change via explicit SDK bridge calls.",
+  "testMetadata": {
+    "kind": "automated browser, real wall time, synthetic user behavior",
+    "browser": "153.0.8010.0",
+    "viewport": "390x844",
+    "externalServices": "mocked; no production score writes",
+    "games": 9,
+    "gameplayBannerAbsenceChecks": 36,
+    "errors": []
+  }
+}

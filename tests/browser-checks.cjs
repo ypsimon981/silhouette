@@ -1,0 +1,25 @@
+const {chromium}=require('playwright'),assert=require('node:assert/strict');
+(async()=>{
+ const b=await chromium.launch({headless:true,...(process.env.BROWSER_EXECUTABLE?{executablePath:process.env.BROWSER_EXECUTABLE,args:['--no-sandbox','--in-process-gpu','--no-zygote','--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']}: {})});
+ const p=await b.newPage({viewport:{width:390,height:844}}),errors=[];
+ p.on('pageerror',e=>{errors.push(e.message);console.log('PAGEERROR',e.message)});p.setDefaultTimeout(12000);
+ await p.addInitScript(()=>{localStorage.setItem('10shapes_profile_setup','yes');localStorage.setItem('10shapes_music','off')});
+ await p.route('https://**/*',r=>r.abort());
+ const base=process.env.TEST_BASE||'http://127.0.0.1:8766/';
+ await p.goto(base);assert.equal(await p.locator('#adtestHud').count(),0);assert.equal(await p.evaluate(()=>typeof window.timeshapesAdTest),'undefined');
+ await p.goto(base+'?adtest=1');await p.waitForTimeout(1400);
+ const original=await p.evaluate(()=>timeshapesAdTest.report());assert.equal(original.qualifiedOpportunities,1);
+ await p.locator('#homeRanking').click();await p.waitForTimeout(1200);
+ const before=await p.evaluate(()=>timeshapesAdTest.report());await p.locator('[data-rank="2"]').click();await p.locator('[data-scope="national"]').click();
+ const after=await p.evaluate(()=>timeshapesAdTest.report());assert.equal(after.eligibleOpportunities,before.eligibleOpportunities);assert.equal(after.contextChanges,before.contextChanges+2);
+ await p.locator('#rankingProfile').click();await p.waitForTimeout(1200);const profile=await p.evaluate(()=>timeshapesAdTest.report());assert.equal(profile.qualifiedOpportunities,after.qualifiedOpportunities);
+ await p.locator('#closeProfile').click();await p.locator('#homeButton').click();
+ await p.locator('[data-mode="1"]').click();assert.equal(await p.locator('#adSlot').isVisible(),false);
+ await p.locator('#startButton').click();assert.equal(await p.locator('#adSlot').isVisible(),false);
+ await p.waitForTimeout(3300);assert.equal(await p.locator('#adSlot').isVisible(),false);
+ const game=await p.evaluate(()=>timeshapesAdTest.report());assert.equal(game.gamesStarted,1);
+ const clock=await p.locator('#clock').textContent();await p.waitForTimeout(2000);console.log('CLOCKS',clock,await p.locator('#clock').textContent());assert.notEqual(await p.locator('#clock').textContent(),clock);
+ await p.locator('#restart').click();const abandoned=await p.evaluate(()=>timeshapesAdTest.report());assert.equal(abandoned.gamesAbandoned,1);assert.ok(abandoned.gameplayMs>=1500);
+ assert.equal(abandoned.native.request,0);assert.equal(abandoned.native.impression,0);assert.deepEqual(errors,[]);
+ console.log('Browser checks PASS: opt-in, filters, profile, countdown/play banner absence, timer advances, restart abandonment; no JS errors.');await b.close();
+})().catch(e=>{console.error(e);process.exit(1)});
