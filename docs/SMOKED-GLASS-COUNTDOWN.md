@@ -1,3 +1,5 @@
+> Historical design: replaced in v0.22.4 by the potato-and-knife countdown. See `10-POTATOES.md`.
+
 # Smoked glass platform — v0.21.45
 
 The central platform retains a three-dimensional volume with a slightly translucent smoked glass face, a discreet rim, and visible side thickness. The pastel board and recessed shape slots are preserved.
