@@ -1,3 +1,37 @@
+# 10 Potatoes — v0.22.4
+
+The opening button is a whole, textured potato with a burned START mark. Pressing it starts the existing three-second countdown: an animated kitchen knife cuts one numbered slice per second (3, 2, 1). Earlier slices remain visible beside the potato; the knife and fresh slice animate once per beat. At zero, the entire prop disappears and the timer/first playable potato start together. The old glass pedestal is removed. Exit/restart cancels all countdown callbacks as before; Overall stages receive a fresh whole START potato. SVG artwork is native, small and independent of gameplay random selection; reduced-motion mode retains clear numbered slices without the knife/drop animation.
+
+The board now uses six quiet tablecloth patterns: gingham, ticking stripes, windowpane, diamonds, floral damask and linen weave. Six muted cloth colors rotate by level independently of the unchanged four potato varieties. Pattern selection uses the existing cosmetic crypto RNG and never consumes shape randomness. Fabric remains unchanged during an individual countdown/game. No opaque pregame/finish wash, blur or full-field overlay covers the potatoes.
+
+Results live in the clear central corridor between the ten unchanged board positions. The card's bounds come from actual slot rectangles and update on resize. Time, sectors and Rigioca are immediately visible; other navigation/social actions remain accessible by scrolling inside the card. Potatoes continue blinking, glancing and smiling around it. On timeout, the unplaced potato rests in the unused side position without being scored, leaving the results readable and every visible potato unobscured. Face animations and scoring/timing rules remain unchanged.
+
+Validation: `npm test` (32 tests); `CHROMIUM_EXECUTABLE=<browser> npm run test:kitchen:ui` checks live countdown visibility, numbered slices, delayed timer start, no platform during play, central-card/potato non-overlap for wins and timeouts in both hands at 320×568, 390×844 and 768×1024, working analysis navigation and resize behavior. The existing automatic test covers canceling pending countdown callbacks. Physical-device checks remain outstanding.
+
+`node tests/build-potato-preview.cjs` regenerates `docs/potatoes-preview.html`, now including START, each slice, play and results scenes. Snapshots contain no live game/network scripts or score submissions. The previous smoked-glass document below is historical.
+
+---
+
+# 10 Potatoes — v0.22.3
+
+The existing SVG catalog and renderer now produce solid, fleshy potatoes. The legacy `ring` and `square-hole` IDs represent a full oval and a rounded cushion; they remain distinct from the circle and square, preserving ten families and the selection flow. Both stars have shorter, broader points; the crescent has a shallower recess; L, cross, arrow, hourglass and chevron bodies are thicker. Triangles, rectangles, squares and polygonal level-three shapes use tangent circular corner arcs with a nominal seven-unit radius on the 100-unit canvas (about 5 px on a 72 px piece), limited only by adjacent edge length. Semicircle ends and shield corners use explicit curves. Organic levels retain their weights/codes/order and nominal scale, with contour deviations reduced to 78% to broaden their cores and shorten lobes.
+
+`potatoPath` supplies the same cached geometry to pieces, cutout floors/rims, skin clipping and face clipping. Collision acceptance in this game uses center distance, not a polygon physics mesh; its existing `.46 * piece width` tolerance and pointer handlers remain unchanged. Ten board positions, timer, scoring, records, random selection, face dimensions/anchors/expressions and animation CSS are unchanged. Geometric recognition necessarily changes with the requested new shapes; no difficulty settings or progression rules are retuned.
+
+All four original palettes and their level assignment remain intact. Soft central light replaces the previous upper-edge highlight. A static user-space pore pattern and two batched lenticel paths add fine grain with natural color variation; the patched variety keeps its three patches. All texture follows the exact outline without bitmap scaling, external images, noise filters, gameplay randomness or drag-loop work.
+
+## Validation
+
+- `npm test`: 32 passing tests, including complete placement, rejection/reset reactions, timing/statistics/social regressions, shared geometry, a single closed contour per shape and stable four-variety selection.
+- `CHROMIUM_EXECUTABLE=<browser> npm run test:potatoes:ui`: browser geometry coverage of all 123 catalog entries and rotations, sampled full eye ellipses and mouth outlines inside the potato, exact cutout/path matching, and real pointer placements on all ten levels at 320×568, 390×844 and 768×1024 (300 placements).
+- Actual renderer sheet inspected as a PNG via Inkscape; mobile static previews regenerated. Existing face sizes and anchors are preserved, including the original special face proportions on the former hollow-family IDs.
+- Same-host Chromium construction benchmark, eight batches of 150 SVG pieces with the first batch discarded: median 59.3 ms for v0.22.2, 38.6 ms for v0.22.3. A standard piece decreases from 71 to 55 SVG descendant nodes. These are renderer construction measurements, not a physical-device FPS guarantee; physical Android/iOS checks remain outstanding.
+- The older general `test:ui` suite was attempted: its browser process/context lifecycle failed in this headless setup and the online-challenge fixture timed out. Those checks are not counted as passes; the dedicated geometry/pointer suite above isolates this change using local fixtures.
+
+Commands `node tests/build-potato-sheet.cjs` and `node tests/build-potato-preview.cjs` regenerate the checked-in review assets. No live accounts or scores are modified by these fixtures.
+
+---
+
 # 10 Potatoes — v0.22.2
 
 Reference-character update: four stable level skins (yellow, yellow/red patched, red, purple), repeated every four levels. Every potato in a given level uses the same variety, including Overall stages. Background tint and diffuse platform neon follow that variety. SVG skin gradients, broad clipped patches for the patched variety, and freckles require no image downloads or gameplay random calls.

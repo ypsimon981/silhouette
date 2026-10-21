@@ -9,7 +9,7 @@ function fixture(){
  w.eval([...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1].replace('})();',debug));
  return {w,g:w.potatoTest,close:()=>w.close()};
 }
-test('every existing silhouette has identical softened potato/cutout geometry, preserved holes and upright faces without consuming gameplay randomness',()=>{
+test('every existing silhouette has identical softened potato/cutout geometry, solid rounded contours and upright faces without consuming gameplay randomness',()=>{
  const {w,g,close}=fixture();try{
   const random=w.Math.random;w.Math.random=()=>{throw Error('Cosmetic renderer consumed shape randomness')};
   const catalog=g.catalog();w.Math.random=random;assert.ok(catalog.length>40);
@@ -19,16 +19,23 @@ test('every existing silhouette has identical softened potato/cutout geometry, p
    assert.equal(piece.querySelector('.front-face').getAttribute('fill-rule'),'evenodd');
    assert.equal(slot.querySelector('.recess-floor').getAttribute('d'),rounded);
    assert.ok(!/NaN|Infinity/.test(rounded));
-   assert.equal((rounded.match(/Z/gi)||[]).length,(entry.path.match(/Z/gi)||[]).length);
+   assert.equal((rounded.match(/Z/gi)||[]).length,1);
+   assert.equal((rounded.match(/M/gi)||[]).length,1);
    assert.equal(piece.querySelector('.potatoFace').dataset.upright,'true');
    assert.ok(!piece.querySelector('.potatoFace').getAttribute('transform').includes('rotate'));
    assert.equal(piece.querySelectorAll('.potatoPupils ellipse').length,2);
    for(const def of piece.querySelectorAll('[id]')){assert.equal(ids.has(def.id),false);ids.add(def.id)}
   }
-  const square=catalog.find(a=>a.entry.family==='square');assert.match(square.rounded,/ Q /);
-  const ring=catalog.find(a=>a.entry.family==='ring');assert.match(ring.rounded,/A 6 6/);assert.match(ring.rounded,/A 40 40/);
+  const square=catalog.find(a=>a.entry.family==='square');assert.match(square.rounded,/ A 7\.000 7\.000 /);
+  const oval=catalog.find(a=>a.entry.family==='ring');assert.equal((oval.rounded.match(/M/g)||[]).length,1);assert.notEqual(oval.rounded,catalog.find(a=>a.entry.family==='circle').rounded);
   const hollow=catalog.find(a=>a.entry.family==='square-hole');assert.ok(!hollow.rounded.includes('30 30'));
   const ell=catalog.find(a=>a.entry.family==='ell');assert.notEqual(ell.rounded,ell.entry.path);
+  for(const {piece} of catalog){
+   assert.equal(piece.querySelectorAll(".potatoGrain").length,1);
+   assert.equal(piece.querySelectorAll("pattern[patternUnits=\"userSpaceOnUse\"]").length,1);
+   assert.equal(piece.querySelectorAll(".potatoLenticels").length,1);
+   assert.equal(piece.querySelectorAll("feTurbulence, image").length,0);
+  }
   assert.equal(w.SILHOUETTE_SOCIAL_CONFIG.brand,'10 Potatoes');assert.equal(w.document.title,'10 Potatoes');
  }finally{close()}
 });

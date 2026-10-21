@@ -14,7 +14,8 @@ test('real client initializes, preserves random retries and exposes sharing only
   w.eval(script);assert.ok(w.document.querySelector('#social-preferences'));
   assert.equal(w.document.querySelector('#social-actions').hidden,true);
   w.__game.setLevel(1);const original=[...w.document.querySelectorAll('.slot')].map(e=>e.outerHTML).join('');
-  const arenaArt=w.document.querySelector('#board').style.getPropertyValue('--arena-art');assert.ok(arenaArt.includes('data:image/svg+xml'));
+  const arenaArt=w.document.querySelector('#board').style.getPropertyValue('--arena-art');assert.ok(/gradient|data:image\/svg\+xml/.test(arenaArt));
+  assert.ok(w.document.querySelector('#board').style.getPropertyValue('--cloth-color'));
   const recessIds=new Set();
   for(const slot of w.document.querySelectorAll('.slot')){
    const rim=slot.querySelector('.recess-rim'),floor=slot.querySelector('.recess-floor');
@@ -64,7 +65,7 @@ test('social scripts use the current release cache key',()=>{
  for(const asset of ['social.js','social-config.js'])assert.ok(html.includes(asset+'?v='+release));
 });
 
-test('glass decks descend 3-2-1 before the timer and first shape start; exit cancels countdown',()=>{
+test('potato slices count 3-2-1 before the timer and first piece start; exit cancels countdown',()=>{
  const html=fs.readFileSync('index.html','utf8'),dom=new JSDOM(html,{url:'https://ypsimon981.github.io/silhouette/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
  w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music','off');
  w.fetch=()=>new Promise(()=>{});w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
@@ -75,22 +76,23 @@ test('glass decks descend 3-2-1 before the timer and first shape start; exit can
   const callbacks=new Map(),cancelled=[];let nextId=0;
   w.setTimeout=(fn,ms)=>{const id=++nextId;if([1000,2000,3000].includes(ms))callbacks.set(ms,{fn,id});return id};
   w.clearTimeout=id=>cancelled.push(id);
-  const board=w.document.querySelector('#board'),opacity=selector=>w.getComputedStyle(board.querySelector(selector)).opacity;
-  assert.equal(board.querySelectorAll('.glassLayer').length,4);
+  const board=w.document.querySelector('#board');
+  assert.equal(board.querySelectorAll('.glassLayer,.pedestal').length,0);
+  assert.equal(board.querySelector('#startButton .burnedStart').textContent,'START');
   const arenaArt=board.style.getPropertyValue('--arena-art');
   w.document.querySelector('#startButton').click();
-  for(const [digit,hiddenDecks] of [[3,[]],[2,[3]],[1,[3,2]]]){
+  for(const digit of [3,2,1]){
    if(digit<3)callbacks.get((3-digit)*1000).fn();
    assert.equal(w.__countdown.state().phase,'countdown');assert.equal(w.__countdown.state().start,null);
-   assert.equal(board.querySelector('.piece'),null);assert.equal(w.document.querySelector('#countNumber').textContent,String(digit));
-   assert.equal(opacity('.deck'+digit+' .glassDigit'),'1');
+   assert.equal(board.querySelector('.piece'),null);assert.equal(w.document.querySelector('#countNumber').dataset.digit,String(digit));
+   assert.equal(board.querySelectorAll('[data-slice]').length,4-digit);
+   assert.equal(board.querySelector('.slice-current .sliceNumber').textContent,String(digit));
+   assert.equal(board.querySelectorAll('.knifeMotion').length,1);
    assert.equal(board.style.getPropertyValue('--arena-art'),arenaArt);
-   for(const deck of hiddenDecks)assert.equal(opacity('.deck'+deck),'0');
   }
   callbacks.get(3000).fn();assert.equal(w.__countdown.state().phase,'playing');assert.equal(typeof w.__countdown.state().start,'number');
-  assert.ok(board.querySelector('.piece'));assert.equal(opacity('.deck0'),'1');
+  assert.ok(board.querySelector('.piece'));assert.equal(w.document.querySelector('#countdown').style.display,'none');
   assert.equal(board.style.getPropertyValue('--arena-art'),arenaArt);
-  for(const deck of [1,2,3])assert.equal(opacity('.deck'+deck),'0');
   w.document.querySelector('[data-mode="1"]').click();w.document.querySelector('#startButton').click();
   const pending=[...callbacks.values()];w.__countdown.goHome();
   for(const timer of pending){assert.ok(cancelled.includes(timer.id));timer.fn()}
