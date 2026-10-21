@@ -1,0 +1,20 @@
+#finish{overflow-y:auto;justify-content:safe center}
+.social-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;margin:10px 0}
+.social-actions[hidden],.social-actions button[hidden]{display:none}
+.social-actions button{flex:1;min-width:125px;min-height:44px;background:linear-gradient(145deg,#285d69,#443769);border:1px solid #8eddd6}
+.social-note{font-size:12px;line-height:1.45;color:#b8ccdd;white-space:pre-line}
+#social-result{margin:8px 0;color:#8ce7db;font-size:14px;white-space:pre-line}
+.social-dialog{color:#eef7ff;border:1px solid #7098ac;border-radius:20px;background:linear-gradient(150deg,#162f43,#151a32);padding:24px;width:min(420px,calc(100vw - 24px));max-height:calc(100dvh - 40px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overflow:auto;box-sizing:border-box}
+.social-dialog::backdrop{background:#041020dc}.social-dialog h2{font-size:23px;margin:0 0 18px}.social-dialog h3{font-size:16px}
+.social-dialog button,.social-dialog select{min-height:44px;margin:4px 0}.social-dialog .target-time{font-size:44px;font-weight:800;color:#7de4d6;font-variant-numeric:tabular-nums;text-align:center}
+.social-dialog .target-level{text-align:center;color:#c2a6ff;letter-spacing:2px;margin-top:20px}
+.social-dialog img{display:block;width:100%;max-height:45dvh;object-fit:contain;border-radius:12px;margin:10px auto}
+.social-dialog input,.social-dialog textarea,.social-dialog select{box-sizing:border-box;width:100%;background:#10243b;color:white;border:1px solid #7098ac;padding:10px;border-radius:9px;font:inherit}
+.social-dialog textarea{font-size:13px;min-height:80px}.social-dialog .social-close{float:right;padding:6px 12px;margin:-10px -10px 0 8px}
+#social-preferences{border:1px solid #4c687e;border-radius:12px;padding:12px;margin:10px 0;display:grid;gap:10px}
+#social-preferences legend{font-weight:700}#social-preferences label{display:flex;align-items:center;gap:10px;font-weight:400}
+#profileOverlay #social-preferences input[type=checkbox]{width:20px;min-height:20px;flex:none;accent-color:#52d2c1}
+#social-preferences small{display:block;color:#adc4d6;line-height:1.4}
+.social-item{border-bottom:1px solid #385568;padding:12px 0;font-size:14px;line-height:1.5}.social-item button{width:100%}
+#social-history{border:1px solid #426279;border-radius:12px;padding:12px;white-space:pre-line;font-size:13px;line-height:1.6}
+#social-toast{position:fixed;z-index:200;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#10263c;border:1px solid #72b8bc;padding:12px 18px;border-radius:12px;width:max-content;max-width:90vw;color:white;font-size:13px;pointer-events:none}

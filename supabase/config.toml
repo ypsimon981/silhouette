@@ -1,0 +1,9 @@
+project_id = "silhouette-social"
+
+[functions.ten-shapes-social]
+# JWT verified by Auth /user in the handler, not merely decoded.
+verify_jwt = false
+
+[functions.ten-shapes-ranking]
+# GET remains public. Every POST is verified by Auth /user in the handler.
+verify_jwt = false

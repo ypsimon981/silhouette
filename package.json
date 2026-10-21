@@ -1,0 +1,13 @@
+{
+  "name": "silhouette-social-web",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/backend.test.cjs tests/dom.test.cjs",
+    "test:ui": "node --test tests/ui.test.cjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.10",
+    "jsdom": "29.0.1",
+    "playwright": "1.62.1"
+  }
+}
