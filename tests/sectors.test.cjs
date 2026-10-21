@@ -23,7 +23,7 @@ test('a new total record still has a yellow sector when an earlier slower run ha
   assert.deepEqual(Array.from(g.state().best),[1781,2437,3967]);
   assert.deepEqual([...w.document.querySelectorAll('#finishSectors .sector')].map(n=>n.className),['sector green','sector yellow','sector green']);
   g.analysis();
-  assert.deepEqual([...w.document.querySelectorAll('.selectedSector')].map(n=>n.getAttribute('fill')),['#54e3c3','#f2cd56','#54e3c3']);
+  assert.deepEqual([...w.document.querySelectorAll('.selectedSector')].map(n=>n.getAttribute('fill')),['#e4bb76','#f4dfb3','#e4bb76']);
   assert.equal(g.state().best.reduce((a,b)=>a+b,0),8185);
   assert.equal(g.status({sectors:[2467],world:[true]},0,2437),'yellow');
   assert.equal(g.status({sectors:[2467],world:[true],worldVerified:true},0,2437),'fuchsia');

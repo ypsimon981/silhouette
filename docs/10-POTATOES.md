@@ -1,3 +1,15 @@
+# 10 Potatoes — v0.22.5
+
+The supplied 1536×768 JPEG brand board is included unchanged at `assets/brand/10potatoes-board.jpeg` (307 KB). Native SVG viewports reuse its cream horizontal logo on the home screen, brown-backed potato mascot in the toolbar and compact brown logo in the banner placeholder. The share-card canvas draws the top horizontal logo directly from the same-origin JPEG, with a text fallback if image decoding fails. It exports both portrait and square PNGs without cross-origin dependencies.
+
+`potato-theme.css` is the final theme layer after `social.css`: dark potato brown, warm cream, skin tan and golden flesh replace cool UI accents, metallic gradients, facets and glow. Fine static lenticel patterns cover buttons, panels, header/footer and social dialogs. Rankings, profile fields, performance charts, hand controls and results all follow the new palette. Tablecloth colors now stay within warm beige/tan shades; all four original potato skin varieties, face proportions, countdown and gameplay remain intact. Rank/sector styling keeps distinct tones and text labels; underlying ranking/sector logic does not change.
+
+Validation: 32 automated tests; kitchen/browser checks for countdown, unobscured results and responsive layouts in both hands; a dedicated brand check covers JPEG decoding, logo placement, actual computed matte button paint, cream profile/home surfaces, rankings, portrait/square share-image export and a 320 px home layout. Review screenshots and static preview were inspected. Physical-device checks remain outstanding.
+
+The preview generator embeds the artwork in its standalone review HTML; the live game downloads the original sheet once and reuses it from cache. No image-generation dependency, external font, noise filter, additional animation loop or gameplay RNG call is introduced.
+
+---
+
 # 10 Potatoes — v0.22.4
 
 The opening button is a whole, textured potato with a burned START mark. Pressing it starts the existing three-second countdown: an animated kitchen knife cuts one numbered slice per second (3, 2, 1). Earlier slices remain visible beside the potato; the knife and fresh slice animate once per beat. At zero, the entire prop disappears and the timer/first playable potato start together. The old glass pedestal is removed. Exit/restart cancels all countdown callbacks as before; Overall stages receive a fresh whole START potato. SVG artwork is native, small and independent of gameplay random selection; reduced-motion mode retains clear numbered slices without the knife/drop animation.

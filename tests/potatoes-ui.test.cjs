@@ -7,11 +7,11 @@ async function fixture(){
  const page=await browser.newPage();
  await page.route('https://potato.test/**',r=>{
   const name=new URL(r.request().url()).pathname.slice(1)||'index.html';
-  if(!['index.html','social-config.js','social.js','social.css','favicon.svg'].includes(name))return r.abort();
-  let body=fs.readFileSync(name,'utf8');
+  if(!['index.html','social-config.js','social.js','social.css','potato-theme.css','favicon.svg','assets/brand/10potatoes-board.jpeg'].includes(name))return r.abort();
+  let body=fs.readFileSync(name,name.endsWith('.jpeg')?undefined:'utf8');
   if(name==='index.html')body=body.replace(/\}\)\(\);\s*<\/script><\/body>/,debug+'</script></body>');
   if(name==='social-config.js')body=body.replace('enabled: true','enabled: false');
-  return r.fulfill({body,contentType:name.endsWith('.js')?'application/javascript':name.endsWith('.css')?'text/css':name.endsWith('.svg')?'image/svg+xml':'text/html'});
+  return r.fulfill({body,contentType:name.endsWith('.js')?'application/javascript':name.endsWith('.css')?'text/css':name.endsWith('.svg')?'image/svg+xml':name.endsWith('.jpeg')?'image/jpeg':'text/html'});
  });
  await page.route('https://bboijzuzhgvfxqrsfatw.supabase.co/**',r=>r.fulfill({json:{scores:[],total:0}}));
  await page.addInitScript(()=>{localStorage.setItem('10shapes_profile_setup','yes');localStorage.setItem('10shapes_music','off');});
