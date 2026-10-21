@@ -4,7 +4,7 @@ function fixture(){
  const html=fs.readFileSync('index.html','utf8'),dom=new JSDOM(html,{url:'https://game.test',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
  w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music','off');w.fetch=()=>new Promise(()=>{});w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));
- const debug='window.behaviorTest={setLevel,setup,goHome,summary:behaviorSummary,store:behaviorStore,play:(n,ms=1000)=>{phase="playing";start=performance.now()-ms;count=n;beginBehaviorAttempt();},finish:ms=>{elapsed=ms;count=10;finishLevel(true);},analysis:()=>{statsMode=mode;showProgress()},player:()=>playerId,other:()=>{playerId="other-player"}};})();';
+ const debug='window.behaviorTest={setLevel,setup,goHome,summary:behaviorSummary,store:behaviorStore,usage:usageTotals,chart:()=>{for(let i=1;i<=10;i++)localStorage.setItem(recordKeyFor(modeFromLevel(i)),"10000");difficultyOpen=true;updateDifficultyGraph()},play:(n,ms=1000)=>{phase="playing";start=performance.now()-ms;count=n;beginBehaviorAttempt();},finish:ms=>{elapsed=ms;count=10;finishLevel(true);},analysis:()=>{statsMode=mode;showProgress()},player:()=>playerId,other:()=>{playerId="other-player"}};})();';
  w.eval([...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1].replace('})();',debug));
  return {w,g:w.behaviorTest,close:()=>w.close()};
 }
@@ -18,6 +18,29 @@ test('only started games count; restart/exit boundaries and duplicate actions ar
   // Switching level must retain the identity of the interrupted level.
   g.setLevel(1);g.play(2);g.setLevel(2);assert.equal(g.summary(1).data.at(-1).sector,2);assert.equal(g.summary(2).data.length,0);
   g.play(4);g.setup();assert.equal(g.summary(2).data[0].level,2);
+ }finally{close()}
+});
+
+test('cumulative level usage seeds without duplicate wins, survives rolling history and paints behind the time curve',()=>{
+ const {w,g,close}=fixture();try{
+  const id=g.player(),win={id:'win-a',playerId:id,level:1,ms:7000,won:true,at:1};
+  w.localStorage.setItem('10shapes_attempt_history_v2',JSON.stringify([win,win,{...win,id:'win-b',level:2},{...win,id:'timeout',won:false},{...win,id:'long',ms:61000},{...win,id:'foreign',playerId:'other'}]));
+  w.localStorage.setItem('10shapes_behavior_v1',JSON.stringify({[id+':1']:[{playerId:id,level:1,ms:7000,outcome:'completed'},{playerId:id,level:1,ms:1000,outcome:'interrupted',sector:1}]}));
+  assert.deepEqual(Array.from(g.usage()),[2,1,0,0,0,0,0,0,0,0]);
+  assert.deepEqual(Array.from(g.usage()),[2,1,0,0,0,0,0,0,0,0]);
+  w.localStorage.removeItem('10shapes_attempt_history_v2');w.localStorage.removeItem('10shapes_behavior_v1');
+  g.setLevel(1);for(let i=0;i<105;i++){g.play(0);g.setup()}
+  assert.equal(g.summary(1).data.length,100);assert.equal(g.usage()[0],107);
+  g.play(0,61000);g.setup();assert.equal(g.usage()[0],107);
+  g.setLevel(2);g.play(10,8000);g.finish(8000);assert.equal(g.usage()[1],2);
+  g.chart();const chart=w.document.querySelector('#difficultyChart'),svg=chart.querySelector('svg');
+  assert.equal(svg.querySelectorAll('circle').length,10);assert.equal(svg.querySelectorAll('.levelUsageArea').length,1);
+  const area=svg.querySelector('.levelUsageArea'),time=svg.querySelector('circle');
+  assert.ok(area.compareDocumentPosition(time)&w.Node.DOCUMENT_POSITION_FOLLOWING);
+  assert.match(svg.getAttribute('aria-label'),/scala destra/);
+  assert.match(area.textContent,/L1 107/);assert.match(chart.querySelector('.levelUsageSummary').textContent,/109 tentativi/);
+  assert.ok(!area.getAttribute('points').includes('NaN'));
+  g.other();assert.ok(Array.from(g.usage()).every(n=>n===0));
  }finally{close()}
 });
 test('completion, excluded long attempts, rounded distribution, UI and behavior coach use observed data',()=>{
