@@ -154,8 +154,8 @@
     if(state==='loading'){note.textContent='Caricamento del tuo record…';return;}
     if(!score){note.textContent=state==='error'?'Record online temporaneamente non disponibile.':'Completa una partita online per sfidare un amico con il tuo record in questo livello.';return;}
     rankingTarget={mode,time_ms:score.time_ms};
-    note.textContent='Il tuo record online · '+label(mode)+': '+seconds(score.time_ms);
-    send.textContent='Sfida un amico a battere il tuo record';send.disabled=!config.enabled;
+    note.textContent=(mode===14?'Overall':'Liv. '+(MODES.indexOf(mode)+1))+' · Il tuo record: '+seconds(score.time_ms);
+    send.textContent='Sfida un amico';send.disabled=!config.enabled;
   }
   async function challengeFromRanking(){
     if(!rankingTarget)return;const target={...rankingTarget},send=document.getElementById('social-ranking-send');send.disabled=true;
@@ -245,7 +245,7 @@
     field.append(button('Sfide e traguardi',inbox));document.getElementById('sendScore').before(field);
     const area=node('section');area.id='social-history';area.textContent='Confronto delle classifiche nelle ultime 24 ore.';document.getElementById('progressStats').before(area,button('Aggiorna confronto',history));
     const rankArea=node('section');rankArea.id='social-ranking-challenge';rankArea.hidden=true;
-    const recordNote=node('p');recordNote.id='social-ranking-record';const rankSend=button('Sfida un amico a battere il tuo record',challengeFromRanking);rankSend.id='social-ranking-send';rankSend.disabled=true;
+    const recordNote=node('p');recordNote.id='social-ranking-record';const rankSend=button('Sfida un amico',challengeFromRanking);rankSend.id='social-ranking-send';rankSend.disabled=true;
     rankArea.append(recordNote,rankSend);document.getElementById('rankSpotlight').after(rankArea);
     window.addEventListener('hashchange',()=>{const c=getCode();if(bridge.playing()){pendingCode=c;toast(c?'Il link verrà aperto dopo la partita.':'Link della sfida non valido.');return;}if(c)openChallenge(c);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');});
     const c=getCode();if(c)setTimeout(()=>openChallenge(c),0);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');
