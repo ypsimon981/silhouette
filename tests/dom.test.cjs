@@ -20,7 +20,7 @@ test('real client initializes, preserves random retries and exposes sharing only
    const rim=slot.querySelector('.recess-rim'),floor=slot.querySelector('.recess-floor');
    assert.equal(rim.getAttribute('d'),floor.getAttribute('d'));
    assert.equal(floor.getAttribute('fill-rule'),'evenodd');
-   assert.equal(slot.querySelector('linearGradient stop').getAttribute('stop-color'),'#040d15');
+   assert.equal(slot.querySelector('linearGradient stop').getAttribute('stop-color'),'#1b1b10');
    assert.ok(floor.parentElement.getAttribute('transform').startsWith('rotate('));
    const filter=slot.querySelector('filter');assert.ok(filter.querySelector('feComposite[in2="SourceGraphic"]'));
    assert.equal(recessIds.has(filter.id),false);recessIds.add(filter.id);
@@ -60,7 +60,7 @@ test('START launches countdown immediately while online requests remain pending'
 });
 
 test('social scripts use the current release cache key',()=>{
- const html=fs.readFileSync('index.html','utf8'),release=html.match(/v(0\.21\.\d+)<\/span>/)[1];
+ const html=fs.readFileSync('index.html','utf8'),release=html.match(/v(\d+\.\d+\.\d+)<\/span>/)[1];
  for(const asset of ['social.js','social-config.js'])assert.ok(html.includes(asset+'?v='+release));
 });
 

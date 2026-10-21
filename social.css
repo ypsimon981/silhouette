@@ -21,3 +21,13 @@
 #social-ranking-challenge[hidden]{display:none}#social-ranking-record{margin:0 0 10px;font-size:14px;line-height:1.5;color:#caf5ee}
 #social-ranking-send{width:100%;min-height:44px;white-space:normal}#social-ranking-send:disabled{opacity:.5}
 #social-toast{position:fixed;z-index:200;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#10263c;border:1px solid #72b8bc;padding:12px 18px;border-radius:12px;width:max-content;max-width:90vw;color:white;font-size:13px;pointer-events:none}
+.social-dialog{background:#314435;color:#fff0d1;border-color:#a9b184}
+.social-dialog::backdrop{background:#182419dd}
+.social-dialog input,.social-dialog textarea,.social-dialog select{background:#23392c;color:#fff0d1;border-color:#8ca175}
+.social-dialog button,.social-actions button{background:linear-gradient(145deg,#876a3b,#4c4f31);border-color:#d2b87b;color:#fff2cf}
+.social-note,#social-preferences small{color:#d6cfaf}
+#social-result,.social-dialog .target-time{color:#f4d58e}
+.social-dialog .target-level{color:#c9d7a4}
+#social-preferences,#social-history,#social-ranking-challenge{background:#2c4030;border-color:#7b9167}
+#social-ranking-record{color:#e2e6be}
+#social-toast{background:#334a34;border-color:#b3bf87;color:#fff0d1}
