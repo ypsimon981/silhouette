@@ -34,7 +34,7 @@ test('image share closes on success, keeps preview on cancellation and releases 
  const f=fixture(),{w,social}=f;
  try{
   social.finish({won:true,mode:1,ms:8918,previous:6953});
-  [...w.document.getElementById('social-actions').querySelectorAll('button')].find(b=>b.textContent==='Condividi risultato').click();await flush();
+  [...w.document.getElementById('social-actions').querySelectorAll('button')].find(b=>b.textContent==='Condividi').click();await flush();
   const d=w.document.querySelector('.social-dialog'),send=[...d.querySelectorAll('button')].find(b=>b.textContent==='Condividi immagine');assert.equal(send.disabled,false);
   f.setOutcome('cancel');send.click();await flush();assert.ok(d.isConnected);
   f.setOutcome('success');send.click();await flush();assert.equal(d.isConnected,false);assert.equal(f.payload().files.length,1);

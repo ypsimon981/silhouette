@@ -26,7 +26,7 @@ test('mobile/tablet play regression, random retries, card exports, safe layout a
    await play(page);
    assert.equal(await page.locator('#finishSectors .sector').count(),3);
    assert.equal(await page.locator('#adSlot').isVisible(),false);
-   await page.locator('#finishProgress').click();
+   await page.locator('#finishRanking').click();await page.locator('#rankingToStats').click();
    assert.equal(await page.locator('#sectorAnalysis circle').count(),3);
    assert.equal(await page.locator('#progressGraph circle').count(),1);
    assert.equal(await page.locator('#adSlot').isVisible(),true);

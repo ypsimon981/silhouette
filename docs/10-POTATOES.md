@@ -1,3 +1,13 @@
+# 10 Potatoes — v0.22.7
+
+The result card targets 7% more width and height than the previous central corridor. It uses transparent SVG margins while preserving a three-pixel gap from visible potato contours; dimensions are capped only if needed to prevent overlap. Time, delta and sector indicators are unchanged.
+
+Actions now occupy four compact rows: Rigioca / Tutti i livelli; previous / next level; one full-width Classifiche e performance button; Condividi / Sfida. The combined button opens rankings with the existing internal performance tab and preserves the just-finished attempt selection. The redundant performance-only result button is removed. Share/challenge remain available only after a completed run; an existing rematch action may add its own row. All touch targets retain at least 44 px height.
+
+Validation: 32 automated tests; dedicated browser checks cover result size, row order, paired-button alignment, the single rankings/performance entry, navigation, sharing, actual potato-contour non-overlap and both hand preferences on 320×568, 390×844 and 768×1024 layouts. Physical-device verification remains outstanding.
+
+---
+
 # 10 Potatoes — v0.22.6
 
 All playable potatoes and their matching seats are 20% wider and taller: the shared board-relative width increases from 22.44% to 26.928%. Their SVG contours, face proportions, centers, ten positions and drag handlers are unchanged. The existing center-distance acceptance rule remains 46% of piece width. The results card automatically recomputes its free corridor from the enlarged seat rectangles. Brand artwork and the START/countdown prop retain their existing sizes. On screens up to 360 px, the result card uses tighter spacing and a smaller heading so the time and 44 px Rigioca button remain visible without scrolling.

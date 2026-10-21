@@ -51,7 +51,7 @@ test('central results never overlap potatoes; expressions stay animated on win, 
    await page.evaluate(({hand,won})=>{potatoUI.hand(hand);potatoUI.setLevel(1);potatoUI.play();if(won)potatoUI.win();else potatoUI.timeout()},{hand,won});
    const result=await page.evaluate(()=>{
     const card=document.querySelector('#finish'),r=card.getBoundingClientRect(),pieces=[...document.querySelectorAll('.piece')];
-    const overlapping=pieces.filter(p=>{const b=p.getBoundingClientRect();return r.left<b.right&&r.right>b.left&&r.top<b.bottom&&r.bottom>b.top});
+    const overlapping=pieces.filter(p=>{const b=p.querySelector('.front-face').getBoundingClientRect();return r.left<b.right&&r.right>b.left&&r.top<b.bottom&&r.bottom>b.top});
     return {overlapping:overlapping.length,count:pieces.length,filter:getComputedStyle(card).backdropFilter,scroll:card.scrollHeight>=card.clientHeight,eyeAnimations:pieces.every(p=>getComputedStyle(p.querySelector('.potatoEyes')).animationName==='potatoBlink'),after:getComputedStyle(document.querySelector('#board'),'::after').display,visible:card.clientWidth>90&&card.clientHeight>100,bodyWidth:document.documentElement.scrollWidth};
    });
    assert.equal(result.overlapping,0,JSON.stringify({hand,size,won,result}));assert.equal(result.after,'none');assert.equal(result.filter,'none');assert.ok(result.eyeAnimations);assert.ok(result.visible);assert.equal(result.count,won?10:1);assert.ok(result.bodyWidth<=size.width);
@@ -59,7 +59,7 @@ test('central results never overlap potatoes; expressions stay animated on win, 
     assert.ok(await page.locator("#again").evaluate(e=>{const a=e.getBoundingClientRect(),b=document.querySelector("#finish").getBoundingClientRect();return a.top>=b.top&&a.bottom<=b.bottom}),"Rigioca must be visible without scrolling");
     await page.screenshot({path:'/tmp/potato-finish-'+size.width+'-'+hand+'-v224.png'});
     // Actions remain reachable through the central panel, including social actions.
-    await page.locator('#finishProgress').scrollIntoViewIfNeeded();await page.locator('#finishProgress').click();
+    await page.locator('#finishRanking').scrollIntoViewIfNeeded();await page.locator('#finishRanking').click();await page.locator('#rankingToStats').click();
     assert.equal(await page.locator('#myProgress').isVisible(),true);
     await page.locator('#closeProgress').click();
    }
@@ -103,5 +103,30 @@ test('supplied artwork and matte brown/cream theme cover home, profile, rankings
   await page.evaluate(()=>potatoUI.goHome());await page.setViewportSize({width:320,height:568});
   await page.screenshot({path:'/tmp/potato-brand-home-320.png'});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ }finally{await browser.close()}
+});
+
+test('results grow by seven percent and use paired replay/levels, adjacent-level, combined overview and social rows',async()=>{
+ const {browser,page}=await fixture();try{
+  await page.setViewportSize({width:390,height:844});
+  await page.evaluate(()=>{potatoUI.setLevel(13);potatoUI.play();potatoUI.win()});
+  const layout=await page.evaluate(()=>{
+   const r=id=>{const e=document.getElementById(id),b=e.getBoundingClientRect();return {x:b.x,y:b.y,width:b.width,height:b.height,bottom:b.bottom}};
+   const slots=[...document.querySelectorAll('.slot')].map(e=>({x:parseFloat(e.style.left),y:parseFloat(e.style.top),r:e.getBoundingClientRect()}));
+   const baseWidth=Math.min(...slots.filter(s=>s.x>70).map(s=>s.r.left))-Math.max(...slots.filter(s=>s.x<30).map(s=>s.r.right))-16;
+   const baseHeight=Math.min(...slots.filter(s=>s.y>80).map(s=>s.r.top))-Math.max(...slots.filter(s=>s.y<20).map(s=>s.r.bottom))-16;
+   const social=[...document.querySelectorAll('#social-actions button')].slice(0,2).map(e=>{const b=e.getBoundingClientRect();return {x:b.x,y:b.y,bottom:b.bottom}});
+   return {card:r('finish'),replay:r('again'),levels:r('finishHome'),prev:r('previousLevel'),next:r('nextLevel'),overview:r('finishRanking'),social,baseWidth,baseHeight,duplicate:!!document.getElementById('finishProgress')};
+  });
+  assert.ok(Math.abs(layout.card.width/layout.baseWidth-1.07)<.001);
+  assert.ok(Math.abs(layout.card.height/layout.baseHeight-1.07)<.001);
+  assert.equal(layout.replay.y,layout.levels.y);assert.ok(layout.replay.x<layout.levels.x);
+  assert.equal(layout.prev.y,layout.next.y);assert.ok(layout.prev.y>=layout.replay.bottom);
+  assert.ok(layout.overview.y>=layout.prev.bottom);assert.ok(layout.social[0].y>=layout.overview.bottom);
+  assert.equal(layout.social[0].y,layout.social[1].y);assert.ok(layout.social[0].bottom<=layout.card.bottom);
+  assert.equal(layout.duplicate,false);
+  await page.screenshot({path:'/tmp/potato-results-v227.png'});
+  await page.locator('#finishRanking').click();assert.equal(await page.locator('#ranking').isVisible(),true);
+  await page.locator('#rankingToStats').click();assert.equal(await page.locator('#myProgress').isVisible(),true);
  }finally{await browser.close()}
 });
