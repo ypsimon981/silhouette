@@ -38,3 +38,11 @@ test('social scripts use the current release cache key',()=>{
  const html=fs.readFileSync('index.html','utf8'),release=html.match(/v(0\.21\.\d+)<\/span>/)[1];
  for(const asset of ['social.js','social-config.js'])assert.ok(html.includes(asset+'?v='+release));
 });
+
+test('requested reset clears only target player timings once and preserves identity',()=>{
+ const html=fs.readFileSync('index.html','utf8'),code=html.slice(html.indexOf("const PERSONAL_RESET="),html.indexOf('const HISTORY_KEY='));
+ const target='d41ebc45-0813-4c53-873c-15307acba7e3';
+ function run(id){const m=new Map([['10shapes_social_session',JSON.stringify({user:{id}})],['silhouette_record_10_handed','6953'],['10shapes_nick','Ypsimon'],['10shapes_sectors_v1',JSON.stringify({[target+':1']:{},'other:1':{}})]]);const storage={get length(){return m.size},key:i=>[...m.keys()][i],getItem:k=>m.get(k)||null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};const apply=()=>require('node:vm').runInNewContext(code,{playerId:id,localStorage:storage});apply();return {m,apply}}
+ const other=run('other');assert.equal(other.m.get('silhouette_record_10_handed'),'6953');
+ const own=run(target);assert.equal(own.m.has('silhouette_record_10_handed'),false);assert.equal(own.m.get('10shapes_nick'),'Ypsimon');assert.ok(own.m.has('10shapes_social_session'));assert.deepEqual(Object.keys(JSON.parse(own.m.get('10shapes_sectors_v1'))),['other:1']);own.m.set('silhouette_record_10_handed','9000');own.apply();assert.equal(own.m.get('silhouette_record_10_handed'),'9000');
+});
