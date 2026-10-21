@@ -23,7 +23,16 @@ test('mobile/tablet play regression, random retries, card exports, safe layout a
    await page.route('https://**',r=>r.abort());await page.goto(url);
    assert.equal(await page.locator('#social-actions').isVisible(),false);
    await page.locator('[data-mode="1"]').click();const first=await page.locator('.slot').evaluateAll(es=>es.map(e=>e.innerHTML+e.style.left+e.style.top).join('|'));
-   await play(page);await page.getByRole('button',{name:'Condividi risultato',exact:true}).click();
+   await play(page);
+   assert.equal(await page.locator('#finishSectors .sector').count(),3);
+   assert.equal(await page.locator('#adSlot').isVisible(),false);
+   await page.locator('#finishProgress').click();
+   assert.equal(await page.locator('#sectorAnalysis circle').count(),3);
+   assert.equal(await page.locator('#progressGraph circle').count(),1);
+   assert.equal(await page.locator('#adSlot').isVisible(),true);
+   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   await page.locator('#closeProgress').click();
+   await page.getByRole('button',{name:'Condividi risultato',exact:true}).click();
    await page.locator('.social-dialog img').waitFor({state:'visible'});
    await page.waitForFunction(()=>document.querySelector('.social-dialog img')?.naturalWidth===1080);
    assert.equal(await page.locator('.social-dialog img').evaluate(e=>e.naturalHeight),1920);
