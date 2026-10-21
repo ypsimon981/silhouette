@@ -14,6 +14,15 @@ test('real client initializes, preserves random retries and exposes sharing only
   w.eval(script);assert.ok(w.document.querySelector('#social-preferences'));
   assert.equal(w.document.querySelector('#social-actions').hidden,true);
   w.__game.setLevel(1);const original=[...w.document.querySelectorAll('.slot')].map(e=>e.outerHTML).join('');
+  const recessIds=new Set();
+  for(const slot of w.document.querySelectorAll('.slot')){
+   const rim=slot.querySelector('.recess-rim'),floor=slot.querySelector('.recess-floor');
+   assert.equal(rim.getAttribute('d'),floor.getAttribute('d'));
+   assert.equal(floor.getAttribute('fill-rule'),'evenodd');
+   assert.ok(floor.parentElement.getAttribute('transform').startsWith('rotate('));
+   const filter=slot.querySelector('filter');assert.ok(filter.querySelector('feComposite[in2="SourceGraphic"]'));
+   assert.equal(recessIds.has(filter.id),false);recessIds.add(filter.id);
+  }
   w.__game.win();assert.equal(w.document.querySelector('#social-actions').hidden,false);
   assert.ok(w.document.querySelector('#finishTimeValue').textContent);
   w.__game.setup();const retry=[...w.document.querySelectorAll('.slot')].map(e=>e.outerHTML).join('');assert.notEqual(original,retry);
