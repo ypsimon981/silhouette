@@ -52,6 +52,37 @@ test('social scripts use the current release cache key',()=>{
  for(const asset of ['social.js','social-config.js'])assert.ok(html.includes(asset+'?v='+release));
 });
 
+test('glass decks descend 3-2-1 before the timer and first shape start; exit cancels countdown',()=>{
+ const html=fs.readFileSync('index.html','utf8'),dom=new JSDOM(html,{url:'https://ypsimon981.github.io/silhouette/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
+ w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music','off');
+ w.fetch=()=>new Promise(()=>{});w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
+ w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));
+ const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1].replace('})();','window.__countdown={state:()=>({phase,start}),goHome};})();');
+ try{
+  w.eval(script);w.document.querySelector('[data-mode="1"]').click();
+  const callbacks=new Map(),cancelled=[];let nextId=0;
+  w.setTimeout=(fn,ms)=>{const id=++nextId;if([1000,2000,3000].includes(ms))callbacks.set(ms,{fn,id});return id};
+  w.clearTimeout=id=>cancelled.push(id);
+  const board=w.document.querySelector('#board'),opacity=selector=>w.getComputedStyle(board.querySelector(selector)).opacity;
+  assert.equal(board.querySelectorAll('.glassLayer').length,4);
+  w.document.querySelector('#startButton').click();
+  for(const [digit,hiddenDecks] of [[3,[]],[2,[3]],[1,[3,2]]]){
+   if(digit<3)callbacks.get((3-digit)*1000).fn();
+   assert.equal(w.__countdown.state().phase,'countdown');assert.equal(w.__countdown.state().start,null);
+   assert.equal(board.querySelector('.piece'),null);assert.equal(w.document.querySelector('#countNumber').textContent,String(digit));
+   assert.equal(opacity('.deck'+digit+' .glassDigit'),'1');
+   for(const deck of hiddenDecks)assert.equal(opacity('.deck'+deck),'0');
+  }
+  callbacks.get(3000).fn();assert.equal(w.__countdown.state().phase,'playing');assert.equal(typeof w.__countdown.state().start,'number');
+  assert.ok(board.querySelector('.piece'));assert.equal(opacity('.deck0'),'1');
+  for(const deck of [1,2,3])assert.equal(opacity('.deck'+deck),'0');
+  w.document.querySelector('[data-mode="1"]').click();w.document.querySelector('#startButton').click();
+  const pending=[...callbacks.values()];w.__countdown.goHome();
+  for(const timer of pending){assert.ok(cancelled.includes(timer.id));timer.fn()}
+  assert.equal(w.__countdown.state().phase,'home');assert.equal(w.__countdown.state().start,null);
+ }finally{w.close()}
+});
+
 test('requested reset clears only target player timings once and preserves identity',()=>{
  const html=fs.readFileSync('index.html','utf8'),code=html.slice(html.indexOf("const PERSONAL_RESET="),html.indexOf('const HISTORY_KEY='));
  const target='d41ebc45-0813-4c53-873c-15307acba7e3';
