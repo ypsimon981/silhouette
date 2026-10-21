@@ -1,4 +1,12 @@
-# 10 Potatoes — v0.22.0
+# 10 Potatoes — v0.22.1
+
+Reference-character update: four stable level skins (yellow, yellow/red patched, red, purple), repeated every four levels. Every potato in a given level uses the same variety, including Overall stages. Background tint and diffuse platform neon follow that variety. SVG skin gradients, broad clipped patches for the patched variety, and freckles require no image downloads or gameplay random calls.
+
+Eyes now have shaded whites, brown irises, dark pupils and highlights. The open mouth includes teeth and tongue. The standard face uses 25-unit eyes and a 30-unit mouth in its normalized 100-unit reference frame, adapted to the available solid area of each silhouette; narrow shapes cannot retain those percentages of the full outer height. Faces remain upright. Hollow shapes retain their original outside dimensions but now have a 12-unit opening (ring previously 44, square previously 40), with large eyes above and mouth below it. L arms increase from 30 to 48 units. These requested geometry changes are shared by pieces and their matching recesses and consume no gameplay randomness. Shape families and selection, timing, tolerance, player data and records are preserved.
+
+Validation: 32 automated tests pass. `node tests/build-potato-sheet.cjs` generates `docs/potato-varieties.svg` from the actual game renderer for skin, hollow-shape and rotated-L review. `node tests/build-potato-preview.cjs` also includes levels 2 and 3 to review all four varieties in the actual game layout. SVG reference sheet rendered and inspected with Inkscape. Physical iOS/Android performance testing remains outstanding.
+
+## Initial v0.22.0 release
 
 Full visual rebrand with warm sage/earthy fields, golden potato pieces, a tray-like central platform, diffuse warm underglow, potato mascot/favicon, restyled home/profile/rankings/performance/social screens, and branded share cards. Existing storage keys, identity, backend/rules version, records and statistics are preserved.
 
