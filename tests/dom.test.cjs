@@ -22,6 +22,15 @@ test('real client initializes, preserves random retries and exposes sharing only
   w.document.querySelector('#playAnalyzedLevel').click();assert.match(w.document.querySelector('#levelTitle').textContent,/LIVELLO 6/);assert.equal(w.document.querySelector('#myProgress').style.display,'none');
   w.document.querySelector('[data-stat="14"]').click();assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca di nuovo Overall');
   w.document.querySelector('#playAnalyzedLevel').click();assert.match(w.document.querySelector('#levelTitle').textContent,/OVERALL/);
+  assert.equal(w.document.querySelector('#rankingProfile'),null);
+  w.document.querySelector('#profileButton').click();
+  assert.equal(w.document.querySelector('#profileOverlay').hidden,false);
+  assert.equal(w.document.activeElement.id,'closeProfile');
+  assert.equal(w.document.querySelector('#profileLanguage').value,'auto');
+  assert.equal(w.document.querySelector('#profileMusic').value,'cinematic');
+  assert.equal(w.getComputedStyle(w.document.querySelector('#profileMusic')).height,'48px');
+  w.document.querySelector('#closeProfile').click();
+  assert.equal(w.document.querySelector('#profileOverlay').hidden,true);
  }finally{await new Promise(r=>setTimeout(r,25));w.close();}
 });
 
