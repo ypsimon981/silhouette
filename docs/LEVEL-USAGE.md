@@ -1,0 +1,9 @@
+# Cumulative level frequency — v0.21.53
+
+The existing ten-level difficulty chart keeps its best-time curve and seconds axis on the left. A subdued filled frequency curve is painted behind the grid/record points, using cumulative eligible attempt counts on a separate right axis. Point tooltips include both time and count. Accessible chart/area descriptions explain both scales; a summary identifies the most-played levels and total observations. The existing unlock rule (complete each of the ten levels) is unchanged.
+
+Counters are stored in `10shapes_level_usage_v1`, partitioned by player ID, with ten nonnegative integer totals. Eligible completed/interrupted attempts increment once when finalized, using the current level for Overall stages. Countdown cancellation, timeouts and durations beyond 60 seconds do not count. No processing is added to the timer or drag loop.
+
+On first use, counters seed from player-attributed valid completions still available in time history and interruptions still available in behavioral history. Duplicate completion IDs are collapsed; overlapping behavioral completions use the larger completion count rather than being added again. Records missing player identity are not silently attributed. Previously discarded history and untracked interruptions cannot be recovered; the page states the count covers locally available data. Once seeded, totals continue beyond rolling 100-attempt retention. Clearing browser storage still removes local counters; account synchronization is not introduced.
+
+Validation: `npm test` — 29 passed. The cumulative-usage regression verifies migration/deduplication, player/level isolation, exclusion of long attempts, retention beyond 100, completion incrementing, finite chart geometry and background draw order while retaining all ten time points. `git diff --check` passed. Physical-device visual checks remain unavailable.
