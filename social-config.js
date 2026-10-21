@@ -1,7 +1,6 @@
-// SQL, social endpoint and cron deployed. Auth anonymous sign-in is still disabled.
-// Enable only after Auth is enabled and the authenticated ranking endpoint is deployed.
+// Social backend, anonymous Auth, authenticated rankings and daily cron are active.
 window.SILHOUETTE_SOCIAL_CONFIG = Object.freeze({
-  enabled: false,
+  enabled: true,
   supabaseUrl: 'https://bboijzuzhgvfxqrsfatw.supabase.co',
   publishableKey: 'sb_publishable_IYGuSSUStiK95becoD-OQQ_aj_2sGIN',
   publicUrl: 'https://ypsimon981.github.io/silhouette/',

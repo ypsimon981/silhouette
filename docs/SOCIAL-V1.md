@@ -1,17 +1,13 @@
 # Social V1 web — pubblicazione graduale
 
 Stato al 21 ottobre 2026: installazione SQL applicata al progetto CoDriver,
-funzione `ten-shapes-social` distribuita e cron `shapes-social-digest` attivo.
-Il client pubblicato abilita le card locali; `enabled: false` mantiene le funzioni
-social online disattivate, perché Anonymous Sign-ins risulta spento in Auth.
-La precedente funzione delle classifiche resta in servizio per non interrompere
-il gioco corrente. Il suo aggiornamento autenticato si applicherà insieme
-all'attivazione online, dopo aver abilitato Anonymous Sign-ins.
+funzioni `ten-shapes-social` e `ten-shapes-ranking` distribuite, accessi anonimi
+abilitati nel dashboard e cron `shapes-social-digest` attivo.
+Il client pubblicato ha `enabled: true`: condivisioni, sfide, rivincite,
+traguardi e avvisi interni sono attivi. Le push native restano rinviate all'app.
 
-Da fare nel dashboard Supabase del progetto CoDriver: Authentication →
-Sign In / Providers → Anonymous Sign-ins → Enable anonymous sign-ins.
-Non occorre modificare Fi-card. Questo controllo non è esposto dagli strumenti
-Supabase collegati e non è stato aggirato con credenziali alternative.
+L'attivazione Auth è stata completata nel dashboard del progetto CoDriver dopo
+l'accesso sicuro dell'utente; nessuna impostazione di Fi-card è stata modificata.
 
 ## Contenuto
 
@@ -129,6 +125,11 @@ Controllo sintattico del JavaScript e caricamento delle due funzioni TypeScript.
 Un test funzionale DOM esegue il client reale e verifica inizializzazione,
 conclusione della partita, comparsa delle azioni social, retry casuale e timeout.
 Quest'ultimo non verifica la grafica o i gesti di trascinamento.
+
+Attivazione verificata anche sulle API reali con due account ospite di prova:
+creazione e apertura sfida, risultato vincente, differenza al centesimo,
+reinvio idempotente senza doppio avviso e apertura del link di rivincita.
+I risultati e i profili usati esclusivamente per la prova sono stati rimossi.
 
 I test browser Playwright sono inclusi in `tests/ui.test.cjs`, ma non sono stati
 superati qui: il browser locale non si avvia in questo ambiente. Non equivalgono
