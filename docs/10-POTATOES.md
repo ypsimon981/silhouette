@@ -1,3 +1,11 @@
+# 10 Potatoes — v0.22.6
+
+All playable potatoes and their matching seats are 20% wider and taller: the shared board-relative width increases from 22.44% to 26.928%. Their SVG contours, face proportions, centers, ten positions and drag handlers are unchanged. The existing center-distance acceptance rule remains 46% of piece width. The results card automatically recomputes its free corridor from the enlarged seat rectangles. Brand artwork and the START/countdown prop retain their existing sizes. On screens up to 360 px, the result card uses tighter spacing and a smaller heading so the time and 44 px Rigioca button remain visible without scrolling.
+
+Validation uses real browser measurements and pointer placements on every level at 320×568, 390×844 and 768×1024, plus the existing win/timeout, both-hands and central-results checks. Physical-device verification remains outstanding.
+
+---
+
 # 10 Potatoes — v0.22.5
 
 The supplied 1536×768 JPEG brand board is included unchanged at `assets/brand/10potatoes-board.jpeg` (307 KB). Native SVG viewports reuse its cream horizontal logo on the home screen, brown-backed potato mascot in the toolbar and compact brown logo in the banner placeholder. The share-card canvas draws the top horizontal logo directly from the same-origin JPEG, with a text fallback if image decoding fails. It exports both portrait and square PNGs without cross-origin dependencies.

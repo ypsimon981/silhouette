@@ -118,3 +118,13 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
 #app:not(.game-toolbar) #homeButton>svg.toolbarPotato{display:block!important;width:32px;height:32px;stroke:none;filter:none!important}
 #app header button span{color:inherit!important;text-shadow:none!important}
 @media(max-width:380px){#app:not(.game-toolbar) #homeButton>svg.toolbarPotato{width:28px;height:28px}}
+/* Keep the primary result action visible in the smaller corridor on narrow phones. */
+@media(max-width:360px){
+ #app #board.complete #finish{padding:8px 6px;gap:4px}
+ #app #finish h2,#app #finish.new-record h2{font-size:11px}
+ #app #finishTimePanel .finishTimeLabel{display:none}
+ #app #finishTimeValue{font-size:18px;letter-spacing:-.8px}
+ #app #finishTimeDelta{font-size:9px}
+ #app #finishSectors{margin:2px 0}
+ #app #finishSectors .sector{padding:4px 2px}
+}

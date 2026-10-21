@@ -49,6 +49,8 @@ test('ten levels retain ten slots and complete through real pointer placement on
   for(const mode of [1,2,4,7,8,9,10,11,12,13]){
    await page.evaluate(mode=>{potatoUI.setLevel(mode);potatoUI.play()},mode);
    assert.equal(await page.locator('.slot').count(),10);
+   const ratio=await page.locator('.piece:not(.done)').evaluate(e=>e.getBoundingClientRect().width/document.querySelector('#board').getBoundingClientRect().width);
+   assert.ok(Math.abs(ratio-(.2244*1.2))<.0002,'Potatoes must be 20% larger at every level and viewport');
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    for(let i=0;i<10;i++){
     const piece=page.locator('.piece:not(.done)'),a=await piece.boundingBox(),b=await page.locator('.slot').nth(i).boundingBox();
