@@ -78,13 +78,15 @@
       await ensureProfile();const t=await api('run_start',{level:mode,code:active?.code||null,rules:config.rulesVersion});
       if(gen!==generation)return false;ticket=t;return true;
     }catch(e){
+      if(gen!==generation)return false;
       if(active){toast(errorText(e));return false;}
       toast('Partita locale: il risultato non potrà creare una sfida online.');return gen===generation;
-    }finally{startPending=false;}
+    }finally{if(gen===generation)startPending=false;}
   }
-  function resetAttempt(mode){generation++;ticket=null;submitting=null;if(active&&active.level!==mode)active=null;}
+  function resetAttempt(mode){generation++;startPending=false;ticket=null;submitting=null;if(active&&active.level!==mode)active=null;}
   function leave(){resetAttempt(null);active=null;}
   function finish(result){
+    generation++;startPending=false; // A late run_start response must not attach to a finished attempt.
     const run=ticket;ticket=null;const challenge=active;
     last={...result,challenge,run_id:run?.id,verified:false};const current=last;
     renderRematch();
@@ -236,7 +238,7 @@
     rankArea.append(recordNote,rankSend);document.getElementById('rankSpotlight').after(rankArea);
     window.addEventListener('hashchange',()=>{const c=getCode();if(bridge.playing()){pendingCode=c;toast(c?'Il link verrà aperto dopo la partita.':'Link della sfida non valido.');return;}if(c)openChallenge(c);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');});
     const c=getCode();if(c)setTimeout(()=>openChallenge(c),0);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');
-    return {begin,finish,leave,resetAttempt,score,profile,history,ranking,openPending:()=>{const c=getCode();if(c)openChallenge(c);}};
+    return {begin,requiresOnlineStart:()=>!!active,finish,leave,resetAttempt,score,profile,history,ranking,openPending:()=>{const c=getCode();if(c)openChallenge(c);}};
   }
   window.SilhouetteSocial={init};
 })();
