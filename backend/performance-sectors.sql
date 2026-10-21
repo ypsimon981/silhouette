@@ -14,7 +14,7 @@ grant select,insert on public.shapes_performance_sectors to service_role;
 create or replace function public.shapes_performance_submit(who uuid, run uuid, parts integer[])
 returns jsonb language plpgsql security invoker set search_path=public,pg_temp as $$
 declare r public.shapes_social_runs%rowtype; saved public.shapes_performance_sectors%rowtype;
- records boolean[]; minima integer[];
+ records boolean[]; minima integer[]; has_global_reference boolean;
 begin
  select * into r from public.shapes_social_runs where id=run and user_id=who;
  if not found or r.status<>'completed' then raise exception 'Tentativo non verificato';end if;
@@ -27,7 +27,8 @@ begin
   return jsonb_build_object('world',saved.world);
  end if;
  select array[min(sectors[1]),min(sectors[2]),min(sectors[3])] into minima from public.shapes_performance_sectors where level=r.level;
- records=array[minima[1] is null or parts[1]<minima[1],minima[2] is null or parts[2]<minima[2],minima[3] is null or parts[3]<minima[3]];
+ select exists(select 1 from public.shapes_performance_sectors where level=r.level and user_id<>who) into has_global_reference;
+ records=array[has_global_reference and parts[1]<minima[1],has_global_reference and parts[2]<minima[2],has_global_reference and parts[3]<minima[3]];
  insert into public.shapes_performance_sectors(run_id,user_id,level,sectors,world) values(run,who,r.level,parts,records);
  return jsonb_build_object('world',records);
 end $$;

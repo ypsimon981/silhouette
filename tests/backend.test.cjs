@@ -108,9 +108,10 @@ test('leaderboard challenges use the owned best, support Overall stage records a
 
 test('verified sector receipts: ownership, sum, global records, ties and idempotency',async()=>{
  const submit=async(who,r,parts)=>(await db.query('select public.shapes_performance_submit($1,$2,$3) result',[who,r,parts])).rows[0].result;
- const a=await run(A,18000,null,2);assert.deepEqual((await submit(A,a.id,[3000,5000,10000])).world,[true,true,true]);
- assert.deepEqual((await submit(A,a.id,[3000,5000,10000])).world,[true,true,true]);
+ const a=await run(A,18000,null,2);assert.deepEqual((await submit(A,a.id,[3000,5000,10000])).world,[false,false,false]);
+ assert.deepEqual((await submit(A,a.id,[3000,5000,10000])).world,[false,false,false]);
  await assert.rejects(submit(B,a.id,[3000,5000,10000]));await assert.rejects(submit(A,a.id,[3000,4000,11000]));
+ const solo=await run(A,17000,null,2);assert.deepEqual((await submit(A,solo.id,[3000,5000,9000])).world,[false,false,false]);
  const b=await run(B,18000,null,2);await assert.rejects(submit(B,b.id,[3000,5000,9999]));
  assert.deepEqual((await submit(B,b.id,[3000,4900,10100])).world,[false,true,false]);
  await db.exec('set role authenticated');try{await assert.rejects(submit(B,b.id,[3000,4900,10100]));await assert.rejects(db.query('select * from public.shapes_performance_sectors'));}finally{await db.exec('reset role')}
