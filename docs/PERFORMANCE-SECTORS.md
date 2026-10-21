@@ -31,3 +31,7 @@ No banner is visible on the game screen, including preparation, countdown and fi
 - Android and iOS physical-device layout, WebKit, native anchored-adaptive rendering and timing under device load remain unverified. There is no new per-frame computation; only three constant-time timing samples per level, with storage/chart work after completion or when opening analysis.
 
 Before release, apply the SQL/Edge Function changes and run browser/device QA. No game rules, shape selection or random retry sequence were intentionally changed.
+
+## v0.21.37 — density view
+
+The sector chart now uses one vertical violin per sector, based on available completed measured attempts belonging to the current player/level (plus deduplicated retained top runs). Width is a Gaussian kernel density estimate with a robust Silverman bandwidth and 40 ms minimum; each sector's width is independently normalized. At least five measured runs are required to draw density clouds; smaller samples show observed ranges only. Three selected-run markers are drawn above the clouds, with exact values below the axis. A selector includes the best retained runs and up to 100 recent available attempts, defaults to the PB, and opens the just-finished run when entered from results. The coach remains explicitly based on the PB and all-time personal minima. The independent 100-attempt total-time history remains unchanged. No network calls or per-frame work are introduced by this chart.
