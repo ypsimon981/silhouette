@@ -1,6 +1,8 @@
-# 10 Potatoes — v0.22.1
+# 10 Potatoes — v0.22.2
 
 Reference-character update: four stable level skins (yellow, yellow/red patched, red, purple), repeated every four levels. Every potato in a given level uses the same variety, including Overall stages. Background tint and diffuse platform neon follow that variety. SVG skin gradients, broad clipped patches for the patched variety, and freckles require no image downloads or gameplay random calls.
+
+Character path paint uses explicit inline styles so legacy metallic path rules cannot hide mouths, pupils or skin patches. The regression test checks computed paint inside a real piece DOM container.
 
 Eyes now have shaded whites, brown irises, dark pupils and highlights. The open mouth includes teeth and tongue. The standard face uses 25-unit eyes and a 30-unit mouth in its normalized 100-unit reference frame, adapted to the available solid area of each silhouette; narrow shapes cannot retain those percentages of the full outer height. Faces remain upright. Hollow shapes retain their original outside dimensions but now have a 12-unit opening (ring previously 44, square previously 40), with large eyes above and mouth below it. L arms increase from 30 to 48 units. These requested geometry changes are shared by pieces and their matching recesses and consume no gameplay randomness. Shape families and selection, timing, tolerance, player data and records are preserved.
 

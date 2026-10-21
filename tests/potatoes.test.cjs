@@ -47,7 +47,7 @@ test('potato expressions react to rejected placement, reset safely, and all ten 
  }finally{close()}
 });
 test('four reference skins stay fixed within each level and match background/neon; eyes and mouth use reference proportions',()=>{
- const {g,close}=fixture();try{
+ const {w,g,close}=fixture();try{
   const names=['gialla','pezzata','rossa','viola'];
   for(let n=1;n<=10;n++){
    const v=g.variety(n);assert.equal(v.skin.name,names[(n-1)%4]);
@@ -57,6 +57,10 @@ test('four reference skins stay fixed within each level and match background/neo
     assert.equal(piece.querySelectorAll('.potatoPatch').length,v.skin.name==='pezzata'?3:0);
     assert.equal(piece.querySelectorAll('.potatoEyeWhite').length,2);
     assert.equal(piece.querySelectorAll('.potatoMouth g path').length,4);
+    const host=w.document.createElement('div');host.className='piece';host.appendChild(piece);w.document.querySelector('#board').appendChild(host);
+    assert.equal(w.getComputedStyle(piece.querySelector('.potatoMouth > path')).fill,'rgb(67, 13, 11)');
+    for(const patch of piece.querySelectorAll('.potatoPatch'))assert.match(w.getComputedStyle(patch).fill,/-patch["']?\)/);
+    host.remove();
    }
   }
   const circle=g.variety(1).pieces[0];
