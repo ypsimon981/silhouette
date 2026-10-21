@@ -1,4 +1,5 @@
-// Enable only after the SQL, Auth and both Edge Functions have been deployed.
+// SQL, social endpoint and cron deployed. Auth anonymous sign-in is still disabled.
+// Enable only after Auth is enabled and the authenticated ranking endpoint is deployed.
 window.SILHOUETTE_SOCIAL_CONFIG = Object.freeze({
   enabled: false,
   supabaseUrl: 'https://bboijzuzhgvfxqrsfatw.supabase.co',

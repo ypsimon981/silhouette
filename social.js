@@ -27,7 +27,7 @@
     if(!response.ok)throw Error(data.error_description||data.msg||data.error||'Servizio temporaneamente non disponibile.');return data;
   }
   async function session(){
-    if(!config.enabled)throw Error('Le sfide online saranno disponibili dopo l’attivazione del backend social.');
+    if(!config.enabled)throw Error('Le sfide online non sono ancora attive. Puoi già condividere l’immagine del risultato.');
     if(authFlight)return authFlight;
     const work=async()=>{
       let s=read('session',null);
@@ -126,7 +126,7 @@
     if(!MODES.includes(result.mode)){toast('Le sfide V1 sono disponibili sui singoli livelli.');return;}
     try{
       if(submitting)await submitting;
-      if(!result.verified)throw Error('Per creare una sfida serve una partita completata con il backend social attivo.');
+      if(!result.verified)throw Error('Per creare una sfida serve una partita completata online con le sfide attive.');
       const c=await api('challenge_create',{run_id:result.run_id,parent_code:result.challenge?.code||null});
       event(result.challenge?'rematch_share_clicked':'share_clicked',{code:c.code});
       await shareText(label(result.mode)+' · '+seconds(result.ms)+'. Riesci a battermi?',link(c.code),result.challenge?'rematch_shared':'share_handoff',c.code);
@@ -207,7 +207,7 @@
     }
     const time=node('input');time.type='time';time.value=prefs.digest_time;time.onchange=()=>{if(time.value){prefs.digest_time=time.value;write('preferences',prefs);}};
     const tl=node('label','Orario riepilogo');tl.append(time);field.append(tl,node('small','Preferenze per gli avvisi nel gioco. Push non disponibili: saranno attivate con l’app mobile e il consenso del sistema. Le impostazioni online si salvano con “Salva profilo”.'),node('small','Il profilo social è legato a questo browser. Cancellando i dati perderai l’accesso; il recupero su altri dispositivi non è ancora disponibile.'));
-    if(!config.enabled)field.append(node('small','Backend social in attesa di attivazione. Puoi già condividere le immagini dei risultati.'));
+    if(!config.enabled)field.append(node('small','Le sfide online non sono ancora attive. Puoi già condividere le immagini dei risultati.'));
     field.append(button('Sfide e traguardi',inbox));document.getElementById('sendScore').before(field);
     const area=node('section');area.id='social-history';area.textContent='Confronto delle classifiche nelle ultime 24 ore.';document.getElementById('progressStats').before(area,button('Aggiorna confronto',history));
     window.addEventListener('hashchange',()=>{const c=getCode();if(bridge.playing()){pendingCode=c;toast(c?'Il link verrà aperto dopo la partita.':'Link della sfida non valido.');return;}if(c)openChallenge(c);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');});

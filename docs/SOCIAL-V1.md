@@ -1,7 +1,17 @@
-# Social V1 web — aggiornamento da revisionare
+# Social V1 web — pubblicazione graduale
 
-Stato: codice preparato, backend non distribuito, `enabled: false`.
-Il sito pubblico e il database di produzione non sono stati modificati.
+Stato al 21 ottobre 2026: installazione SQL applicata al progetto CoDriver,
+funzione `ten-shapes-social` distribuita e cron `shapes-social-digest` attivo.
+Il client pubblicato abilita le card locali; `enabled: false` mantiene le funzioni
+social online disattivate, perché Anonymous Sign-ins risulta spento in Auth.
+La precedente funzione delle classifiche resta in servizio per non interrompere
+il gioco corrente. Il suo aggiornamento autenticato si applicherà insieme
+all'attivazione online, dopo aver abilitato Anonymous Sign-ins.
+
+Da fare nel dashboard Supabase del progetto CoDriver: Authentication →
+Sign In / Providers → Anonymous Sign-ins → Enable anonymous sign-ins.
+Non occorre modificare Fi-card. Questo controllo non è esposto dagli strumenti
+Supabase collegati e non è stato aggirato con credenziali alternative.
 
 ## Contenuto
 
@@ -50,7 +60,9 @@ nel Profilo. Non abilitare un'unione automatica basata sul vecchio UUID.
 2. Provare prima su un database di sviluppo con la struttura di
    `public.ten_shapes_scores` esistente, incluso l'indice univoco
    `(player_id,level)`, e Supabase Auth.
-3. Eseguire una volta `backend/install-social.sql` nel SQL Editor. È uno script
+3. Già applicato in produzione come migrazione `shapes_social_v1_web`:
+   `backend/install-social.sql`. Per un ambiente nuovo, eseguirlo una volta.
+   È uno script
    transazionale di installazione, non una migrazione CLI già applicata.
    Non rieseguirlo sullo stesso schema: crea tabelle e funzioni nuove.
 4. Abilitare Anonymous Sign-ins in Supabase Auth. Controllare limiti e protezioni
@@ -76,7 +88,7 @@ nel Profilo. Non abilitare un'unione automatica basata sul vecchio UUID.
 
 Per usare la CLI, verificare prima `supabase --help`, collegare esplicitamente
 il progetto corretto e consultare l'help di `functions deploy`. Nessun comando
-di deploy è stato eseguito durante questa preparazione.
+   di deploy CLI è stato eseguito: la distribuzione è avvenuta tramite il connettore.
 
 Per un rollback del client, ripristinare insieme la precedente Edge Function
 delle classifiche; cambiare soltanto `enabled` dopo il deploy non riabilita i
@@ -127,7 +139,10 @@ Safari/iPhone e Chrome/Android, incluse safe area e schermi piccoli.
 Prima di attivare: due account reali, apertura fredda/calda del link, condivisione
 su WhatsApp/Telegram/Instagram dove supportata, card quadrata/verticale, rete
 assente, tentativo interrotto, link scaduto, notifiche interne e job dopo 24 ore.
-Non sono state modificate o provate funzioni sul database di produzione.
+Verificati in produzione l'installazione additiva, la funzione di lettura ranking,
+il job, l'esecuzione del digest senza profili e gli advisor. Gli avvisi informativi
+RLS senza policy sulle tabelle social sono coerenti con l'accesso solo server:
+anon e authenticated non hanno grant e il servizio accede tramite Edge Function.
 
 ## Funzioni rinviate alla versione mobile
 
