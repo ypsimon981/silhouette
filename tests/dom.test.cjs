@@ -33,3 +33,8 @@ test('START launches countdown immediately while online requests remain pending'
  assert.equal(w.document.querySelector('#startButton').disabled,false);
  }finally{w.close()}
 });
+
+test('social scripts use the current release cache key',()=>{
+ const html=fs.readFileSync('index.html','utf8'),release=html.match(/v(0\.21\.\d+)<\/span>/)[1];
+ for(const asset of ['social.js','social-config.js'])assert.ok(html.includes(asset+'?v='+release));
+});
