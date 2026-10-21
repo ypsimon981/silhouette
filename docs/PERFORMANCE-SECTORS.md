@@ -39,3 +39,7 @@ The sector chart now uses one vertical violin per sector, based on available com
 ## v0.21.40 — all-time sector color reference
 
 User-updated rule: finish colors compare each sector with its independent all-time personal minimum captured before that attempt, regardless of the best total run. Equal/faster is green; slower is yellow. First measured sectors establish green reference values. Analysis markers compare against current all-time personal sector minima, matching the ideal-time coach. Verified world receipts take priority as fuchsia; analysis trusts only newly marked verified receipts, rather than old archived flags created before competitive global-reference checks existed. Record totals and measured sector data are preserved.
+
+## v0.21.41 — compact analysis and eligible attempts
+
+The analysis header uses a compact title/close row and horizontal level carousel like rankings, without scope filters. Remove the attempts/completed summary. Analysis excludes failed/timed-out attempts and durations beyond the per-level limit, including existing stored data; new failed attempts are not appended to performance history. Overall uses its existing sum-of-stage limits. Raw historical entries remain stored rather than being destructively deleted. The 100-point graph selects the latest 100 eligible completed runs.

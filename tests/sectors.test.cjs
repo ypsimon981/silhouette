@@ -1,6 +1,6 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs');
 const {JSDOM}=require('jsdom');
-function game(){const html=fs.readFileSync('index.html','utf8'),dom=new JSDOM(html,{url:'https://game.test',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music','off');w.fetch=async()=>{throw Error('offline')};w.structuredClone=structuredClone;w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));let script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1];script=script.replace('})();',`window.testSectors={run:(marks,total)=>{setLevel(1);beginSectors();sectorMarks=marks;elapsed=total;count=10;finishLevel(true);},analysis:()=>{statsMode=1;showProgress()},state:()=>sectorState(1),color:sectorColor,status:sectorStatus,valid:validSectors,capture:()=>{start=performance.now()-2500;overallAccum=0;sectorMarks=[];captureSector(2);return {elapsed,marks:sectorMarks}},history:()=>JSON.parse(localStorage.getItem(HISTORY_KEY)),recordKey:recordKeyFor(1)};})();`);w.eval(script);return {w,dom,g:w.testSectors}}
+function game(){const html=fs.readFileSync('index.html','utf8'),dom=new JSDOM(html,{url:'https://game.test',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music','off');w.fetch=async()=>{throw Error('offline')};w.structuredClone=structuredClone;w.HTMLElement.prototype.scrollIntoView=()=>{};w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));let script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1];script=script.replace('})();',`window.testSectors={run:(marks,total)=>{setLevel(1);beginSectors();sectorMarks=marks;elapsed=total;count=10;finishLevel(true);},analysis:()=>{statsMode=1;showProgress()},state:()=>sectorState(1),accepts:isPerformanceAttempt,color:sectorColor,status:sectorStatus,valid:validSectors,capture:()=>{start=performance.now()-2500;overallAccum=0;sectorMarks=[];captureSector(2);return {elapsed,marks:sectorMarks}},history:()=>JSON.parse(localStorage.getItem(HISTORY_KEY)),recordKey:recordKeyFor(1)};})();`);w.eval(script);return {w,dom,g:w.testSectors}}
 test('exact sums, all-time sector best snapshot, independent sector minima, top five and 100-attempt history',async()=>{const {w,dom,g}=game();try{g.run([2000,5000,10000],10000);g.run([1900,5100,9900],9900);assert.deepEqual([...w.document.querySelectorAll('#finishSectors .sector')].map(n=>n.className),['sector green','sector yellow','sector green']);g.run([1800,5200,11000],11000);assert.equal(g.state().record.ms,9900);assert.deepEqual(Array.from(g.state().best),[1800,3000,4800]);for(let i=0;i<105;i++)g.run([2200,5500,12000+i],12000+i);assert.equal(g.state().top.length,5);g.analysis();assert.equal(w.document.querySelectorAll('#progressGraph circle').length,100);assert.equal(w.document.querySelectorAll('#sectorAnalysis circle').length,3);assert.match(w.document.querySelector('#sectorAnalysis').textContent,/teorico/);assert.equal(w.document.querySelectorAll('.sectorCloud').length,3);const picker=w.document.querySelector('#sectorAttemptSelect');picker.value=picker.options[1].value;picker.dispatchEvent(new w.Event('change'));assert.equal(w.document.querySelectorAll('.selectedSector').length,3);for(const a of g.history())assert.ok(g.valid(a));assert.equal(g.color(2,2),'green');assert.equal(g.color(2,null),'green');const captured=g.capture();assert.equal(captured.marks[0],Math.round(captured.elapsed));assert.ok(captured.elapsed>=2500); }finally{await new Promise(r=>setTimeout(r,30));dom.window.close()}});
 test('legacy record remains authoritative and unavailable sectors are not invented',async()=>{const {w,dom,g}=game();try{w.localStorage.setItem(g.recordKey,'8000');g.run([2000,5000,10000],10000);assert.equal(w.localStorage.getItem(g.recordKey),'8000');assert.equal(g.state().record,null);g.analysis();assert.match(w.document.querySelector('#sectorAnalysis').textContent,/dettaglio non è disponibile/);assert.ok([...w.document.querySelectorAll('#finishSectors .sector')].every(n=>n.classList.contains('green')));}finally{await new Promise(r=>setTimeout(r,30));dom.window.close()}});
 
@@ -27,5 +27,26 @@ test('a new total record still has a yellow sector when an earlier slower run ha
   assert.equal(g.state().best.reduce((a,b)=>a+b,0),8185);
   assert.equal(g.status({sectors:[2467],world:[true]},0,2437),'yellow');
   assert.equal(g.status({sectors:[2467],world:[true],worldVerified:true},0,2437),'fuchsia');
+ }finally{await new Promise(r=>setTimeout(r,30));dom.window.close()}
+});
+
+test('analysis omits historical timeouts and over-limit wins, and navigation follows the selected level',async()=>{
+ const {w,dom,g}=game();
+ try{
+  g.run([2000,5000,10000],10000);
+  const raw=g.history();
+  raw.push({level:1,ms:60000,won:false,at:Date.now()},{level:1,ms:70000,won:true,at:Date.now()});
+  w.localStorage.setItem('10shapes_attempt_history_v2',JSON.stringify(raw));
+  g.analysis();
+  assert.equal(w.document.querySelectorAll('#progressGraph circle').length,1);
+  assert.equal(w.document.querySelector('#progressStats').hidden,true);
+  assert.equal(w.document.querySelector('#myProgress h2').textContent,'Analisi delle performance');
+  assert.equal(w.document.querySelector('#statsPrev').disabled,true);
+  w.document.querySelector('#statsNext').click();
+  assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca di nuovo livello 2');
+  assert.equal(w.document.querySelectorAll('#myProgress [data-scope]').length,0);
+  assert.equal(g.accepts({won:true,level:1,ms:60000}),true);
+  assert.equal(g.accepts({won:true,level:1,ms:60001}),false);
+  assert.equal(g.accepts({won:false,level:1,ms:60000}),false);
  }finally{await new Promise(r=>setTimeout(r,30));dom.window.close()}
 });
