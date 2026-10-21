@@ -5,5 +5,5 @@ window.SILHOUETTE_SOCIAL_CONFIG = Object.freeze({
   publishableKey: 'sb_publishable_IYGuSSUStiK95becoD-OQQ_aj_2sGIN',
   publicUrl: 'https://ypsimon981.github.io/silhouette/',
   rulesVersion: 'shapes-0.21.27-social1',
-  brand: '10Shapes'
+  brand: '10 Potatoes'
 });
