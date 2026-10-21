@@ -11,7 +11,7 @@ before(async()=>{
  db=new PGlite();await db.exec(`create role anon;create role authenticated;create role service_role bypassrls;
  create schema auth;create table auth.users(id uuid primary key);
  create table public.ten_shapes_scores(id bigint generated always as identity primary key,player_id uuid not null,nickname text not null,country text not null,level smallint not null,time_ms integer not null,playing_hand text,updated_at timestamptz not null default now(),is_demo boolean not null default false,demo_friend boolean not null default false,unique(player_id,level));`);
- try{await db.exec(fs.readFileSync('backend/install-social.sql','utf8'));}catch(e){delete e.query;throw e;}
+ try{await db.exec(fs.readFileSync('backend/install-social.sql','utf8'));await db.exec(fs.readFileSync('backend/challenge-best.sql','utf8'));}catch(e){delete e.query;throw e;}
  for(const [id,nickname]of [[A,'Marco'],[B,'Giulia'],[C,'Luca']]){await db.query('insert into auth.users values($1)',[id]);await action(id,'profile',{nickname,country:'IT',timezone:'Europe/Rome',preferences:prefs});}
 });
 after(async()=>{await db?.close();});
@@ -81,4 +81,15 @@ test('ranking API matches history and atomic legacy scores cannot worsen a recor
  assert.equal(rank.my_rank,Number(history.rank_position));assert.equal(rank.total,3);
  await Promise.all([14000,19000,14500].map(ms=>db.query("select public.shapes_social_legacy_score($1,'Marco','IT',2,$2,'left')",[A,ms])));
  assert.equal((await db.query('select time_ms from public.ten_shapes_scores where player_id=$1 and level=2',[A])).rows[0].time_ms,14000);
+});
+test('leaderboard challenges use the owned best, support Overall stage records and renew expired links',async()=>{
+ const best=async(user,level)=>(await db.query('select public.shapes_social_best_challenge($1,$2) r',[user,level])).rows[0].r;
+ const first=await best(A,2);assert.equal(first.time_ms,14000);assert.equal(first.level,2);
+ assert.equal((await action(B,'challenge_get',{code:first.code})).time_ms,14000);
+ assert.equal((await best(A,2)).code,first.code);
+ await assert.rejects(best(B,2));await assert.rejects(best(A,14));
+ await db.query("select public.shapes_social_legacy_score($1,'Marco','IT',2,13000,'left')",[A]);
+ const improved=await best(A,2);assert.notEqual(improved.code,first.code);assert.equal(improved.time_ms,13000);
+ await db.query("update public.shapes_social_challenges set expires_at=now()-interval '1 second' where code=$1",[improved.code]);
+ const renewed=await best(A,2);assert.notEqual(renewed.code,improved.code);assert.equal(renewed.time_ms,13000);
 });

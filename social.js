@@ -10,7 +10,7 @@
   const label = mode => mode===14?'Overall':'Livello '+String(MODES.indexOf(mode)+1).padStart(2,'0');
   const defaults = {challenges:true,digest:true,digest_time:'19:00',show_name:true,analytics:false};
   let prefs={...defaults,...read('preferences',{})}, bridge, active=null, ticket=null, last=null, generation=0, authFlight=null, submitting=null;
-  let startPending=false, shareUrl=null, profileReady=false, pendingCode=null;
+  let startPending=false, shareUrl=null, profileReady=false, pendingCode=null, rankingTarget=null;
   const node = (tag,text,cls) => { const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e; };
   const button = (text,fn) => {const b=node('button',text);b.type='button';b.onclick=fn;return b;};
   const errorText = e => e?.message || 'Operazione non disponibile. Riprova con una connessione attiva.';
@@ -136,8 +136,27 @@
     // This second explicit tap preserves user activation after asynchronous server work.
     const d=dialog('Condividi la sfida');const content=text+'\n'+url;
     const area=node('textarea');area.readOnly=true;area.value=content;d.append(area);
-    d.append(button('Condividi',async()=>{try{if(navigator.share){await navigator.share({title:config.brand,text,url});event(eventName,{code});}else{await navigator.clipboard.writeText(content);toast('Testo copiato.');}}catch(e){if(e.name!=='AbortError')toast('Seleziona e copia il testo qui sopra.');}}));
-    d.append(button('Copia link',async()=>{try{await navigator.clipboard.writeText(url);toast('Link copiato.');}catch{area.select();}}));
+    const send=button('Condividi',async()=>{send.disabled=true;try{if(navigator.share){await navigator.share({title:config.brand,text,url});event(eventName,{code});d.close();toast('Condivisione completata.');}else{await navigator.clipboard.writeText(content);d.close();toast('Testo copiato.');}}catch(e){if(e.name!=='AbortError')toast('Seleziona e copia il testo qui sopra.');}finally{send.disabled=false;}});
+    d.append(send,button('Copia link',async()=>{try{await navigator.clipboard.writeText(url);d.close();toast('Link copiato.');}catch{area.select();}}));
+  }
+  function ranking(mode,score,state='ready'){
+    const area=document.getElementById('social-ranking-challenge'),note=document.getElementById('social-ranking-record'),send=document.getElementById('social-ranking-send');
+    rankingTarget=null;send.disabled=true;area.hidden=!MODES.includes(mode);
+    if(area.hidden)return;
+    if(state==='loading'){note.textContent='Caricamento del tuo record…';return;}
+    if(!score){note.textContent=state==='error'?'Record online temporaneamente non disponibile.':'Completa una partita online per sfidare un amico con il tuo record in questo livello.';return;}
+    rankingTarget={mode,time_ms:score.time_ms};
+    note.textContent='Il tuo record online · '+label(mode)+': '+seconds(score.time_ms);
+    send.textContent='Sfida un amico a battere il tuo record';send.disabled=!config.enabled;
+  }
+  async function challengeFromRanking(){
+    if(!rankingTarget)return;const target={...rankingTarget},send=document.getElementById('social-ranking-send');send.disabled=true;
+    try{
+      await ensureProfile();const c=await api('challenge_best',{level:target.mode});
+      event('share_clicked',{level:c.level,code:c.code});
+      await shareText('Il mio record · '+label(c.level)+': '+seconds(c.time_ms)+'. Riesci a battermi?',link(c.code),'share_handoff',c.code);
+    }catch(e){toast(errorText(e));}
+    finally{send.disabled=!rankingTarget||!config.enabled;}
   }
   async function card(result,shape,achievement){
     const c=document.createElement('canvas');c.width=1080;c.height=shape==='portrait'?1920:1080;const g=c.getContext('2d'),h=c.height;
@@ -166,15 +185,16 @@
     const note=node('p','Il link viene condiviso come testo separato: alcune app accettano solo l’immagine. Puoi copiarlo qui.','social-note');
     let file=null,version=0;const send=button('Condividi immagine',async()=>{
       if(!file)return;
+      send.disabled=true;
       try{
-        if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:config.brand,text:label(result.mode)+' · '+seconds(result.ms)+'\n'+config.publicUrl});event(achievement?'achievement_shared':'share_handoff',{level:result.mode});}
-        else {const a=node('a');a.href=shareUrl;a.download=file.name;a.click();toast('Immagine scaricata. Condividila dall’app che preferisci.');}
-      }catch(e){if(e.name!=='AbortError')toast('Condivisione non riuscita. Usa Scarica immagine.');}
+        if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:config.brand,text:label(result.mode)+' · '+seconds(result.ms)+'\n'+config.publicUrl});event(achievement?'achievement_shared':'share_handoff',{level:result.mode});d.close();toast('Condivisione completata.');}
+        else {const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata. Condividila dall’app che preferisci.');}
+      }catch(e){if(e.name!=='AbortError')toast('Condivisione non riuscita. Usa Scarica immagine.');}finally{send.disabled=false;}
     });
-    const download=button('Scarica immagine',()=>{if(file){const a=node('a');a.href=shareUrl;a.download=file.name;a.click();}});
+    const download=button('Scarica immagine',()=>{if(file){const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata.');}});
     const build=async()=>{const id=++version;send.disabled=true;download.disabled=true;try{const blob=await card(result,select.value,achievement);if(id!==version||!d.isConnected)return;if(!blob)throw Error('Impossibile generare l’immagine.');if(shareUrl)URL.revokeObjectURL(shareUrl);shareUrl=URL.createObjectURL(blob);file=new File([blob],'10Shapes-'+select.value+'.png',{type:'image/png'});preview.src=shareUrl;send.disabled=false;download.disabled=false;}catch(e){note.textContent=errorText(e);}};
     select.onchange=build;d.append(select,preview,send,download,note,button('Copia link del gioco',async()=>{try{await navigator.clipboard.writeText(config.publicUrl);toast('Link copiato.');}catch{const a=node('textarea');a.value=config.publicUrl;d.append(a);a.select();}}));
-    d.addEventListener('close',()=>{version++;if(shareUrl){URL.revokeObjectURL(shareUrl);shareUrl=null;}});build();
+    d.addEventListener('close',()=>{version++;if(shareUrl){const finishedUrl=shareUrl;shareUrl=null;setTimeout(()=>URL.revokeObjectURL(finishedUrl),1000);}});build();
   }
   function renderRematch(){const b=document.getElementById('social-rematch');b.hidden=!last?.challenge;}
   async function inbox(){
@@ -210,9 +230,12 @@
     if(!config.enabled)field.append(node('small','Le sfide online non sono ancora attive. Puoi già condividere le immagini dei risultati.'));
     field.append(button('Sfide e traguardi',inbox));document.getElementById('sendScore').before(field);
     const area=node('section');area.id='social-history';area.textContent='Confronto delle classifiche nelle ultime 24 ore.';document.getElementById('progressStats').before(area,button('Aggiorna confronto',history));
+    const rankArea=node('section');rankArea.id='social-ranking-challenge';rankArea.hidden=true;
+    const recordNote=node('p');recordNote.id='social-ranking-record';const rankSend=button('Sfida un amico a battere il tuo record',challengeFromRanking);rankSend.id='social-ranking-send';rankSend.disabled=true;
+    rankArea.append(recordNote,rankSend);document.getElementById('rankSpotlight').after(rankArea);
     window.addEventListener('hashchange',()=>{const c=getCode();if(bridge.playing()){pendingCode=c;toast(c?'Il link verrà aperto dopo la partita.':'Link della sfida non valido.');return;}if(c)openChallenge(c);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');});
     const c=getCode();if(c)setTimeout(()=>openChallenge(c),0);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');
-    return {begin,finish,leave,resetAttempt,score,profile,history,openPending:()=>{const c=getCode();if(c)openChallenge(c);}};
+    return {begin,finish,leave,resetAttempt,score,profile,history,ranking,openPending:()=>{const c=getCode();if(c)openChallenge(c);}};
   }
   window.SilhouetteSocial={init};
 })();

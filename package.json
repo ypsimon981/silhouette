@@ -2,7 +2,7 @@
   "name": "silhouette-social-web",
   "private": true,
   "scripts": {
-    "test": "node --test tests/backend.test.cjs tests/dom.test.cjs",
+    "test": "node --test tests/backend.test.cjs tests/dom.test.cjs tests/sharing.test.cjs",
     "test:ui": "node --test tests/ui.test.cjs"
   },
   "devDependencies": {

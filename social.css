@@ -17,4 +17,7 @@
 #social-preferences small{display:block;color:#adc4d6;line-height:1.4}
 .social-item{border-bottom:1px solid #385568;padding:12px 0;font-size:14px;line-height:1.5}.social-item button{width:100%}
 #social-history{border:1px solid #426279;border-radius:12px;padding:12px;white-space:pre-line;font-size:13px;line-height:1.6}
+#social-ranking-challenge{padding:12px;border:1px solid #578e9b;border-radius:12px;background:linear-gradient(140deg,#173c48,#292344)}
+#social-ranking-challenge[hidden]{display:none}#social-ranking-record{margin:0 0 10px;font-size:14px;line-height:1.5;color:#caf5ee}
+#social-ranking-send{width:100%;min-height:44px;white-space:normal}#social-ranking-send:disabled{opacity:.5}
 #social-toast{position:fixed;z-index:200;bottom:calc(20px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#10263c;border:1px solid #72b8bc;padding:12px 18px;border-radius:12px;width:max-content;max-width:90vw;color:white;font-size:13px;pointer-events:none}

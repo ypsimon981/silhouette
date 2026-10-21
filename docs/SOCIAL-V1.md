@@ -6,6 +6,14 @@ abilitati nel dashboard e cron `shapes-social-digest` attivo.
 Il client pubblicato ha `enabled: true`: condivisioni, sfide, rivincite,
 traguardi e avvisi interni sono attivi. Le push native restano rinviate all'app.
 
+Versione 0.21.30: il pannello di condivisione si chiude dopo l'esito positivo
+del sistema, sia per link sia per immagini; annullamento ed errori mantengono
+il pannello disponibile. Nella classifica di ciascun livello singolo compaiono
+il record personale online e il pulsante per sfidare un amico a batterlo.
+Il server seleziona il record dell'utente autenticato: il client non invia tempi
+arbitrari. Se serve, viene conservata una copia del record con provenienza
+`leaderboard_snapshot`, distinguibile da un tentativo effettivamente giocato.
+
 L'attivazione Auth è stata completata nel dashboard del progetto CoDriver dopo
 l'accesso sicuro dell'utente; nessuna impostazione di Fi-card è stata modificata.
 
@@ -61,6 +69,8 @@ nel Profilo. Non abilitare un'unione automatica basata sul vecchio UUID.
    È uno script
    transazionale di installazione, non una migrazione CLI già applicata.
    Non rieseguirlo sullo stesso schema: crea tabelle e funzioni nuove.
+   Applicare successivamente `backend/challenge-best.sql`, che aggiunge la
+   creazione delle sfide dal record della classifica.
 4. Abilitare Anonymous Sign-ins in Supabase Auth. Controllare limiti e protezioni
    antiabuso prima di aprire la registrazione al pubblico. Il client non aggira
    CAPTCHA o le restrizioni configurate; un CAPTCHA obbligatorio richiede
@@ -116,7 +126,7 @@ di sfida. Questi limiti vanno considerati prima di classifiche pubbliche premiat
 
 ## Verifica eseguita e da completare
 
-Eseguiti: 9 test sullo SQL reale in PostgreSQL WASM/PGlite, comprendenti
+Eseguiti: 13 test totali, di cui 10 sullo SQL reale in PostgreSQL WASM/PGlite, comprendenti
 risultati validi/non validi, proprietà, replay, parità, vittoria/sconfitta,
 rivincita, avvisi non duplicati, privacy, preferenze, RLS e grant,
 storico di 24 ore, variazioni positive/negative, fusi estate/inverno,
@@ -125,6 +135,8 @@ Controllo sintattico del JavaScript e caricamento delle due funzioni TypeScript.
 Un test funzionale DOM esegue il client reale e verifica inizializzazione,
 conclusione della partita, comparsa delle azioni social, retry casuale e timeout.
 Quest'ultimo non verifica la grafica o i gesti di trascinamento.
+Due test aggiuntivi verificano chiusura dopo condivisione di link e immagini,
+annullamento, errore, record inviato dal server e cambi del livello selezionato.
 
 Attivazione verificata anche sulle API reali con due account ospite di prova:
 creazione e apertura sfida, risultato vincente, differenza al centesimo,
