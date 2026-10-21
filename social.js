@@ -99,6 +99,7 @@
     if(!run)return;
     submitting=api('run_finish',{id:run.id,time_ms:Math.round(result.ms),hand:bridge.profile().hand}).then(data=>{
       current.verified=true;current.server=data;
+      if(result.sectorAttempt?.sectors)api('performance_sectors',{id:run.id,sectors:result.sectorAttempt.sectors}).then(receipt=>bridge.sectorsVerified?.(result.sectorAttempt,receipt)).catch(()=>{});
       if(last!==current)return data;
       const lines=[];
       if(challenge){lines.push(data.outcome==='won'?'HAI VINTO!':data.outcome==='tie'?'PARITÀ':'SFIDA NON SUPERATA');lines.push('Differenza: '+seconds(Math.abs(data.difference_ms)));}

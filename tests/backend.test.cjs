@@ -13,6 +13,7 @@ before(async()=>{
  create table public.ten_shapes_scores(id bigint generated always as identity primary key,player_id uuid not null,nickname text not null,country text not null,level smallint not null,time_ms integer not null,playing_hand text,updated_at timestamptz not null default now(),is_demo boolean not null default false,demo_friend boolean not null default false,unique(player_id,level));`);
  try{await db.exec(fs.readFileSync('backend/install-social.sql','utf8'));await db.exec(fs.readFileSync('backend/challenge-best.sql','utf8'));}catch(e){delete e.query;throw e;}
  await db.exec(fs.readFileSync('backend/unique-nicknames.sql','utf8'));
+ await db.exec(fs.readFileSync('backend/performance-sectors.sql','utf8'));
  for(const [id,nickname]of [[A,'Marco'],[B,'Giulia'],[C,'Luca']]){await db.query('insert into auth.users values($1)',[id]);await action(id,'profile',{nickname,country:'IT',timezone:'Europe/Rome',preferences:prefs});}
 });
 after(async()=>{await db?.close();});
@@ -103,4 +104,14 @@ test('leaderboard challenges use the owned best, support Overall stage records a
  const improved=await best(A,2);assert.notEqual(improved.code,first.code);assert.equal(improved.time_ms,13000);
  await db.query("update public.shapes_social_challenges set expires_at=now()-interval '1 second' where code=$1",[improved.code]);
  const renewed=await best(A,2);assert.notEqual(renewed.code,improved.code);assert.equal(renewed.time_ms,13000);
+});
+
+test('verified sector receipts: ownership, sum, global records, ties and idempotency',async()=>{
+ const submit=async(who,r,parts)=>(await db.query('select public.shapes_performance_submit($1,$2,$3) result',[who,r,parts])).rows[0].result;
+ const a=await run(A,18000,null,2);assert.deepEqual((await submit(A,a.id,[3000,5000,10000])).world,[true,true,true]);
+ assert.deepEqual((await submit(A,a.id,[3000,5000,10000])).world,[true,true,true]);
+ await assert.rejects(submit(B,a.id,[3000,5000,10000]));await assert.rejects(submit(A,a.id,[3000,4000,11000]));
+ const b=await run(B,18000,null,2);await assert.rejects(submit(B,b.id,[3000,5000,9999]));
+ assert.deepEqual((await submit(B,b.id,[3000,4900,10100])).world,[false,true,false]);
+ await db.exec('set role authenticated');try{await assert.rejects(submit(B,b.id,[3000,4900,10100]));await assert.rejects(db.query('select * from public.shapes_performance_sectors'));}finally{await db.exec('reset role')}
 });
