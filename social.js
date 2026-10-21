@@ -168,20 +168,24 @@
   }
   async function card(result,shape,achievement){
     const c=document.createElement('canvas');c.width=1080;c.height=shape==='portrait'?1920:1080;const g=c.getContext('2d'),h=c.height;
-    const bg=g.createLinearGradient(0,0,1080,h);bg.addColorStop(0,'#42563a');bg.addColorStop(.55,'#273c2f');bg.addColorStop(1,'#4b3038');g.fillStyle=bg;g.fillRect(0,0,1080,h);
-    g.lineWidth=5;g.strokeStyle='#dbc287';g.globalAlpha=.25;
-    for(let i=0;i<9;i++){g.save();g.translate(70+(i*173)%960,80+(i*241)%(h-160));g.rotate(i*.4);g.strokeRect(-40,-40,80,80);g.restore();}g.globalAlpha=1;
-    g.textAlign='center';g.fillStyle='#ffe0a0';g.font='bold 62px system-ui';g.fillText(config.brand.toUpperCase(),540,h*.18,920);
-    // Potato brand mark from the existing favicon, if available locally.
-    try{const logo=new Image();logo.src='./favicon.svg?v=0.22.0';await logo.decode();g.drawImage(logo,470,h*.03,140,140);}catch{}
+    g.fillStyle='#351b12';g.fillRect(0,0,1080,h);
+    // Fine matte skin grain; deterministic and independent of gameplay RNG.
+    g.fillStyle='#d3a15a';g.globalAlpha=.13;
+    for(let i=0;i<650;i++){g.beginPath();g.ellipse((i*173)%1080,(i*241)%h,i%7===0?2:1,i%7===0?1.2:.7,0,0,Math.PI*2);g.fill();}g.globalAlpha=1;
+    g.textAlign='center';
+    // Reuse the supplied brand board, cropping only the logo's source rectangle.
+    // The same-origin JPEG keeps exported share cards origin-clean.
+    try{const logo=new Image();logo.src='./assets/brand/10potatoes-board.jpeg?v=0.22.5';await logo.decode();g.drawImage(logo,0,0,1536,375,60,h*.035,960,960*375/1536);}catch{
+      g.fillStyle='#fff0d0';g.font='bold 62px system-ui';g.fillText(config.brand.toUpperCase(),540,h*.18,920);
+    }
     g.fillStyle='#e5d7b6';g.font='36px system-ui';g.fillText(label(result.mode).toUpperCase(),540,h*.34,920);
-    g.fillStyle='#ffffff';g.font='bold 128px system-ui';g.fillText(seconds(result.ms),540,h*.49,950);
+    g.fillStyle='#fff0d0';g.font='bold 128px system-ui';g.fillText(seconds(result.ms),540,h*.49,950);
     g.font='32px system-ui';if(prefs.show_name)g.fillText(bridge.profile().nickname,540,h*.58,900);
-    if(achievement){g.fillStyle='#83eddb';g.fillText(achievement,540,h*.66,920);}
-    else if(result.server?.rank){g.fillStyle='#83eddb';g.fillText('N° '+result.server.rank+' / '+result.server.total+' · mondiale',540,h*.66,920);}
+    if(achievement){g.fillStyle='#efc47a';g.fillText(achievement,540,h*.66,920);}
+    else if(result.server?.rank){g.fillStyle='#efc47a';g.fillText('N° '+result.server.rank+' / '+result.server.total+' · mondiale',540,h*.66,920);}
     if(!achievement&&(!result.previous||result.ms<result.previous)){g.fillStyle='#ffcf79';g.font='bold 28px system-ui';g.fillText('NUOVO RECORD PERSONALE',540,h*.72,920);}
-    g.fillStyle='#ffffff';g.font='bold 46px system-ui';g.fillText('10 patate. Riesci a battermi?',540,h*.79,940);
-    g.fillStyle='#cbd0ac';g.font='26px system-ui';const publicLink=new URL(config.publicUrl);g.fillText(publicLink.host+publicLink.pathname,540,h*.91,920);
+    g.fillStyle='#fff0d0';g.font='bold 46px system-ui';g.fillText('10 patate. Riesci a battermi?',540,h*.79,940);
+    g.fillStyle='#d9b98e';g.font='26px system-ui';const publicLink=new URL(config.publicUrl);g.fillText(publicLink.host+publicLink.pathname,540,h*.91,920);
     return new Promise(resolve=>c.toBlob(resolve,'image/png'));
   }
   async function shareResult(achievement,provided){

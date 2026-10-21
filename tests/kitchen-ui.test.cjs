@@ -7,11 +7,11 @@ async function fixture(){
  const page=await browser.newPage();
  await page.route('https://potato.test/**',r=>{
   const name=new URL(r.request().url()).pathname.slice(1)||'index.html';
-  if(!['index.html','social-config.js','social.js','social.css','favicon.svg'].includes(name))return r.abort();
-  let body=fs.readFileSync(name,'utf8');
+  if(!['index.html','social-config.js','social.js','social.css','potato-theme.css','favicon.svg','assets/brand/10potatoes-board.jpeg'].includes(name))return r.abort();
+  let body=fs.readFileSync(name,name.endsWith('.jpeg')?undefined:'utf8');
   if(name==='index.html')body=body.replace(/\}\)\(\);\s*<\/script><\/body>/,debug+'</script></body>');
   if(name==='social-config.js')body=body.replace('enabled: true','enabled: false');
-  return r.fulfill({body,contentType:name.endsWith('.js')?'application/javascript':name.endsWith('.css')?'text/css':name.endsWith('.svg')?'image/svg+xml':'text/html'});
+  return r.fulfill({body,contentType:name.endsWith('.js')?'application/javascript':name.endsWith('.css')?'text/css':name.endsWith('.svg')?'image/svg+xml':name.endsWith('.jpeg')?'image/jpeg':'text/html'});
  });
  await page.route('https://bboijzuzhgvfxqrsfatw.supabase.co/**',r=>r.fulfill({json:{scores:[],total:0}}));
  await page.addInitScript(()=>{localStorage.setItem('10shapes_profile_setup','yes');localStorage.setItem('10shapes_music','off');});
@@ -70,5 +70,38 @@ test('central results never overlap potatoes; expressions stay animated on win, 
  await page.setViewportSize({width:768,height:1024});await page.waitForTimeout(100);
  assert.ok(await page.evaluate(()=>{const c=document.querySelector('#finish').getBoundingClientRect(),b=document.querySelector('#board').getBoundingClientRect();return c.left>b.left&&c.right<b.right&&c.top>b.top&&c.bottom<b.bottom}));
  assert.deepEqual(errors,[]);
+ }finally{await browser.close()}
+});
+
+test('supplied artwork and matte brown/cream theme cover home, profile, rankings and exported result cards',async()=>{
+ const {browser,page}=await fixture();try{
+  await page.setViewportSize({width:390,height:844});
+  const asset=await page.evaluate(async()=>{const i=new Image();i.src='./assets/brand/10potatoes-board.jpeg?v=0.22.5';await i.decode();return {width:i.naturalWidth,height:i.naturalHeight}});
+  assert.deepEqual(asset,{width:1536,height:768});
+  assert.equal(await page.locator('#homePage .brandArt image').count(),1);
+  assert.ok(await page.locator('#homePage .brandArt').isVisible());
+  assert.ok(await page.locator('#homeButton .toolbarPotato').isVisible());
+  const paint=await page.evaluate(()=>{const b=getComputedStyle(document.querySelector('#rankingButton'));return {button:b.backgroundImage,home:getComputedStyle(document.querySelector('#homePage')).backgroundColor}});
+  assert.ok(paint.button.includes('data:image/svg+xml'));assert.ok(!paint.button.includes('gradient'));assert.equal(paint.home,'rgb(255, 240, 208)');
+  await page.screenshot({path:'/tmp/potato-brand-home-390.png'});
+  await page.locator('#profileButton').click();await page.screenshot({path:'/tmp/potato-brand-profile-390.png'});
+  assert.equal(await page.locator('.profilePanel').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(255, 240, 208)');
+  await page.locator('#closeProfile').click();await page.locator('#homeRanking').click();
+  assert.ok(await page.locator('#ranking .selected').evaluateAll(es=>es.every(e=>!getComputedStyle(e).backgroundImage.includes('gradient'))));
+  await page.screenshot({path:'/tmp/potato-brand-ranking-390.png'});
+  await page.locator('#closeRanking').click();
+  await page.evaluate(()=>{potatoUI.setLevel(1);potatoUI.play();potatoUI.win()});
+  await page.screenshot({path:'/tmp/potato-brand-finish-390.png'});
+  await page.getByRole('button',{name:'Condividi risultato',exact:true}).scrollIntoViewIfNeeded();
+  await page.getByRole('button',{name:'Condividi risultato',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('.social-dialog img')?.naturalWidth===1080);
+  assert.equal(await page.locator('.social-dialog img').evaluate(e=>e.naturalHeight),1920);
+  await page.screenshot({path:'/tmp/potato-brand-share-390.png'});
+  await page.locator('.social-dialog select').selectOption('square');
+  await page.waitForFunction(()=>document.querySelector('.social-dialog img')?.naturalHeight===1080);
+  await page.getByRole('button',{name:'Chiudi',exact:true}).click();
+  await page.evaluate(()=>potatoUI.goHome());await page.setViewportSize({width:320,height:568});
+  await page.screenshot({path:'/tmp/potato-brand-home-320.png'});
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  }finally{await browser.close()}
 });
