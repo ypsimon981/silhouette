@@ -18,6 +18,10 @@ test('real client initializes, preserves random retries and exposes sharing only
   assert.ok(w.document.querySelector('#finishTimeValue').textContent);
   w.__game.setup();const retry=[...w.document.querySelectorAll('.slot')].map(e=>e.outerHTML).join('');assert.notEqual(original,retry);
   w.__game.fail();assert.equal(w.document.querySelector('#social-actions').hidden,true);
+  w.document.querySelector('[data-stat="9"]').click();assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca livello 6');
+  w.document.querySelector('#playAnalyzedLevel').click();assert.match(w.document.querySelector('#levelTitle').textContent,/LIVELLO 6/);assert.equal(w.document.querySelector('#myProgress').style.display,'none');
+  w.document.querySelector('[data-stat="14"]').click();assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca Overall');
+  w.document.querySelector('#playAnalyzedLevel').click();assert.match(w.document.querySelector('#levelTitle').textContent,/OVERALL/);
  }finally{await new Promise(r=>setTimeout(r,25));w.close();}
 });
 
