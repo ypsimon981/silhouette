@@ -157,6 +157,23 @@ il job, l'esecuzione del digest senza profili e gli advisor. Gli avvisi informat
 RLS senza policy sulle tabelle social sono coerenti con l'accesso solo server:
 anon e authenticated non hanno grant e il servizio accede tramite Edge Function.
 
+## Recupero identità e nickname — v0.21.31
+
+Applicare `backend/identity-recovery-audit.sql` e `backend/unique-nicknames.sql`
+dopo aver risolto eventuali identità duplicate. Il registro privato riserva i
+nickname anche ai giocatori legacy; maiuscole/minuscole e spazi esterni non
+permettono di aggirare il vincolo. I vecchi alias rimangono riservati al titolare.
+I trigger proteggono sia i profili sia le scritture dei risultati: un endpoint
+alternativo non può assegnare ai punteggi il nome di un altro giocatore.
+
+Il recupero amministrativo conserva un backup privato, riunisce i record con il
+minimo per livello e rimuove la sola identità duplicata dalla classifica. Non è
+esposto alcun recupero automatico basato su nome o UUID pubblici. Lo storico
+originale rimane conservato; la continuità delle analisi delle 24 ore durante
+un recupero non è garantita. La registrazione facoltativa e il recupero autonomo
+su altri dispositivi restano da implementare: la sessione anonima non è un backup
+permanente e non va cancellata dal browser.
+
 ## Funzioni rinviate alla versione mobile
 
 Push APNs/FCM, token dispositivi, consenso OS, invio con app chiusa, tracking push,

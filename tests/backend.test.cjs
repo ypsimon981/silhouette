@@ -12,9 +12,20 @@ before(async()=>{
  create schema auth;create table auth.users(id uuid primary key);
  create table public.ten_shapes_scores(id bigint generated always as identity primary key,player_id uuid not null,nickname text not null,country text not null,level smallint not null,time_ms integer not null,playing_hand text,updated_at timestamptz not null default now(),is_demo boolean not null default false,demo_friend boolean not null default false,unique(player_id,level));`);
  try{await db.exec(fs.readFileSync('backend/install-social.sql','utf8'));await db.exec(fs.readFileSync('backend/challenge-best.sql','utf8'));}catch(e){delete e.query;throw e;}
+ await db.exec(fs.readFileSync('backend/unique-nicknames.sql','utf8'));
  for(const [id,nickname]of [[A,'Marco'],[B,'Giulia'],[C,'Luca']]){await db.query('insert into auth.users values($1)',[id]);await action(id,'profile',{nickname,country:'IT',timezone:'Europe/Rome',preferences:prefs});}
 });
 after(async()=>{await db?.close();});
+test('nickname ownership covers case, whitespace, legacy players and alternate score writes',async()=>{
+ await assert.rejects(action(B,'profile',{nickname:' mArCo ',country:'IT',timezone:'Europe/Rome',preferences:prefs}),/Nickname già utilizzato/);
+ assert.equal((await db.query('select nickname from public.shapes_social_profiles where user_id=$1',[B])).rows[0].nickname,'Giulia');
+ const old='00000000-0000-4000-8000-000000000099';
+ await db.query("insert into public.ten_shapes_scores(player_id,nickname,country,level,time_ms) values($1,'Legacy','IT',1,20000)",[old]);
+ await assert.rejects(action(C,'profile',{nickname:'LEGACY',country:'IT',timezone:'Europe/Rome',preferences:prefs}),/Nickname già utilizzato/);
+ await db.query("insert into public.ten_shapes_scores(player_id,nickname,country,level,time_ms) values($1,'Marco','IT',13,20000)",[B]);
+ assert.equal((await db.query('select nickname from public.ten_shapes_scores where player_id=$1 and level=13',[B])).rows[0].nickname,'Giulia');
+ await db.query('delete from public.ten_shapes_scores where player_id=$1 or (player_id=$2 and level=13)',[old,B]);
+});
 let challenge, firstRun;
 test('a verified result creates an idempotent challenge',async()=>{
  firstRun=await run(A,18420);assert.equal(firstRun.result.saved,true);
