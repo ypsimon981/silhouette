@@ -1,0 +1,11 @@
+# Completion and interruption analysis — v0.21.52
+
+The performance page includes a separate section for the selected level's completion rate, restart rate, and distribution of interruptions across S1–S3. The red stacked bar represents 100% of recorded interruptions, not 100% of all games. Labels include counts and integer percentages; largest-remainder rounding keeps the displayed shares at exactly 100%.
+
+Capture begins when the first shape and timer start after countdown. An explicit restart or in-game exit closes that attempt once. Sector assignment uses the next shape to place: 0–1 placed -> S1, 2–4 -> S2, 5–9 -> S3. Successful completion is a separate outcome. Countdown cancellation, ready-screen restart, timeouts and durations over 60 seconds are excluded. App backgrounding, calls, crashes and browser termination are not inferred as intentional exits.
+
+New data is stored locally under `10shapes_behavior_v1`, partitioned by player ID and level, with the latest 100 eligible finalized attempts per partition. Entries contain UUID, player, level, mode, start/end timestamps, elapsed milliseconds, placed count, outcome, reason and interruption sector. Overall records these events for the actual individual stages; its analysis points to the individual levels. Storage failures cannot block restart or gameplay. The historical total-time graph and sector records are independent and unchanged. No legacy interruption rates are invented, and no account synchronization is introduced.
+
+The deterministic coach describes observed interruptions and restart streaks. Fewer than five observations produce a small-sample message. A majority in S1 suggests practicing later sectors by completing some uncertain runs. It does not infer distraction or mistakes from an interruption. No interstitial is activated by this change.
+
+Validation: `npm test` includes three behavioral client tests covering countdown exclusion, boundary sectors, restart/exit lifecycle, duplicate prevention, completion, time-limit exclusion, exact percentage sums, UI/coach output, player/level isolation, per-level retention and storage failure. Existing timing/sector/history/sharing/backend tests remain included. Physical Android/iOS layout and frame-rate checks remain unavailable.
