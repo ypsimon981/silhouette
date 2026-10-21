@@ -14,11 +14,13 @@ test('real client initializes, preserves random retries and exposes sharing only
   w.eval(script);assert.ok(w.document.querySelector('#social-preferences'));
   assert.equal(w.document.querySelector('#social-actions').hidden,true);
   w.__game.setLevel(1);const original=[...w.document.querySelectorAll('.slot')].map(e=>e.outerHTML).join('');
+  const arenaArt=w.document.querySelector('#board').style.getPropertyValue('--arena-art');assert.ok(arenaArt.includes('data:image/svg+xml'));
   const recessIds=new Set();
   for(const slot of w.document.querySelectorAll('.slot')){
    const rim=slot.querySelector('.recess-rim'),floor=slot.querySelector('.recess-floor');
    assert.equal(rim.getAttribute('d'),floor.getAttribute('d'));
    assert.equal(floor.getAttribute('fill-rule'),'evenodd');
+   assert.equal(slot.querySelector('linearGradient stop').getAttribute('stop-color'),'#040d15');
    assert.ok(floor.parentElement.getAttribute('transform').startsWith('rotate('));
    const filter=slot.querySelector('filter');assert.ok(filter.querySelector('feComposite[in2="SourceGraphic"]'));
    assert.equal(recessIds.has(filter.id),false);recessIds.add(filter.id);
@@ -26,6 +28,7 @@ test('real client initializes, preserves random retries and exposes sharing only
   w.__game.win();assert.equal(w.document.querySelector('#social-actions').hidden,false);
   assert.ok(w.document.querySelector('#finishTimeValue').textContent);
   w.__game.setup();const retry=[...w.document.querySelectorAll('.slot')].map(e=>e.outerHTML).join('');assert.notEqual(original,retry);
+  assert.notEqual(w.document.querySelector('#board').style.getPropertyValue('--arena-art'),arenaArt);
   w.__game.fail();assert.equal(w.document.querySelector('#social-actions').hidden,true);
   w.document.querySelector('[data-stat="9"]').click();assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca di nuovo livello 6');
   w.document.querySelector('#playAnalyzedLevel').click();assert.match(w.document.querySelector('#levelTitle').textContent,/LIVELLO 6/);assert.equal(w.document.querySelector('#myProgress').style.display,'none');
@@ -74,16 +77,19 @@ test('glass decks descend 3-2-1 before the timer and first shape start; exit can
   w.clearTimeout=id=>cancelled.push(id);
   const board=w.document.querySelector('#board'),opacity=selector=>w.getComputedStyle(board.querySelector(selector)).opacity;
   assert.equal(board.querySelectorAll('.glassLayer').length,4);
+  const arenaArt=board.style.getPropertyValue('--arena-art');
   w.document.querySelector('#startButton').click();
   for(const [digit,hiddenDecks] of [[3,[]],[2,[3]],[1,[3,2]]]){
    if(digit<3)callbacks.get((3-digit)*1000).fn();
    assert.equal(w.__countdown.state().phase,'countdown');assert.equal(w.__countdown.state().start,null);
    assert.equal(board.querySelector('.piece'),null);assert.equal(w.document.querySelector('#countNumber').textContent,String(digit));
    assert.equal(opacity('.deck'+digit+' .glassDigit'),'1');
+   assert.equal(board.style.getPropertyValue('--arena-art'),arenaArt);
    for(const deck of hiddenDecks)assert.equal(opacity('.deck'+deck),'0');
   }
   callbacks.get(3000).fn();assert.equal(w.__countdown.state().phase,'playing');assert.equal(typeof w.__countdown.state().start,'number');
   assert.ok(board.querySelector('.piece'));assert.equal(opacity('.deck0'),'1');
+  assert.equal(board.style.getPropertyValue('--arena-art'),arenaArt);
   for(const deck of [1,2,3])assert.equal(opacity('.deck'+deck),'0');
   w.document.querySelector('[data-mode="1"]').click();w.document.querySelector('#startButton').click();
   const pending=[...callbacks.values()];w.__countdown.goHome();
