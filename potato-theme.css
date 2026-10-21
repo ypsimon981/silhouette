@@ -128,3 +128,23 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
  #app #finishSectors{margin:2px 0}
  #app #finishSectors .sector{padding:4px 2px}
 }
+/* v0.22.7 — four compact action rows, in the order requested. */
+#app #board.complete #finish .finishActions{display:flex;flex-direction:column;gap:6px}
+#app #board.complete #finish .finishPrimary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+#app #board.complete #finish .finishPrimary #again{grid-column:1;grid-row:1}
+#app #board.complete #finish .finishPrimary #finishHome{grid-column:2;grid-row:1;margin:0}
+#app #board.complete #finish .finishNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+#app #board.complete #finish .finishNav #previousLevel{grid-column:1;grid-row:1}
+#app #board.complete #finish .finishNav #nextLevel{grid-column:2;grid-row:1}
+#app #board.complete #finish .finishPrimary button{padding:6px 3px;font-size:10px;min-height:44px;line-height:1.15}
+#app #board.complete #finish .finishOverview{
+ width:100%;height:auto;min-height:44px;padding:6px 4px;margin:0;
+ background-image:var(--potato-grain)!important;background-color:#dcb06b!important;
+ border:1px solid #b98340!important;border-radius:10px;color:var(--potato-ink)!important;
+ font-size:11px;line-height:1.2;font-weight:800;box-shadow:none!important;text-shadow:none!important;white-space:normal;
+}
+#app #board.complete #finish .social-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));order:0;margin:0;gap:5px}
+#app #board.complete #finish .social-actions[hidden]{display:none}
+#app #board.complete #finish .social-actions button{padding:6px 2px;font-size:10px;min-height:44px;line-height:1.15}
+#app #board.complete #finish #social-rematch{grid-column:1 / -1}
+#app #board.complete #finish #social-result{order:0}

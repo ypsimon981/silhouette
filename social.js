@@ -229,10 +229,12 @@
     bridge=game;
     const restored=read('session',null);if(config.enabled&&restored?.user?.id)bridge.identity(restored.user.id);
     const actions=node('div',undefined,'social-actions');actions.id='social-actions';actions.hidden=true;
-    actions.append(button('Condividi risultato',()=>shareResult()),button('Sfida un amico',createChallenge));
+    const share=button('Condividi',()=>shareResult());share.setAttribute('aria-label','Condividi risultato');
+    const challenge=button('Sfida',createChallenge);challenge.setAttribute('aria-label','Sfida un amico');
+    actions.append(share,challenge);
     const rematch=button('Invia rivincita',createChallenge);rematch.id='social-rematch';rematch.hidden=true;actions.append(rematch);
     const status=node('p',undefined);status.id='social-result';status.setAttribute('role','status');
-    const finishActions=document.querySelector('#finish .finishActions');finishActions.before(status,actions);
+    const finishActions=document.querySelector('#finish .finishActions');finishActions.append(actions,status);
     const field=node('fieldset');field.id='social-preferences';field.append(node('legend','Social e notifiche'));
     for(const [key,title] of [['challenges','Sfide e rivincite'],['digest','Riepilogo classifiche'],['show_name','Mostra il nome nelle condivisioni'],['analytics','Statistiche social facoltative']]){
       const line=node('label'),input=node('input');input.type='checkbox';input.checked=prefs[key];input.onchange=()=>{prefs[key]=input.checked;write('preferences',prefs);};line.append(input,document.createTextNode(title));field.append(line);
