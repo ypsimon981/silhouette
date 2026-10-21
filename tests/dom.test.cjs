@@ -20,3 +20,16 @@ test('real client initializes, preserves random retries and exposes sharing only
   w.__game.fail();assert.equal(w.document.querySelector('#social-actions').hidden,true);
  }finally{await new Promise(r=>setTimeout(r,25));w.close();}
 });
+
+test('START launches countdown immediately while online requests remain pending',async()=>{
+ const html=fs.readFileSync('index.html','utf8'),dom=new JSDOM(html,{url:'https://ypsimon981.github.io/silhouette/',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window;
+ w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music','off');
+ w.fetch=()=>new Promise(()=>{});w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
+ w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));
+ const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1];
+ try{w.eval(script);w.document.querySelector('[data-mode="1"]').click();w.document.querySelector('#startButton').click();
+ assert.equal(w.document.querySelector('#startButton').style.display,'none');
+ assert.equal(w.document.querySelector('#countNumber').style.display,'block');
+ assert.equal(w.document.querySelector('#startButton').disabled,false);
+ }finally{w.close()}
+});
