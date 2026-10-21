@@ -40,3 +40,20 @@ test('image share closes on success, keeps preview on cancellation and releases 
   f.setOutcome('success');send.click();await flush();assert.equal(d.isConnected,false);assert.equal(f.payload().files.length,1);
  }finally{f.close();}
 });
+
+test('parallel startup waits only at results to satisfy server elapsed-time guard',async()=>{
+ const f=fixture(),{w,social}=f;let now=1000,scheduled;
+ Object.defineProperty(w.performance,'now',{value:()=>now});
+ const realTimeout=w.setTimeout.bind(w);
+ try{
+  assert.equal(await social.begin(1),true);
+  now=10000;
+  w.setTimeout=(fn,delay,...args)=>{if(delay>100){scheduled={fn,delay};return 12345}return realTimeout(fn,delay,...args)};
+  social.finish({won:true,mode:1,ms:8636,previous:6953});
+  assert.equal(scheduled.delay,2186);
+  assert.equal(f.requests.some(r=>r.action==='run_finish'),false);
+  assert.match(w.document.querySelector('#social-result').textContent,/Verifica/);
+  now+=scheduled.delay;scheduled.fn();await flush();await flush();
+  assert.ok(f.requests.some(r=>r.action==='run_finish'&&r.data.time_ms===8636));
+ }finally{f.close()}
+});

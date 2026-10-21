@@ -76,7 +76,7 @@
     startPending=true;const gen=generation;
     try{
       await ensureProfile();const t=await api('run_start',{level:mode,code:active?.code||null,rules:config.rulesVersion});
-      if(gen!==generation)return false;ticket=t;return true;
+      if(gen!==generation)return false;ticket={...t,receivedAt:performance.now()};return true;
     }catch(e){
       if(gen!==generation)return false;
       if(active){toast(errorText(e));return false;}
@@ -99,7 +99,12 @@
     if(!result.previous)status.textContent='Primo completamento!';else if(gain>0)status.textContent='Nuovo record personale · −'+seconds(gain);
     // Local cards are available offline, but challenge creation requires a verified run.
     if(!run)return;
-    submitting=api('run_finish',{id:run.id,time_ms:Math.round(result.ms),hand:bridge.profile().hand}).then(data=>{
+    status.textContent='Verifica risultato…';
+    // run_start now overlaps the countdown. Preserve the server's elapsed-time
+    // check by waiting only on the result screen, using ticket receipt as a
+    // conservative lower bound for the server run age.
+    const remaining=Math.max(0,Math.ceil(Math.round(result.ms)+2550-(performance.now()-run.receivedAt)));
+    submitting=new Promise(resolve=>setTimeout(resolve,remaining)).then(()=>api('run_finish',{id:run.id,time_ms:Math.round(result.ms),hand:bridge.profile().hand})).then(data=>{
       current.verified=true;current.server=data;
       if(result.sectorAttempt?.sectors)api('performance_sectors',{id:run.id,sectors:result.sectorAttempt.sectors}).then(receipt=>bridge.sectorsVerified?.(result.sectorAttempt,receipt)).catch(()=>{});
       if(last!==current)return data;
