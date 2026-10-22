@@ -46,36 +46,37 @@ test('catalog has ten languages, ten distinct recordings each, positive/error/ur
  for(const c of catalog){assert.ok(c.text.trim());assert.ok(fs.statSync(c.src).size>1000);}
 });
 
-test('audio button cycles four independent modes, restores each selection and migrates legacy mute',async()=>{
+test('separate music and voice toggles act independently, persist and migrate previous settings',async()=>{
  const html=fs.readFileSync('index.html','utf8');
- function fixture(saved,legacy='on'){
+ function fixture(saved,legacy='on',voicePreference=null){
   const dom=new JSDOM(html,{url:'https://game.test',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,state={};
   w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music',legacy);
   if(saved!==null)w.localStorage.setItem('10potatoes_audio_mode',saved);
+  if(voicePreference!==null)w.localStorage.setItem('10potatoes_voices',voicePreference);
   w.fetch=async()=>{throw Error('offline fixture');};w.HTMLElement.prototype.scrollIntoView=()=>{};
   w.PotatoVoices={prepare(){},stop(){},setEnabled:v=>state.voice=v};
   w.PotatoSoundtrack={setEnabled:v=>state.music=v,setMode(){},finish(){},startGame(){state.starts=(state.starts||0)+1;}};
   w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));
   const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1].replace('})();','window.audioTest={play:()=>{phase="playing";},setup,goHome};})();');
-  w.eval(script);return {w,state,button:w.document.getElementById('soundToggle')};
+  w.eval(script);return {w,state,music:w.document.getElementById('soundToggle'),voice:w.document.getElementById('voiceToggle')};
  }
- const expected={all:[true,true],off:[false,false],voice:[false,true],music:[true,false]};
  const fixtures=[];
  try{
   const f=fixture(null);fixtures.push(f);f.w.audioTest.play();
-  for(const mode of ['all','off','voice','music','all']){
-   assert.equal(f.button.dataset.audioMode,mode);
-   assert.deepEqual([f.state.music,f.state.voice],expected[mode]);
-   assert.ok(f.button.dataset.audioLabel);assert.match(f.button.getAttribute('aria-label'),/Tocca per/);
-   if(mode==='voice'||mode==='music'){
-    f.w.audioTest.setup();assert.deepEqual([f.state.music,f.state.voice],expected[mode]);
-    f.w.audioTest.goHome();assert.deepEqual([f.state.music,f.state.voice],expected[mode]);f.w.audioTest.play();
-   }
-   f.button.click();assert.equal(f.w.localStorage.getItem('10potatoes_audio_mode'),f.button.dataset.audioMode);
+  assert.deepEqual([f.state.music,f.state.voice],[true,true]);
+  assert.equal(f.w.document.querySelectorAll('#audioControls button').length,2);
+  for(const [button,music,voice] of [[f.music,false,true],[f.voice,false,false],[f.music,true,false],[f.voice,true,true]]){
+   const starts=f.state.starts||0;button.click();
+   assert.deepEqual([f.state.music,f.state.voice],[music,voice]);
+   if(button===f.voice)assert.equal(f.state.starts||0,starts,'voice toggle must not restart music');
+   assert.equal(f.music.getAttribute('aria-pressed'),String(music));assert.equal(f.voice.getAttribute('aria-pressed'),String(voice));
+   assert.equal(f.music.querySelector('.audioCaption').textContent,'MUSICA');assert.equal(f.voice.querySelector('.audioCaption').textContent,'VOCI');
+   assert.equal(f.music.querySelector('.audioState').textContent,music?'ON':'OFF');assert.equal(f.voice.querySelector('.audioState').textContent,voice?'ON':'OFF');
+   assert.equal(f.w.localStorage.getItem('10shapes_music'),music?'on':'off');assert.equal(f.w.localStorage.getItem('10potatoes_voices'),voice?'on':'off');
+   f.w.audioTest.setup();f.w.audioTest.goHome();assert.deepEqual([f.state.music,f.state.voice],[music,voice]);f.w.audioTest.play();
   }
-  assert.ok(f.state.starts>=2);
-  for(const [saved,legacy,mode] of [['all','off','all'],['off','on','off'],['voice','off','voice'],['music','off','music'],[null,'off','off'],['invalid','off','off']]){
-   const f=fixture(saved,legacy);fixtures.push(f);assert.equal(f.button.dataset.audioMode,mode);assert.deepEqual([f.state.music,f.state.voice],expected[mode]);
+  for(const [saved,legacy,pref,music,voice] of [['all','on',null,true,true],['off','off',null,false,false],['voice','off',null,false,true],['music','on',null,true,false],[null,'off',null,false,false],['invalid','off',null,false,false],['off','on','on',true,true],['all','off','on',false,true],['all','on','off',true,false],['all','off','off',false,false]]){
+   const f=fixture(saved,legacy,pref);fixtures.push(f);assert.deepEqual([f.state.music,f.state.voice],[music,voice]);
   }
  }finally{await new Promise(resolve=>setTimeout(resolve,30));fixtures.forEach(f=>f.w.close());}
 });

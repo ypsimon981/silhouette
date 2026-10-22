@@ -6,7 +6,8 @@
  const catalog=Array.isArray(window.PotatoVoiceCatalog)?window.PotatoVoiceCatalog:fallback;
  const buffers=new Map(),last={};
  const savedAudioMode=localStorage.getItem('10potatoes_audio_mode');
- let ctx=null,loading=null,current=null,enabled=['all','off','voice','music'].includes(savedAudioMode)?savedAudioMode==='all'||savedAudioMode==='voice':localStorage.getItem('10shapes_music')!=='off';
+ const savedVoicePreference=localStorage.getItem('10potatoes_voices');
+ let ctx=null,loading=null,current=null,enabled=savedVoicePreference!==null?savedVoicePreference!=='off':['all','off','voice','music'].includes(savedAudioMode)?savedAudioMode==='all'||savedAudioMode==='voice':localStorage.getItem('10shapes_music')!=='off';
  function stop(){if(current){const source=current;current=null;try{source.stop();}catch(_){}}}
  function prepare(){
   if(loading)return loading;
