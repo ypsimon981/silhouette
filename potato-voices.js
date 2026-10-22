@@ -25,6 +25,8 @@
  function setEnabled(value){enabled=!!value;if(!enabled)stop();else unlock();}
  function play(kind,remainingMs=60000){
   if(!enabled||document.hidden||!ctx||ctx.state!=='running')return false;
+  const probability=kind==='success'?1/3:kind==='error'?1/2:0;
+  if(Math.random()>=probability)return false;
   const candidates=(groups[kind]||[]).slice();
   if(kind==='error'&&remainingMs<=15000)candidates.push('hurry-up');
   const available=candidates.filter(id=>buffers.has(id)&&id!==last[kind]);
@@ -33,7 +35,7 @@
   // A new event replaces the old reaction; never queue voices behind gameplay.
   stop();
   const source=ctx.createBufferSource(),gain=ctx.createGain();
-  source.buffer=buffers.get(id);gain.gain.value=.8;
+  source.buffer=buffers.get(id);gain.gain.value=.2;
   source.connect(gain);gain.connect(ctx.destination);
   source.onended=()=>{source.disconnect();gain.disconnect();if(current===source)current=null;};
   current=source;last[kind]=id;

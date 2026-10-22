@@ -2,19 +2,29 @@ const {test}=require('node:test'),assert=require('node:assert/strict'),fs=requir
 const {JSDOM}=require('jsdom');
 
 test('recorded voice groups, no immediate repeats, no overlapping audio, mute and visibility',async()=>{
- const sources=[],listeners={},duck=[];
+ const sources=[],listeners={},duck=[],gains=[];
+ let roll=0;
  class Context{
   state='running';destination={};
   async decodeAudioData(){return {duration:1};}
-  createGain(){return {gain:{value:1},connect(){},disconnect(){}};}
+  createGain(){const g={gain:{value:1},connect(){},disconnect(){}};gains.push(g);return g;}
   createBufferSource(){const s={connect(){},disconnect(){},start(){s.started=true;},stop(){s.stopped=true;s.onended?.();}};sources.push(s);return s;}
  }
  const window={AudioContext:Context,PotatoSoundtrack:{duck:ms=>duck.push(ms)}};
  const document={hidden:false,addEventListener:(event,fn)=>listeners[event]=fn};
- vm.runInNewContext(fs.readFileSync('potato-voices.js','utf8'),{window,document,localStorage:{getItem:()=>null},fetch:async url=>{assert.ok(fs.existsSync(url.split('?')[0]));return {ok:true,arrayBuffer:async()=>new ArrayBuffer(1)};}});
+ vm.runInNewContext(fs.readFileSync('potato-voices.js','utf8'),{Math:Object.assign(Object.create(Math),{random:()=>roll}),window,document,localStorage:{getItem:()=>null},fetch:async url=>{assert.ok(fs.existsSync(url.split('?')[0]));return {ok:true,arrayBuffer:async()=>new ArrayBuffer(1)};}});
  const v=window.PotatoVoices;await v.prepare();
  assert.equal(v.play('success'),true);const first=sources.at(-1).buffer;
- v.play('success');assert.notEqual(sources.at(-1).buffer,first);assert.ok(sources[0].stopped);
+ assert.equal(gains.at(-1).gain.value,.2);
+ const playing=sources.at(-1),silentCount=sources.length,duckCount=duck.length;
+ roll=1/3;assert.equal(v.play('success'),false);
+ assert.equal(sources.length,silentCount);assert.equal(playing.stopped,undefined);assert.equal(duck.length,duckCount);
+ roll=1/3-Number.EPSILON;assert.equal(v.play('success'),true);
+ const lastSuccess=sources.at(-1).buffer;assert.notEqual(lastSuccess,first);
+ roll=.5;assert.equal(v.play('error'),false);
+ roll=.5-Number.EPSILON;assert.equal(v.play('error'),true);
+ roll=0;
+ v.play('success');assert.notEqual(sources.at(-1).buffer,lastSuccess);assert.ok(sources[0].stopped);
  v.play('error');assert.ok(sources[1].stopped);assert.equal(duck.at(-1),1000);
  const before=sources.length;v.setEnabled(false);assert.ok(sources.at(-1).stopped);assert.equal(v.play('success'),false);assert.equal(sources.length,before);
  v.setEnabled(true);v.play('error',10000);document.hidden=true;listeners.visibilitychange();assert.ok(sources.at(-1).stopped);assert.equal(v.play('success'),false);
