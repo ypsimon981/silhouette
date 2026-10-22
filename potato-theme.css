@@ -94,9 +94,7 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
 #app #finishSectors .sector.green{background:#54e3c3;color:#07101c}
 #app #finishSectors .sector.yellow{background:#f2cd56;color:#07101c}
 #app #finishSectors .sector.fuchsia{background:#f35bdb;color:#07101c}
-#app #myProgress svg text.sectorTime.green{fill:#54e3c3!important}
-#app #myProgress svg text.sectorTime.yellow{fill:#f2cd56!important}
-#app #myProgress svg text.sectorTime.fuchsia{fill:#f35bdb!important}
+#app #myProgress svg text.sectorTime{fill:#07101c!important;font-weight:800}
 #app #finish #social-result{color:#f2cc86}
 #app #overallSplit{background:var(--potato-grain) #4e2c1e;border-color:#bc884a;box-shadow:none;color:var(--potato-cream)}
 #app #overallSplit .splitTime,#app #overallSplit .splitLabel{color:var(--potato-cream);text-shadow:none}
