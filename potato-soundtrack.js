@@ -76,7 +76,7 @@ function setProgress(f,l){
  tempo+=(target-tempo)*.1;
 }
 function finish(){setMode("home");}
-function duck(){duckUntil=Date.now()+850;if(master&&ctx){master.gain.setTargetAtTime(.26,ctx.currentTime,.025);setTimeout(()=>{if(mode==="game")sync()},850);}}
+function duck(duration=850){const hold=Math.max(850,Math.min(3000,Number(duration)||850));duckUntil=Date.now()+hold;if(master&&ctx){master.gain.setTargetAtTime(.26,ctx.currentTime,.025);setTimeout(()=>{if(mode==="game")sync()},hold);}}
 document.addEventListener("visibilitychange",sync);
 window.addEventListener("pointerdown",()=>{if(enabled&&mode==="game")sync()},{passive:true});
 window.PotatoSoundtrack={setMode,setEnabled,startGame,setProgress,finish,duck};
