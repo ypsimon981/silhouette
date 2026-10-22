@@ -59,7 +59,7 @@ function schedule(){
 }
 function stopScheduler(){if(timer!==null){clearInterval(timer);timer=null;}}
 function sync(){
- if(!enabled||document.hidden){stopScheduler();if(master&&ctx)master.gain.setTargetAtTime(.0001,ctx.currentTime,.025);return;}
+ if(!enabled||document.hidden||mode!=="game"){stopScheduler();if(master&&ctx)master.gain.setTargetAtTime(.0001,ctx.currentTime,.025);return;}
  if(!init())return;
  master.gain.setTargetAtTime(mode==="home"?.025:(Date.now()<duckUntil?.29:.53),ctx.currentTime,.07);
  if(timer===null){nextTime=ctx.currentTime+.06;timer=setInterval(schedule,45);schedule();}
@@ -78,6 +78,6 @@ function setProgress(f,l){
 function finish(){setMode("home");}
 function duck(){duckUntil=Date.now()+850;if(master&&ctx){master.gain.setTargetAtTime(.26,ctx.currentTime,.025);setTimeout(()=>{if(mode==="game")sync()},850);}}
 document.addEventListener("visibilitychange",sync);
-window.addEventListener("pointerdown",()=>{if(enabled)sync()},{passive:true});
+window.addEventListener("pointerdown",()=>{if(enabled&&mode==="game")sync()},{passive:true});
 window.PotatoSoundtrack={setMode,setEnabled,startGame,setProgress,finish,duck};
 })();
