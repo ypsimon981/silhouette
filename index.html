@@ -2554,6 +2554,27 @@ function shape3D(shape){
  }
  el("path",{d:darkSpots,fill:"none",stroke:variety.spot,"stroke-width":".85","stroke-linecap":"round",opacity:".35",class:"potatoLenticels"},freckles);
  el("path",{d:lightSpots,fill:"none",stroke:variety.light,"stroke-width":".65","stroke-linecap":"round",opacity:".26"},freckles);
+ // Organic potato peel: deterministic irregular freckles, bruises and recessed eyes.
+ // Each piece receives a distinct distribution, clipped to its exact silhouette.
+ let seed=(shape3DSerial*2654435761+17)>>>0;
+ const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
+ const skinMarks=el("g",{class:"potatoOrganicMarks"},freckles);
+ for(let j=0;j<145;j++){
+  const x=3+rand()*94,y=3+rand()*94,r=.11+Math.pow(rand(),3)*1.18;
+  el("ellipse",{cx:x.toFixed(2),cy:y.toFixed(2),rx:(r*(.65+rand())).toFixed(2),ry:(r*(.35+rand()*.7)).toFixed(2),fill:j%5===0?"#a66a35":"#75401f",opacity:(.10+rand()*.27).toFixed(2)},skinMarks);
+ }
+ // Natural darker patches: diffuse translucent marks rather than regular dots.
+ for(let j=0;j<13;j++){
+  const x=7+rand()*86,y=7+rand()*86,r=1.3+rand()*3.4;
+  el("ellipse",{cx:x.toFixed(2),cy:y.toFixed(2),rx:r.toFixed(2),ry:(r*(.35+rand()*.5)).toFixed(2),fill:"#99602d",opacity:(.055+rand()*.095).toFixed(2),transform:"rotate("+Math.round(rand()*180)+" "+x+" "+y+")"},skinMarks);
+ }
+ // Potato eyes: soft brown halos, darker shallow pits, tiny rim highlights.
+ for(let j=0;j<9;j++){
+  const x=10+rand()*80,y=10+rand()*80,r=.75+rand()*1.15;
+  el("ellipse",{cx:x.toFixed(2),cy:y.toFixed(2),rx:(r*1.85).toFixed(2),ry:(r*1.45).toFixed(2),fill:"#8d5229",opacity:".17"},skinMarks);
+  el("ellipse",{cx:x.toFixed(2),cy:y.toFixed(2),rx:r.toFixed(2),ry:(r*.72).toFixed(2),fill:"#693818",opacity:".48"},skinMarks);
+  el("path",{d:"M "+(x-r).toFixed(2)+" "+(y-r*.15).toFixed(2)+" Q "+x.toFixed(2)+" "+(y-r*1.2).toFixed(2)+" "+(x+r).toFixed(2)+" "+(y-r*.15).toFixed(2),fill:"none",stroke:"#f6c77b","stroke-width":".42",opacity:".7"},skinMarks);
+ }
  const hollow=shape.family==="ring"||shape.family==="square-hole",layout=potatoFaceLayout(shape);
  const {x:cx,y:cy,scale}=hollow?{x:50,y:50,scale:1}:layout;
  const faceClip=el("clipPath",{id:id+"-faceClip"},defs);el("path",{d:outline,"clip-rule":"evenodd",transform:"rotate("+rotation+" 50 50)"},faceClip);
@@ -2583,7 +2604,7 @@ function shape3D(shape){
  return svg
 }
 function time(t){let m=Math.floor(t/60000),s=Math.floor(t/1000)%60,ms=Math.floor(t%1000);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+String(ms).padStart(3,'0')}
-function update(){if(start!==null){elapsed=Math.min(timeLimit(),overallAccum+performance.now()-start);window.PotatoSoundtrack?.setProgress((elapsed-overallAccum)/MAX_TIME,level);window.PotatoSoundtrack?.setProgress((elapsed-overallAccum)/MAX_TIME,level);clock.textContent=time(elapsed);if(elapsed>=overallAccum+MAX_TIME){finishLevel(false);return}frame=requestAnimationFrame(update)}}
+function update(){if(start!==null){elapsed=Math.min(timeLimit(),overallAccum+performance.now()-start);window.PotatoSoundtrack?.setProgress((elapsed-overallAccum)/MAX_TIME,level);clock.textContent=time(elapsed);if(elapsed>=overallAccum+MAX_TIME){finishLevel(false);return}frame=requestAnimationFrame(update)}}
 // One-time reset of the old rule set: records and local attempt graphs restart together.
 // Keep player identity, nickname, country, handedness and audio preference unchanged.
 const RESET_KEY="10shapes_reset_v092";
