@@ -46,6 +46,40 @@ test('catalog has ten languages, ten distinct recordings each, positive/error/ur
  for(const c of catalog){assert.ok(c.text.trim());assert.ok(fs.statSync(c.src).size>1000);}
 });
 
+test('audio button cycles four independent modes, restores each selection and migrates legacy mute',async()=>{
+ const html=fs.readFileSync('index.html','utf8');
+ function fixture(saved,legacy='on'){
+  const dom=new JSDOM(html,{url:'https://game.test',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,state={};
+  w.localStorage.setItem('10shapes_profile_setup','yes');w.localStorage.setItem('10shapes_music',legacy);
+  if(saved!==null)w.localStorage.setItem('10potatoes_audio_mode',saved);
+  w.fetch=async()=>{throw Error('offline fixture');};w.HTMLElement.prototype.scrollIntoView=()=>{};
+  w.PotatoVoices={prepare(){},stop(){},setEnabled:v=>state.voice=v};
+  w.PotatoSoundtrack={setEnabled:v=>state.music=v,setMode(){},finish(){},startGame(){state.starts=(state.starts||0)+1;}};
+  w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));
+  const script=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].at(-1)[1].replace('})();','window.audioTest={play:()=>{phase="playing";},setup,goHome};})();');
+  w.eval(script);return {w,state,button:w.document.getElementById('soundToggle')};
+ }
+ const expected={all:[true,true],off:[false,false],voice:[false,true],music:[true,false]};
+ const fixtures=[];
+ try{
+  const f=fixture(null);fixtures.push(f);f.w.audioTest.play();
+  for(const mode of ['all','off','voice','music','all']){
+   assert.equal(f.button.dataset.audioMode,mode);
+   assert.deepEqual([f.state.music,f.state.voice],expected[mode]);
+   assert.ok(f.button.dataset.audioLabel);assert.match(f.button.getAttribute('aria-label'),/Tocca per/);
+   if(mode==='voice'||mode==='music'){
+    f.w.audioTest.setup();assert.deepEqual([f.state.music,f.state.voice],expected[mode]);
+    f.w.audioTest.goHome();assert.deepEqual([f.state.music,f.state.voice],expected[mode]);f.w.audioTest.play();
+   }
+   f.button.click();assert.equal(f.w.localStorage.getItem('10potatoes_audio_mode'),f.button.dataset.audioMode);
+  }
+  assert.ok(f.state.starts>=2);
+  for(const [saved,legacy,mode] of [['all','off','all'],['off','on','off'],['voice','off','voice'],['music','off','music'],[null,'off','off'],['invalid','off','off']]){
+   const f=fixture(saved,legacy);fixtures.push(f);assert.equal(f.button.dataset.audioMode,mode);assert.deepEqual([f.state.music,f.state.voice],expected[mode]);
+  }
+ }finally{await new Promise(resolve=>setTimeout(resolve,30));fixtures.forEach(f=>f.w.close());}
+});
+
 test('real release handler routes correct/wrong placements, cancellation, tenth potato and exit',async()=>{
  const html=fs.readFileSync('index.html','utf8');
  const dom=new JSDOM(html,{url:'https://game.test',runScripts:'outside-only',pretendToBeVisual:true}),w=dom.window,calls=[];

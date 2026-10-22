@@ -2,7 +2,8 @@
 (()=>{
 "use strict";
 const AC=window.AudioContext||window.webkitAudioContext;
-let ctx=null,master=null,timer=null,enabled=localStorage.getItem("10shapes_music")!=="off";
+const savedAudioMode=localStorage.getItem('10potatoes_audio_mode');
+let ctx=null,master=null,timer=null,enabled=['all','off','voice','music'].includes(savedAudioMode)?savedAudioMode==='all'||savedAudioMode==='music':localStorage.getItem("10shapes_music")!=="off";
 let mode="home",step=0,nextTime=0,tempo=1,level=1,duckUntil=0;
 const beat=60/118;
 const menuMotifs=[[60,67,64,69],[60,67,65,69],[59,67,64,71],[60,69,67,72],[60,67,64,69,72,69],[57,65,69,67,64],[62,69,65,72],[60,67,64,72]];

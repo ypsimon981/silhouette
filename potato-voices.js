@@ -5,7 +5,8 @@
  const fallback=[...groups.success,...groups.error,'hurry-up'].map(id=>({id,lang:'en',kind:id==='hurry-up'?'urgent':groups.success.includes(id)?'success':'error',src:'./assets/voices/'+id+'.mp3'}));
  const catalog=Array.isArray(window.PotatoVoiceCatalog)?window.PotatoVoiceCatalog:fallback;
  const buffers=new Map(),last={};
- let ctx=null,loading=null,current=null,enabled=localStorage.getItem('10shapes_music')!=='off';
+ const savedAudioMode=localStorage.getItem('10potatoes_audio_mode');
+ let ctx=null,loading=null,current=null,enabled=['all','off','voice','music'].includes(savedAudioMode)?savedAudioMode==='all'||savedAudioMode==='voice':localStorage.getItem('10shapes_music')!=='off';
  function stop(){if(current){const source=current;current=null;try{source.stop();}catch(_){}}}
  function prepare(){
   if(loading)return loading;
