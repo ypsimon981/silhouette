@@ -6,15 +6,20 @@ test('recorded voice groups, no immediate repeats, no overlapping audio, mute an
  let roll=0;
  class Context{
   state='running';destination={};
-  async decodeAudioData(){return {duration:1};}
+  async decodeAudioData(data){return {duration:1,id:data.id};}
   createGain(){const g={gain:{value:1},connect(){},disconnect(){}};gains.push(g);return g;}
   createBufferSource(){const s={connect(){},disconnect(){},start(){s.started=true;},stop(){s.stopped=true;s.onended?.();}};sources.push(s);return s;}
  }
  const window={AudioContext:Context,PotatoSoundtrack:{duck:ms=>duck.push(ms)}};
  const document={hidden:false,addEventListener:(event,fn)=>listeners[event]=fn};
- vm.runInNewContext(fs.readFileSync('potato-voices.js','utf8'),{Math:Object.assign(Object.create(Math),{random:()=>roll}),window,document,localStorage:{getItem:()=>null},fetch:async url=>{assert.ok(fs.existsSync(url.split('?')[0]));return {ok:true,arrayBuffer:async()=>new ArrayBuffer(1)};}});
+ vm.runInNewContext(fs.readFileSync('potato-voice-catalog.js','utf8'),{window});
+ let requests=0,peak=0,inflight=0;
+ vm.runInNewContext(fs.readFileSync('potato-voices.js','utf8'),{Math:Object.assign(Object.create(Math),{random:()=>roll}),window,document,localStorage:{getItem:()=>null},fetch:async url=>{requests++;peak=Math.max(peak,++inflight);await Promise.resolve();inflight--;assert.ok(fs.existsSync(url.split('?')[0]));return {ok:true,arrayBuffer:async()=>({id:url.split('?')[0]})};}});
  const v=window.PotatoVoices;await v.prepare();
+ assert.equal(requests,100);assert.ok(peak<=4);
+ const category=()=>window.PotatoVoiceCatalog.find(c=>c.src===sources.at(-1).buffer.id).kind;
  assert.equal(v.play('success'),true);const first=sources.at(-1).buffer;
+ assert.equal(category(),'success');
  assert.equal(gains.at(-1).gain.value,.2);
  const playing=sources.at(-1),silentCount=sources.length,duckCount=duck.length;
  roll=1/3;assert.equal(v.play('success'),false);
@@ -22,12 +27,23 @@ test('recorded voice groups, no immediate repeats, no overlapping audio, mute an
  roll=1/3-Number.EPSILON;assert.equal(v.play('success'),true);
  const lastSuccess=sources.at(-1).buffer;assert.notEqual(lastSuccess,first);
  roll=.5;assert.equal(v.play('error'),false);
- roll=.5-Number.EPSILON;assert.equal(v.play('error'),true);
+ roll=.5-Number.EPSILON;assert.equal(v.play('error'),true);assert.equal(category(),'error');
  roll=0;
  v.play('success');assert.notEqual(sources.at(-1).buffer,lastSuccess);assert.ok(sources[0].stopped);
  v.play('error');assert.ok(sources[1].stopped);assert.equal(duck.at(-1),1000);
  const before=sources.length;v.setEnabled(false);assert.ok(sources.at(-1).stopped);assert.equal(v.play('success'),false);assert.equal(sources.length,before);
  v.setEnabled(true);v.play('error',10000);document.hidden=true;listeners.visibilitychange();assert.ok(sources.at(-1).stopped);assert.equal(v.play('success'),false);
+});
+
+test('catalog has ten languages, ten distinct recordings each, positive/error/urgent separation and local files',()=>{
+ const window={};vm.runInNewContext(fs.readFileSync('potato-voice-catalog.js','utf8'),{window});
+ const catalog=window.PotatoVoiceCatalog,languages=new Set(catalog.map(c=>c.lang));
+ assert.equal(catalog.length,100);assert.equal(languages.size,10);assert.equal(new Set(catalog.map(c=>c.src)).size,100);
+ for(const lang of languages){
+  const clips=catalog.filter(c=>c.lang===lang);assert.equal(clips.length,10);
+  assert.equal(clips.filter(c=>c.kind==='success').length,6);assert.equal(clips.filter(c=>c.kind==='error').length,3);assert.equal(clips.filter(c=>c.kind==='urgent').length,1);
+ }
+ for(const c of catalog){assert.ok(c.text.trim());assert.ok(fs.statSync(c.src).size>1000);}
 });
 
 test('real release handler routes correct/wrong placements, cancellation, tenth potato and exit',async()=>{

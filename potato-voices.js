@@ -2,7 +2,8 @@
 (()=>{
  'use strict';
  const groups={success:['yes','yeah','yeah-baby','good-job'],error:['damn','holy-moly','dont-panic']};
- const ids=[...groups.success,...groups.error,'hurry-up'];
+ const fallback=[...groups.success,...groups.error,'hurry-up'].map(id=>({id,lang:'en',kind:id==='hurry-up'?'urgent':groups.success.includes(id)?'success':'error',src:'./assets/voices/'+id+'.mp3'}));
+ const catalog=Array.isArray(window.PotatoVoiceCatalog)?window.PotatoVoiceCatalog:fallback;
  const buffers=new Map(),last={};
  let ctx=null,loading=null,current=null,enabled=localStorage.getItem('10shapes_music')!=='off';
  function stop(){if(current){const source=current;current=null;try{source.stop();}catch(_){}}}
@@ -11,14 +12,23 @@
   const AC=window.AudioContext||window.webkitAudioContext;
   if(!AC)return Promise.resolve();
   try{ctx=ctx||new AC();}catch(_){return Promise.resolve();}
-  loading=Promise.all(ids.map(async id=>{
-   try{
-    const response=await fetch('./assets/voices/'+id+'.mp3?v=1');
-    if(!response.ok)return;
-    const buffer=await ctx.decodeAudioData(await response.arrayBuffer());
-    buffers.set(id,buffer);
-   }catch(_){} // An unavailable clip must never delay play.
-  }));
+  // Load a small selection across languages first, with at most four requests.
+  const pending=catalog.slice().sort((a,b)=>{
+   const order={success:0,error:1,urgent:2};
+   return (order[a.kind]-order[b.kind])||a.phrase?.localeCompare(b.phrase||'')||0;
+  });
+  async function worker(){
+   while(pending.length){
+    const clip=pending.shift();
+    try{
+     const response=await fetch(clip.src+'?v=1');
+     if(!response.ok)continue;
+     const buffer=await ctx.decodeAudioData(await response.arrayBuffer());
+     buffers.set(clip.id,buffer);
+    }catch(_){} // An unavailable clip must never delay play.
+   }
+  }
+  loading=Promise.all(Array.from({length:4},worker));
   return loading;
  }
  function unlock(){prepare();if(ctx?.state==='suspended')ctx.resume().catch(()=>{});}
@@ -27,11 +37,13 @@
   if(!enabled||document.hidden||!ctx||ctx.state!=='running')return false;
   const probability=kind==='success'?1/3:kind==='error'?1/2:0;
   if(Math.random()>=probability)return false;
-  const candidates=(groups[kind]||[]).slice();
-  if(kind==='error'&&remainingMs<=15000)candidates.push('hurry-up');
-  const available=candidates.filter(id=>buffers.has(id)&&id!==last[kind]);
+  const available=catalog.filter(clip=>(clip.kind===kind||(kind==='error'&&remainingMs<=15000&&clip.kind==='urgent'))&&buffers.has(clip.id)&&clip.id!==last[kind]);
   if(!available.length)return false;
-  const id=available[Math.floor(Math.random()*available.length)];
+  // Choose a language first so each language has the same chance.
+  const languages=[...new Set(available.map(clip=>clip.lang))];
+  const lang=languages[Math.floor(Math.random()*languages.length)];
+  const choices=available.filter(clip=>clip.lang===lang);
+  const id=choices[Math.floor(Math.random()*choices.length)].id;
   // A new event replaces the old reaction; never queue voices behind gameplay.
   stop();
   const source=ctx.createBufferSource(),gain=ctx.createGain();
