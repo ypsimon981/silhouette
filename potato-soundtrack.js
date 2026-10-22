@@ -61,7 +61,7 @@ function stopScheduler(){if(timer!==null){clearInterval(timer);timer=null;}}
 function sync(){
  if(!enabled||document.hidden){stopScheduler();if(master&&ctx)master.gain.setTargetAtTime(.0001,ctx.currentTime,.025);return;}
  if(!init())return;
- master.gain.setTargetAtTime(mode==="home"?.28:(Date.now()<duckUntil?.29:.53),ctx.currentTime,.07);
+ master.gain.setTargetAtTime(mode==="home"?.10:(Date.now()<duckUntil?.29:.53),ctx.currentTime,.07);
  if(timer===null){nextTime=ctx.currentTime+.06;timer=setInterval(schedule,45);schedule();}
 }
 function setMode(m){const newMode=m==="game"?"game":"home";if(mode!==newMode){mode=newMode;step=0;if(ctx)nextTime=ctx.currentTime+.07;}sync();}
