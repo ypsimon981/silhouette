@@ -3156,7 +3156,8 @@ function layoutFinish(){
  const height=Math.max(0,Math.min((bottom-top)*1.07,freeBottom-freeTop));
  const cardLeft=Math.max(freeLeft,Math.min((left+right-width)/2,freeRight-width));
  const cardTop=Math.max(freeTop,Math.min((top+bottom-height)/2,freeBottom-height));
- Object.assign(finish.style,{left:cardLeft+"px",top:cardTop+"px",width:width+"px",height:height+"px"});
+ // Results dimensions are owned by responsive CSS; do not override them with a narrow slot corridor.
+ ["left","top","width","height"].forEach(prop=>finish.style.removeProperty(prop));
 }
 function settleUnplacedPotato(){
  if(!active||active.classList.contains("done"))return;
