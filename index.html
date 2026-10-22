@@ -2200,9 +2200,7 @@ function stopMusic(){
   cinematicBus=null;
  }
 }
-function startMusic(){
- stopMusic();
- if(!musicOn)return;
+function startMusic(){stopMusic();if(window.PotatoSoundtrack){window.PotatoSoundtrack.setEnabled(musicOn);window.PotatoSoundtrack.startGame(level);return;}if(!musicOn)return;
  audioReady();
  if(!audioCtx)return;
  cinematicBus=audioCtx.createGain();
@@ -2585,7 +2583,7 @@ function shape3D(shape){
  return svg
 }
 function time(t){let m=Math.floor(t/60000),s=Math.floor(t/1000)%60,ms=Math.floor(t%1000);return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')+'.'+String(ms).padStart(3,'0')}
-function update(){if(start!==null){elapsed=Math.min(timeLimit(),overallAccum+performance.now()-start);window.PotatoSoundtrack?.setProgress((elapsed-overallAccum)/MAX_TIME,level);clock.textContent=time(elapsed);if(elapsed>=overallAccum+MAX_TIME){finishLevel(false);return}frame=requestAnimationFrame(update)}}
+function update(){if(start!==null){elapsed=Math.min(timeLimit(),overallAccum+performance.now()-start);window.PotatoSoundtrack?.setProgress((elapsed-overallAccum)/MAX_TIME,level);window.PotatoSoundtrack?.setProgress((elapsed-overallAccum)/MAX_TIME,level);clock.textContent=time(elapsed);if(elapsed>=overallAccum+MAX_TIME){finishLevel(false);return}frame=requestAnimationFrame(update)}}
 // One-time reset of the old rule set: records and local attempt graphs restart together.
 // Keep player identity, nickname, country, handedness and audio preference unchanged.
 const RESET_KEY="10shapes_reset_v092";
@@ -3023,8 +3021,7 @@ function updateFinishNavigation(){
  prev.setAttribute("aria-label",left>=1?"Vai al livello "+left:"Nessun livello precedente");
  next.setAttribute("aria-label",right<=10?"Vai al livello "+right:"Nessun livello successivo")
 }
-function finishLevel(won){
- endBehaviorAttempt(won?"completed":"timeout",Math.max(0,elapsed-overallAccum));
+function finishLevel(won){window.PotatoSoundtrack?.finish();endBehaviorAttempt(won?"completed":"timeout",Math.max(0,elapsed-overallAccum));
  const seq=sequenceFor(mode),stageMs=Math.max(0,elapsed-overallAccum);
  if(isSeries(mode)){
   saveAttempt(won,modeFromLevel(level),stageMs,count);
@@ -3172,7 +3169,7 @@ function placementTick(placedCount){
  osc.start(when);osc.stop(when+duration+.025);
 }
 function up(e){if(!offset)return;offset=null;let p=active;p.classList.remove('drag');p.removeEventListener('pointermove',move);p.removeEventListener('pointerup',up);p.removeEventListener('pointercancel',up);let target=slots[count],a=p.getBoundingClientRect(),b=target.getBoundingClientRect();let d=Math.hypot(a.left+a.width/2-b.left-b.width/2,a.top+a.height/2-b.top-b.height/2);if(d<a.width*.46){if(start!==null&&performance.now()-start>=MAX_TIME){elapsed=overallAccum+MAX_TIME;finishLevel(false);return}placementHaptic(true);placementTick(count+1);p.style.left=target.style.left;p.style.top=target.style.top;p.classList.add('done');target.classList.add('done');count++;captureSector(count);progress.textContent=count+' / 10 patate';active=null;next()}else{potatoReaction();placementHaptic(false);p.style.left='50%';p.style.top='50%';msg.textContent='Ops! Questa patata cerca un altro incavo.'}}
-document.getElementById("soundToggle").onclick=()=>{musicOn=!musicOn;localStorage.setItem("10shapes_music",musicOn?"on":"off");soundLabel();if(window.PotatoSoundtrack)window.PotatoSoundtrack.setEnabled(musicOn);if(!musicOn)stopMusic();else if(phase==="playing")startMusic()};soundLabel();document.getElementById("progressButton").onclick=showProgress;document.getElementById("closeProgress").onclick=()=>{document.getElementById("myProgress").style.display="none";updateToolbar()};document.getElementById('rankingButton').onclick=showRanking;document.getElementById('closeRanking').onclick=()=>{document.getElementById('ranking').style.display='none';updateToolbar()};document.getElementById('sendScore').onclick=sendScore;
+document.getElementById("soundToggle").onclick=()=>{musicOn=!musicOn;localStorage.setItem("10shapes_music",musicOn?"on":"off");soundLabel();if(window.PotatoSoundtrack)window.PotatoSoundtrack.setEnabled(musicOn);if(window.PotatoSoundtrack)window.PotatoSoundtrack.setEnabled(musicOn);if(!musicOn)stopMusic();else if(phase==="playing")startMusic()};soundLabel();document.getElementById("progressButton").onclick=showProgress;document.getElementById("closeProgress").onclick=()=>{document.getElementById("myProgress").style.display="none";updateToolbar()};document.getElementById('rankingButton').onclick=showRanking;document.getElementById('closeRanking').onclick=()=>{document.getElementById('ranking').style.display='none';updateToolbar()};document.getElementById('sendScore').onclick=sendScore;
 document.getElementById("profileButton").onclick=()=>openProfile(false);
 document.getElementById("profileLanguage").onchange=()=>{const saved=languagePreference;languagePreference=document.getElementById("profileLanguage").value;applyLanguage();const first=document.getElementById("profileOverlay").classList.contains("firstSetup");const t=translations[currentLanguage()];document.getElementById("profileTitle").textContent=first?t.welcome:t.profile;document.getElementById("profileIntro").textContent=first?t.first:t.intro;languagePreference=saved};
 document.getElementById("closeProfile").onclick=closeProfile;
