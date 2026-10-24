@@ -300,3 +300,7 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
 @keyframes countdownPotatoBounce{0%{transform:translateY(-100px) scale(.8,1.15) rotate(-6deg);opacity:0}12%{opacity:1}25%{transform:translateY(12px) scale(1.12,.85) rotate(2deg)}43%{transform:translateY(-15px) scale(.94,1.05) rotate(-2deg)}60%{transform:translateY(0) scale(1.02,.98) rotate(0)}76%{transform:scale(1)}90%{transform:scale(1);opacity:1}100%{transform:translateY(20px) scale(.9);opacity:0}}
 @media(max-height:650px){#app #board.game-screen #countNumber{width:130px!important;height:260px!important}}
 @media(prefers-reduced-motion:reduce){#app #countNumber .countdownPotato{animation:none}}
+/* v0.22.21 — each character has its own complete transparent image. */
+#app #countNumber img.countdownPotato{object-fit:contain;object-position:center;background:none!important;background-image:none!important;overflow:visible}
+#app #board.game-screen #startButton{width:min(82%,350px)!important;height:auto!important;min-height:44px;padding:0!important;border:0!important;border-radius:0;background:none!important;background-image:none!important;box-shadow:none!important;clip-path:none;overflow:visible;filter:drop-shadow(2px 4px 3px #30120470)}
+#app #startButton .potatoStartWord{display:block;width:100%;height:auto;max-height:180px;object-fit:contain;pointer-events:none}
