@@ -294,3 +294,9 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
 /* Approved study: retain the exact polished eye sockets and recessed smile. */
 #board.game-screen .piece .face,#board.game-screen .piece .eyes,#board.game-screen .piece .mouth{transform-origin:center}
 #board.game-screen .piece,#board.game-screen .piece.done{filter:drop-shadow(1px 2px 1px #000b) drop-shadow(2px 3px 2px #0007)}
+/* v0.22.20 — three textured potato numerals; the game clock still starts after 1. */
+#app #board.game-screen #countNumber{width:clamp(130px,36vw,220px)!important;height:clamp(260px,72vw,440px)!important;padding:0!important;border:0;background:none!important;box-shadow:none!important;transform:none!important;overflow:visible;line-height:1}
+#app #countNumber .countdownPotato{display:block;width:100%;height:100%;background-image:url('./assets/brand/countdown-potatoes.webp?v=0.22.20');background-size:300% 100%;background-repeat:no-repeat;transform-origin:50% 80%;filter:drop-shadow(2px 5px 3px #30120465);animation:countdownPotatoBounce 950ms both}
+@keyframes countdownPotatoBounce{0%{transform:translateY(-100px) scale(.8,1.15) rotate(-6deg);opacity:0}12%{opacity:1}25%{transform:translateY(12px) scale(1.12,.85) rotate(2deg)}43%{transform:translateY(-15px) scale(.94,1.05) rotate(-2deg)}60%{transform:translateY(0) scale(1.02,.98) rotate(0)}76%{transform:scale(1)}90%{transform:scale(1);opacity:1}100%{transform:translateY(20px) scale(.9);opacity:0}}
+@media(max-height:650px){#app #board.game-screen #countNumber{width:130px!important;height:260px!important}}
+@media(prefers-reduced-motion:reduce){#app #countNumber .countdownPotato{animation:none}}
