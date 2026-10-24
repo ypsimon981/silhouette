@@ -291,3 +291,6 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
 #board.game-screen.complete .piece.done .potatoBrows{transform:none}
 #board.game-screen.potato-oops .piece.done .potatoMouth{transform:scaleX(1.08)}
 #board.game-screen .piece .potatoPupils{--look-x:0px;--look-y:0px}
+/* Approved study: retain the exact polished eye sockets and recessed smile. */
+#board.game-screen .piece .face,#board.game-screen .piece .eyes,#board.game-screen .piece .mouth{transform-origin:center}
+#board.game-screen .piece,#board.game-screen .piece.done{filter:drop-shadow(1px 2px 1px #000b) drop-shadow(2px 3px 2px #0007)}
