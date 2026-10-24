@@ -23,7 +23,7 @@ test('every existing silhouette has identical softened potato/cutout geometry, s
    assert.equal((rounded.match(/M/gi)||[]).length,1);
    assert.equal(piece.querySelector('.potatoFace').dataset.upright,'true');
    assert.ok(!piece.querySelector('.potatoFace').getAttribute('transform').includes('rotate'));
-   assert.equal(piece.querySelectorAll('.potatoPupils ellipse').length,2);
+   assert.equal(piece.querySelectorAll('.potatoIris').length,2);
    for(const def of piece.querySelectorAll('[id]')){assert.equal(ids.has(def.id),false);ids.add(def.id)}
   }
   const square=catalog.find(a=>a.entry.family==='square');assert.match(square.rounded,/ A 7\.000 7\.000 /);
@@ -53,7 +53,7 @@ test('potato expressions react to rejected placement, reset safely, and all ten 
   assert.match(w.document.querySelector('style').textContent,/@media\(prefers-reduced-motion:reduce\).*potatoEyes/s);
  }finally{close()}
 });
-test('four reference skins stay fixed within each level and match background/neon; eyes and mouth use reference proportions',()=>{
+test('four skins retain their assignment while logo faces use large eyes, convergent pupils and a small toothless smile',()=>{
  const {w,g,close}=fixture();try{
   const names=['gialla','pezzata','rossa','viola'];
   for(let n=1;n<=10;n++){
@@ -63,16 +63,20 @@ test('four reference skins stay fixed within each level and match background/neo
     assert.equal(piece.dataset.variety,v.skin.name);
     assert.equal(piece.querySelectorAll('.potatoPatch').length,v.skin.name==='pezzata'?3:0);
     assert.equal(piece.querySelectorAll('.potatoEyeWhite').length,2);
-    assert.equal(piece.querySelectorAll('.potatoMouth g path').length,4);
+    assert.equal(piece.querySelectorAll('.potatoMouth > path').length,2);
+    assert.equal(piece.querySelector('.potatoFace').dataset.style,'logo');
+    const whites=[...piece.querySelectorAll('.potatoEyeWhite')],irises=[...piece.querySelectorAll('.potatoIris')];
+    assert.ok(Number(irises[0].getAttribute('cx'))>Number(whites[0].getAttribute('cx')));
+    assert.ok(Number(irises[1].getAttribute('cx'))<Number(whites[1].getAttribute('cx')));
     const host=w.document.createElement('div');host.className='piece';host.appendChild(piece);w.document.querySelector('#board').appendChild(host);
-    assert.equal(w.getComputedStyle(piece.querySelector('.potatoMouth > path')).fill,'rgb(67, 13, 11)');
+    assert.equal(w.getComputedStyle(piece.querySelector('.potatoMouth > path')).fill,'rgb(57, 18, 10)');
     for(const patch of piece.querySelectorAll('.potatoPatch'))assert.match(w.getComputedStyle(patch).fill,/-patch["']?\)/);
     host.remove();
    }
   }
   const circle=g.variety(1).pieces[0];
   assert.equal(Number(circle.querySelector('.potatoEyeWhite').getAttribute('ry'))*2,25);
-  // Cubic control height 40 gives exactly 30 at its midpoint (t = .5).
-  assert.match(circle.querySelector('.potatoMouth > path').getAttribute('d'),/C 19 40 -19 40 -19 0/);
+  assert.equal(circle.querySelector('.potatoFace').dataset.mouthHeight,'10');
+  assert.ok(Number(circle.querySelector('.potatoPupils').dataset.convergence)>0);
  }finally{close()}
 });

@@ -284,3 +284,10 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
  #app #board.complete #finish #finishCommands button{height:34px;min-height:34px;font-size:10px}
  #app #board.complete #finish #finishCommands .finishNav{padding-bottom:5px}
 }
+/* Logo character language: soft rounded peel, upright glossy eyes, small smile. */
+#board.game-screen .piece .front-face{stroke-width:.35px;stroke-opacity:.28}
+#board.game-screen .piece,#board.game-screen .piece.done{filter:drop-shadow(1px 3px 2px #48210965)}
+#board.game-screen.complete .piece.done .potatoMouth{transform:none}
+#board.game-screen.complete .piece.done .potatoBrows{transform:none}
+#board.game-screen.potato-oops .piece.done .potatoMouth{transform:scaleX(1.08)}
+#board.game-screen .piece .potatoPupils{--look-x:0px;--look-y:0px}
