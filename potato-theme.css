@@ -246,3 +246,41 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
  #app #board.complete #finish #finishScore h2{font-size:12px}
  #app #board.complete #finish #finishScore #finishTimeDelta{font-size:9px}
 }
+/* v0.22.16 — intact transparent logo and content-sized result cards. */
+#app.game-toolbar header #gameBrand{
+ height:auto;max-height:48px;aspect-ratio:auto;object-fit:contain;object-position:left center;
+ background:transparent;overflow:visible;
+}
+#app #board.complete #finish #finishScore,
+#app #board.complete #finish #finishCommands{
+ padding:12px 9px;border-radius:14px;justify-content:flex-start;gap:8px;
+}
+#app #board.complete #finish #finishScore h2{font-size:13px;font-weight:750;line-height:1.25;color:#edcea0!important}
+#app #board.complete #finish #finishScore .finishTimeLabel{display:none}
+#app #board.complete #finish #finishScore #finishTimePanel{gap:5px}
+#app #board.complete #finish #finishScore #finishTimeValue{
+ font-size:clamp(25px,6.8vw,36px);font-weight:900;letter-spacing:-1px;line-height:1.15;
+}
+#app #board.complete #finish #finishScore #finishTimeDelta{font-size:10px;font-weight:650;color:#e6cba4;line-height:1.3}
+#app #board.complete #finish #finishScore #finishSectors{gap:5px;margin:3px 0 0}
+#app #board.complete #finish #finishScore #finishSectors .sector{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;min-width:0;
+}
+#app #board.complete #finish #finishScore #finishSectors .sector>span{font-size:9px;line-height:1;opacity:.8}
+#app #board.complete #finish #finishScore #finishSectors .sector>strong{font-size:11px;line-height:1.2;font-variant-numeric:tabular-nums}
+#app #board.complete #finish #finishCommands button{height:40px;min-height:40px;font-size:12px;border-radius:9px}
+#app #board.complete #finish #finishCommands .finishNav button{flex-direction:row;gap:5px;overflow:hidden}
+#app #board.complete #finish #finishCommands .finishNav .levelCaption{
+ display:block;margin:0;font-size:10px;line-height:1.2;white-space:normal;letter-spacing:0;
+}
+#app #board.complete #finish #finishCommands .finishNav .levelArrow{flex:none;font-size:21px;text-shadow:none}
+#app #board.complete #finish #finishCommands .finishPrimary,
+#app #board.complete #finish #finishCommands .finishNav,
+#app #board.complete #finish #finishCommands .finishOverviewRow,
+#app #board.complete #finish #finishCommands .social-actions{gap:6px}
+#app #board.complete #finish #finishCommands .finishNav{padding-bottom:8px;border-bottom:1px solid #deb26738}
+@media(max-height:700px){
+ #app #board.complete #finish #finishScore,#app #board.complete #finish #finishCommands{padding:8px;gap:5px}
+ #app #board.complete #finish #finishCommands button{height:34px;min-height:34px;font-size:10px}
+ #app #board.complete #finish #finishCommands .finishNav{padding-bottom:5px}
+}

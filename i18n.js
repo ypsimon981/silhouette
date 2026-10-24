@@ -13,8 +13,8 @@
   async function load(language) {
     const target = normalize(language || (typeof navigator !== "undefined" ? navigator.language : "en"));
     const [enResponse, selectedResponse] = await Promise.all([
-      fetch("./locales/en.json?v=0.22.15"),
-      target === "en" ? Promise.resolve(null) : fetch("./locales/" + target + ".json?v=0.22.15")
+      fetch("./locales/en.json?v=0.22.16"),
+      target === "en" ? Promise.resolve(null) : fetch("./locales/" + target + ".json?v=0.22.16")
     ]);
     if (!enResponse.ok) throw new Error("English translations unavailable");
     fallback = await enResponse.json();
