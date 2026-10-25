@@ -6,17 +6,17 @@ function fixture(){
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
  w.localStorage.setItem('10potatoes_language','it');
  w.localStorage.setItem('10shapes_social_session',JSON.stringify({access_token:'TEST_ONLY',expires_at:9999999999,user:{id:'00000000-0000-4000-8000-000000000001'}}));
- const requests=[];w.fetch=async(url,opts)=>{const b=JSON.parse(opts.body);requests.push(b);return {ok:true,json:async()=>b.action==='profile'?{preferences:{}}:b.action==='challenge_best'?{code:'a'.repeat(32),level:1,time_ms:6953}:{}};};
+ const requests=[],drawn=[];w.fetch=async(url,opts)=>{if(url.includes('scope=world')){requests.push({action:'world_rank'});return {ok:true,json:async()=>({my_rank:17,total:100})};}const b=JSON.parse(opts.body);requests.push(b);return {ok:true,json:async()=>b.action==='profile'?{preferences:{}}:b.action==='challenge_best'?{code:'a'.repeat(32),level:1,time_ms:6953}:{}};};
  w.Image=class {set src(value){queueMicrotask(()=>this.onerror?.());}};
  w.URL.createObjectURL=()=> 'blob:TEST_ONLY';w.URL.revokeObjectURL=()=>{};
- w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(t,k)=>t[k]||(()=>{})});
+ w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({fillText:(text)=>drawn.push(text),createLinearGradient:()=>({addColorStop(){}})},{get:(t,k)=>t[k]||(()=>{})});
  w.HTMLCanvasElement.prototype.toBlob=function(fn){fn(new w.Blob(['fixture'],{type:'image/png'}));};
  Object.defineProperty(w.navigator,'canShare',{value:()=>true,configurable:true});
  let outcome='success',payload;
  Object.defineProperty(w.navigator,'share',{value:async data=>{payload=data;if(outcome==='cancel')throw new w.DOMException('Cancelled','AbortError');if(outcome==='error')throw Error('Sharing failed');},configurable:true});
  w.eval(fs.readFileSync('social-config.js','utf8'));w.eval(fs.readFileSync('social.js','utf8'));
  const social=w.SilhouetteSocial.init({profile:()=>({nickname:'Tester',country:'IT',hand:'right'}),identity(){},playing:()=>false});
- return {w,dom,social,requests,setOutcome:v=>outcome=v,payload:()=>payload,close:()=>w.close()};
+ return {w,dom,social,requests,drawn,setOutcome:v=>outcome=v,payload:()=>payload,close:()=>w.close()};
 }
 test('challenge from leaderboard uses server record; success closes, cancellation/error retain the dialog',async()=>{
  const f=fixture(),{w,social}=f;
@@ -57,5 +57,18 @@ test('parallel startup waits only at results to satisfy server elapsed-time guar
   assert.match(w.document.querySelector('#social-result').textContent,/Verifica/);
   now+=scheduled.delay;scheduled.fn();await flush();await flush();
   assert.ok(f.requests.some(r=>r.action==='run_finish'&&r.data.time_ms===8636));
+ }finally{f.close()}
+});
+
+test('leaderboard shares the selected saved record and disables sharing while loading',async()=>{
+ const f=fixture(),{w,social}=f;
+ try{
+  const share=w.document.getElementById('social-ranking-share');
+  social.ranking(1,null,'loading');assert.equal(share.disabled,true);
+  social.ranking(1,{time_ms:6953});assert.equal(share.disabled,false);share.click();await flush();
+  const d=w.document.querySelector('.potato-share');assert.ok(d);assert.ok(f.requests.some(r=>r.action==='world_rank'));assert.ok(f.drawn.includes('#17'));
+  const send=[...d.querySelectorAll('button')].find(b=>b.textContent==='Condividi immagine');
+  send.click();await flush();assert.match(f.payload().text,/6,95 s/);assert.equal(d.isConnected,false);
+  social.ranking(2,null);assert.equal(share.disabled,true);
  }finally{f.close()}
 });
