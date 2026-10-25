@@ -48,3 +48,11 @@
 /* Mouth silhouettes now express neutral, surprise and sleep instead of scaling one smile. */
 #app #board.game-screen:not(.complete) .piece.done[data-peer-seed] .potatoMouth{scale:1 1!important}
 #app #board.game-screen:not(.complete) .piece.done[data-peer-seed][data-egg] .potatoMouth{scale:1 1!important}
+
+/* Brief post-game teasing; animate only the new tongue and the lips. */
+#app #board.complete .piece.done[data-peer-mood=tongue] .potatoBrows{rotate:-8deg}
+#app #board.complete .piece.done[data-peer-mood=raspberry] .potatoMouth{transform-box:fill-box;transform-origin:center;animation:potatoPfft .14s ease-in-out 6 alternate}
+#app #board.complete .piece.done[data-peer-mood=raspberry] .potatoTongue{transform-box:fill-box;transform-origin:50% 0;rotate:0deg;animation:potatoTongueFlutter .09s ease-in-out 9 alternate}
+@keyframes potatoPfft{from{scale:1 1}to{scale:1.08 .94}}
+@keyframes potatoTongueFlutter{from{rotate:-7deg}to{rotate:7deg}}
+@media(prefers-reduced-motion:reduce){#app #board.complete .piece.done[data-peer-mood=raspberry] .potatoMouth,#app #board.complete .piece.done[data-peer-mood=raspberry] .potatoTongue{animation:none!important}}

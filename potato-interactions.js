@@ -8,7 +8,7 @@
  let liveTimers=new Set(),napTimer=0,sleeper=null,napUsed=false,lastCount=0,wasOops=false,errorCooldown=0;
  let timers=new Set(),loop=0,running=false,dragging=false,lastStarter=null,gazeFrame=0;
  const later=(fn,ms)=>{const id=setTimeout(()=>{timers.delete(id);fn()},ms);timers.add(id);return id};
- const moods=['cheeky','laugh','surprise','curious'];
+ const moods=['cheeky','laugh','surprise','curious','cheeky','laugh','tongue','raspberry'];
  function reset(p){delete p.dataset.peerMood;delete p.dataset.peerBusy;p.style.removeProperty('--peer-x');p.style.removeProperty('--peer-y')}
  function stop(){clearTimeout(loop);timers.forEach(clearTimeout);timers.clear();running=false;board.querySelectorAll('[data-peer-busy]').forEach(reset)}
  function aim(a,b){const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect(),dx=br.left-ar.left,dy=br.top-ar.top,len=Math.hypot(dx,dy)||1;a.style.setProperty('--peer-x',(dx/len*12).toFixed(1)+'px');a.style.setProperty('--peer-y',(dy/len*8).toFixed(1)+'px')}
@@ -80,6 +80,8 @@
   cheeky:'M212 303 Q244 312 286 288 Q291 311 267 322 Q234 333 212 303Z',
   surprise:'M250 283 C277 283 277 329 250 329 C223 329 223 283 250 283Z',
   sleep:'M247 300 C257 300 259 314 250 317 C239 317 236 301 247 300Z',
+  tongue:'M211 290 Q250 307 289 290 Q293 335 251 340 Q211 336 211 290Z',
+  raspberry:'M250 292 C275 288 278 321 253 326 C228 330 222 297 250 292Z',
   laugh:'M209 288 Q250 312 292 285 Q293 337 251 341 Q210 338 209 288Z'
  };
 
@@ -88,18 +90,27 @@
   let pupil=eyes.querySelector('.potatoPupils');if(!pupil){pupil=eyes.querySelector('g');if(pupil)pupil.classList.add('potatoPupils')}
   const wrap=node=>{if(node.parentNode.classList.contains('reaction-pose'))return node.parentNode;const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','reaction-pose');node.replaceWith(g);g.append(node);return g};
   const eyePose=wrap(eyes),browPose=wrap(brows);
-  const sy=mood==='sleep'?.07:mood==='surprise'?1.18:mood==='cheeky'?.67:mood==='laugh'?.65:1;
+  const sy=mood==='sleep'?.07:mood==='surprise'?1.18:mood==='cheeky'?.67:mood==='laugh'?.65:mood==='tongue'?.82:mood==='raspberry'?.75:1;
   eyePose.setAttribute('transform','translate(250 210) scale(1 '+sy+') translate(-250 -210)');
   browPose.setAttribute('transform',mood==='sleep'?'translate(0 9)':mood==='surprise'?'translate(0 -18)':mood==='cheeky'?'rotate(-10 250 115) translate(0 -6)':'translate(0 0)');
  }
 
  function expression(p,count,complete){
   const egg=p.dataset.egg,mood=p.dataset.peerMood;
-  const key=egg==='sleep'?'sleep':egg==='wake'?'surprise':egg==='complicit'?'cheeky':mood==='surprise'?'surprise':mood==='laugh'?'laugh':mood==='cheeky'?'cheeky':mood==='curious'?'smallSmile':complete||count>=7?'smile':count>=4?'smallSmile':'neutral';
+  const key=egg==='sleep'?'sleep':egg==='wake'?'surprise':egg==='complicit'?'cheeky':mood==='surprise'?'surprise':mood==='tongue'?'tongue':mood==='raspberry'?'raspberry':mood==='laugh'?'laugh':mood==='cheeky'?'cheeky':mood==='curious'?'smallSmile':complete||count>=7?'smile':count>=4?'smallSmile':'neutral';
   facialParts(p,key);
   if(p.dataset.faceExpression===key)return;
   const mouth=p.querySelector('.potatoMouth'),path=mouth?.querySelector('path');if(!path)return;
   path.setAttribute('d',mouthShapes[key]);const rim=mouth.querySelectorAll('path')[1];if(rim)rim.style.opacity=key==='smile'?'.75':'0';
+
+  let tongue=mouth.querySelector('.potatoTongue');
+  if(!tongue&&(key==='tongue'||key==='raspberry')){
+   const ns='http://www.w3.org/2000/svg';tongue=document.createElementNS(ns,'g');tongue.setAttribute('class','potatoTongue');
+   const skin=document.createElementNS(ns,'path');skin.setAttribute('d','M233 315 Q250 309 268 315 L268 333 Q266 350 251 352 Q234 350 233 333Z');skin.style.setProperty('fill','#e97983','important');skin.style.setProperty('stroke','#a73549','important');skin.style.strokeWidth='2';
+   const crease=document.createElementNS(ns,'path');crease.setAttribute('d','M251 317 L251 336');crease.style.setProperty('fill','none','important');crease.style.setProperty('stroke','#b74156','important');crease.style.strokeWidth='2.2';crease.style.strokeLinecap='round';
+   tongue.append(skin,crease);mouth.appendChild(tongue);
+  }
+  if(tongue){tongue.style.display=(key==='tongue'||key==='raspberry')?'inline':'none';tongue.setAttribute('transform',key==='raspberry'?'translate(15 53) scale(.94 .84)':'translate(0 0)')}
   p.dataset.faceExpression=key;
  }
 
