@@ -58,3 +58,8 @@
 .social-dialog.potato-share button:disabled{opacity:.55;cursor:wait}
 @media(max-width:360px){.social-dialog.potato-share{padding:14px;border-radius:24px}.potato-share-actions{gap:7px}.social-dialog.potato-share button:not(.social-close){font-size:16px;padding:10px 7px}.potato-share-send:before,.potato-share-download:before{flex-basis:23px;width:23px}.social-dialog.potato-share h2{font-size:32px}}
 .social-dialog.potato-share>button:last-child:before{content:'🔗';font-size:1.25em;flex:none}
+
+/* Share a saved record next to the challenge action. */
+.social-ranking-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.social-ranking-actions button{width:100%;min-width:0;min-height:48px;padding:10px 8px;font-size:14px;white-space:normal;overflow-wrap:anywhere}
+#social-ranking-share:disabled{opacity:.5}
