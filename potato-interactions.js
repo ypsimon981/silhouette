@@ -33,7 +33,16 @@
   seated().forEach(p=>aim(p,active));
  }
  function requestGaze(){if(!gazeFrame)gazeFrame=requestAnimationFrame(gaze)}
+ function groundShadows(){
+  board.querySelectorAll('.piece').forEach(p=>{
+   if(p.dataset.groundShadow)return;
+   const art=p.querySelector('svg'),outline=art?.querySelector('.front-face')||art?.querySelector(':scope > path');if(!outline)return;
+   const ns='http://www.w3.org/2000/svg',shadow=document.createElementNS(ns,'svg');shadow.setAttribute('viewBox',art.getAttribute('viewBox')||'0 0 100 100');shadow.setAttribute('class','ground-shadow');shadow.setAttribute('aria-hidden','true');
+   const path=outline.cloneNode(false);path.removeAttribute('class');path.removeAttribute('id');path.style.setProperty('fill','#000','important');path.style.setProperty('stroke','none','important');path.style.setProperty('filter','none','important');shadow.appendChild(path);p.prepend(shadow);p.dataset.groundShadow='true';
+  });
+ }
  function sync(){
+  groundShadows();
   const all=seated(),complete=board.classList.contains('complete');
   all.forEach((p,i)=>{if(!seatedBefore.has(p)){seatedBefore.add(p);p.dataset.seatPop='true';setTimeout(()=>{delete p.dataset.seatPop},460)}if(!p.dataset.peerSeed){p.dataset.peerSeed=String(i+1);p.style.setProperty('--peer-blink',(4+pick(35)/10)+'s');p.style.setProperty('--peer-delay',(-pick(40)/10)+'s')}
    const happiness=Math.min(1,all.length/10);p.style.setProperty('--peer-smile-x',(.64+happiness*.56).toFixed(2));p.style.setProperty('--peer-smile-y',(.22+happiness*.98).toFixed(2));p.style.setProperty('--peer-brow-y',(-happiness*5).toFixed(1)+'px');

@@ -20,8 +20,16 @@
 #app #board.game-screen:not(.complete) .piece.done[data-peer-seed] .potatoBrows{translate:0 var(--peer-brow-y,0px);transition:translate .65s ease}
 
 /* Animate the inner SVG, preserving the seated piece's exact board coordinates. */
-#app #board .piece.done[data-seat-pop] > svg{transform-origin:50% 65%;animation:potatoSeatPop .44s cubic-bezier(.22,.7,.35,1) both}
+#app #board .piece.done[data-seat-pop] > svg:not(.ground-shadow){transform-origin:50% 65%;animation:potatoSeatPop .44s cubic-bezier(.22,.7,.35,1) both}
 @keyframes potatoSeatPop{0%{scale:1 1}22%{scale:1.1 .86}48%{scale:.94 1.08}72%{scale:1.035 .97}100%{scale:1 1}}
-@media(prefers-reduced-motion:reduce){#app #board .piece.done[data-seat-pop] > svg{animation:none}}
+@media(prefers-reduced-motion:reduce){#app #board .piece.done[data-seat-pop] > svg:not(.ground-shadow){animation:none}}
 #app #board.game-screen .piece.done[data-peer-seed] .potatoPupils{transform:none!important}
 #app #board.game-screen .piece.done[data-peer-busy] .potatoPupils{animation:none!important}
+
+/* Ground contact is a separate, stationary silhouette, outside the animated body. */
+#app #board.game-screen .piece[data-ground-shadow]{filter:none!important}
+#app #board.game-screen .piece[data-ground-shadow] > svg:not(.ground-shadow){position:relative;z-index:1}
+#app #board.game-screen .piece > svg.ground-shadow{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.72;transform:translate(1px,3px);filter:blur(1.4px);animation:none!important;}
+
+#app #board.game-screen .piece.done[data-seat-pop] > svg.ground-shadow{transform-origin:50% 65%;animation:potatoSeatPop .44s cubic-bezier(.22,.7,.35,1) both!important}
+@media(prefers-reduced-motion:reduce){#app #board.game-screen .piece.done[data-seat-pop] > svg.ground-shadow{animation:none!important}}
