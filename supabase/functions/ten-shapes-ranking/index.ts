@@ -10,7 +10,7 @@ export async function handle(req:Request):Promise<Response>{
  try{
   if(req.method==='GET'){
    const p=new URL(req.url).searchParams,level=Number(p.get('level')||1),id=p.get('player_id')||'',country=(p.get('country')||'IT').toUpperCase();
-   if(!Number.isInteger(level)||level<1||level>17||!/^[A-Z]{2}$/.test(country))return reply({error:'Parametri non validi'},400);
+   if(!Number.isInteger(level)||level<1||level>18||!/^[A-Z]{2}$/.test(country))return reply({error:'Parametri non validi'},400);
    const scope=['world','national','friends'].includes(p.get('scope')||'')?p.get('scope')!:'world';
    const candidate=p.get('action')==='positions'?Number(p.get('time_ms')):null;
    if(candidate!==null&&(!uuid.test(id)||!Number.isInteger(candidate)||candidate<1500||candidate>(level===14?600000:level===15||level===16?300000:60000)))return reply({error:'Tempo non valido'},400);
@@ -32,7 +32,7 @@ export async function handle(req:Request):Promise<Response>{
    if(!r.ok)throw Error('rename');return reply({renamed:true});
   }
   const level=Number(b.level),ms=Number(b.time_ms);
-  if(b.action!=='score'||![1,2,4,7,8,9,10,11,12,13,14,17].includes(level)||!Number.isInteger(ms)||ms<1500||ms>(level===14?600000:60000))return reply({error:'Tempo non valido'},400);
+  if(b.action!=='score'||![1,2,4,7,8,9,10,11,12,13,14,17,18].includes(level)||!Number.isInteger(ms)||ms<1500||ms>(level===14?600000:60000))return reply({error:'Tempo non valido'},400);
   return reply(await rpc('shapes_social_legacy_score',{who:user.id,nick:name,cc,mode_id:level,ms,hand:['left','right'].includes(b.playing_hand)?b.playing_hand:null}));
  }catch{return reply({error:'Servizio temporaneamente non disponibile'},503);}
 }

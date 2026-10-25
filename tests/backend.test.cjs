@@ -17,6 +17,24 @@ before(async()=>{
  for(const [id,nickname]of [[A,'Marco'],[B,'Giulia'],[C,'Luca']]){await db.query('insert into auth.users values($1)',[id]);await action(id,'profile',{nickname,country:'IT',timezone:'Europe/Rome',preferences:prefs});}
 });
 after(async()=>{await db?.close();});
+test('Flowers migration allows verified runs, dedicated rankings and challenges',async()=>{
+ await db.exec('begin');try{
+ await db.exec('alter table public.ten_shapes_scores add constraint ten_shapes_scores_level_check check(level between 1 and 16)');
+ await db.exec(fs.readFileSync('backend/official-animals.sql','utf8'));
+ await db.exec(fs.readFileSync('backend/official-flowers.sql','utf8'));
+ const flower=await run(A,18420,null,18);
+ assert.equal(flower.result.saved,true);
+ const ranking=(await db.query("select public.shapes_social_rank_read(18,'world',$1,'IT',null) result",[A])).rows[0].result;
+ assert.equal(ranking.total,1);assert.equal(ranking.my_rank,1);
+ const challenge=(await db.query('select public.shapes_social_best_challenge($1,18) result',[A])).rows[0].result;
+ assert.equal(challenge.level,18);
+ assert.equal((await action(B,'challenge_get',{code:challenge.code})).level,18);
+ assert.equal((await run(B,17900,challenge.code,18)).result.outcome,'won');
+ const animal=await run(A,22000,null,17);assert.equal(animal.result.saved,true);
+ await assert.rejects(action(A,'run_start',{level:19,rules:'shapes-0.21.27-social1'}));
+ }finally{await db.exec('rollback')}
+
+});
 test('nickname ownership covers case, whitespace, legacy players and alternate score writes',async()=>{
  await assert.rejects(action(B,'profile',{nickname:' mArCo ',country:'IT',timezone:'Europe/Rome',preferences:prefs}),/Nickname già utilizzato/);
  assert.equal((await db.query('select nickname from public.shapes_social_profiles where user_id=$1',[B])).rows[0].nickname,'Giulia');
