@@ -22,7 +22,7 @@
    const options=all.filter(p=>!visited.has(p)&&p.isConnected);if(!source.isConnected||!options.length){running=false;schedule();return}
    const origin=source.getBoundingClientRect();options.sort((a,b)=>{const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();return Math.hypot(ar.left-origin.left,ar.top-origin.top)-Math.hypot(br.left-origin.left,br.top-origin.top)});
    const target=options[pick(Math.min(3,options.length))],mood=moods[pick(moods.length)];
-   emote(source,target,mood);later(()=>emote(target,source,mood==='laugh'?'laugh':mood==='cheeky'?'surprise':'cheeky'),480);
+   emote(source,target,mood);later(()=>emote(target,source,mood==='laugh'?'surprise':mood==='cheeky'?'surprise':'laugh'),480);
    visited.add(target);source=target;hop++;
    later(relay,1450+pick(400));
   }
@@ -82,9 +82,21 @@
   sleep:'M247 300 C257 300 259 314 250 317 C239 317 236 301 247 300Z',
   laugh:'M209 288 Q250 312 292 285 Q293 337 251 341 Q210 338 209 288Z'
  };
+
+ function facialParts(p,mood){
+  const eyes=p.querySelector('.potatoEyes'),brows=p.querySelector('.potatoBrows');if(!eyes||!brows)return;
+  let pupil=eyes.querySelector('.potatoPupils');if(!pupil){pupil=eyes.querySelector('g');if(pupil)pupil.classList.add('potatoPupils')}
+  const wrap=node=>{if(node.parentNode.classList.contains('reaction-pose'))return node.parentNode;const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.setAttribute('class','reaction-pose');node.replaceWith(g);g.append(node);return g};
+  const eyePose=wrap(eyes),browPose=wrap(brows);
+  const sy=mood==='sleep'?.07:mood==='surprise'?1.18:mood==='cheeky'?.67:mood==='laugh'?.65:1;
+  eyePose.setAttribute('transform','translate(250 210) scale(1 '+sy+') translate(-250 -210)');
+  browPose.setAttribute('transform',mood==='sleep'?'translate(0 9)':mood==='surprise'?'translate(0 -18)':mood==='cheeky'?'rotate(-10 250 115) translate(0 -6)':'translate(0 0)');
+ }
+
  function expression(p,count,complete){
   const egg=p.dataset.egg,mood=p.dataset.peerMood;
   const key=egg==='sleep'?'sleep':egg==='wake'?'surprise':egg==='complicit'?'cheeky':mood==='surprise'?'surprise':mood==='laugh'?'laugh':mood==='cheeky'?'cheeky':mood==='curious'?'smallSmile':complete||count>=7?'smile':count>=4?'smallSmile':'neutral';
+  facialParts(p,key);
   if(p.dataset.faceExpression===key)return;
   const mouth=p.querySelector('.potatoMouth'),path=mouth?.querySelector('path');if(!path)return;
   path.setAttribute('d',mouthShapes[key]);const rim=mouth.querySelectorAll('path')[1];if(rim)rim.style.opacity=key==='smile'?'.75':'0';
