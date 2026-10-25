@@ -8,6 +8,16 @@
   const write = (key,value) => { try { localStorage.setItem(KEY+key,JSON.stringify(value)); } catch { /* Browser may deny persistence. */ } };
   const seconds = ms => (Math.round(ms/10)/100).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' s';
   const label = mode => mode===14?'Overall':'Livello '+String(MODES.indexOf(mode)+1).padStart(2,'0');
+  const shareTranslations={"it":["Condividi risultato","Condividi immagine","Scarica immagine","Copia link del gioco","Fai alla svelta o sei fritto!","10 patate. Riesci a battermi?","Livello","mondiale","Nuovo record personale","Il link viene condiviso come testo separato: alcune app accettano solo l’immagine. Puoi copiarlo qui."],"en":["Share result","Share image","Download image","Copy game link","Hurry up or you're fried!","10 potatoes. Can you beat me?","Level","worldwide","New personal best","The link is shared separately as text. Some apps accept only the image. Copy it here."],"es":["Compartir resultado","Compartir imagen","Descargar imagen","Copiar enlace del juego","¡Date prisa o acabarás frito!","10 patatas. ¿Puedes superarme?","Nivel","mundial","Nuevo récord personal","El enlace se comparte como texto aparte. Algunas apps solo aceptan imágenes. Cópialo aquí."],"fr":["Partager le résultat","Partager l’image","Télécharger l’image","Copier le lien du jeu","Dépêche-toi ou tu es frit !","10 patates. Tu peux me battre ?","Niveau","mondial","Nouveau record personnel","Le lien est partagé séparément. Certaines applis n’acceptent que l’image. Copie-le ici."],"de":["Ergebnis teilen","Bild teilen","Bild herunterladen","Spiellink kopieren","Beeil dich, sonst wirst du frittiert!","10 Kartoffeln. Schlägst du mich?","Level","weltweit","Neue persönliche Bestzeit","Der Link wird separat als Text geteilt. Manche Apps akzeptieren nur das Bild. Kopiere ihn hier."],"pt":["Partilhar resultado","Partilhar imagem","Descarregar imagem","Copiar ligação do jogo","Despacha-te ou ficas frito!","10 batatas. Consegues superar-me?","Nível","mundial","Novo recorde pessoal","A ligação é partilhada em texto separado. Algumas apps só aceitam imagens. Copia-a aqui."],"ja":["結果をシェア","画像をシェア","画像を保存","ゲームのリンクをコピー","急がないとフライドポテトに！","ジャガイモ10個。勝てるかな？","レベル","世界","自己ベスト更新","リンクは別のテキストとして共有されます。画像のみ対応のアプリもあります。"],"ko":["결과 공유","이미지 공유","이미지 저장","게임 링크 복사","서두르지 않으면 튀겨진다!","감자 10개. 나를 이길 수 있어?","레벨","세계","개인 최고 기록","링크는 별도 텍스트로 공유됩니다. 일부 앱은 이미지만 지원합니다."],"zh-CN":["分享成绩","分享图片","下载图片","复制游戏链接","快点，不然就炸熟啦！","10个土豆。你能打败我吗？","关卡","全球","个人新纪录","链接将作为单独文字分享，部分应用仅支持图片。"],"id":["Bagikan hasil","Bagikan gambar","Unduh gambar","Salin tautan game","Cepat, atau kamu jadi kentang goreng!","10 kentang. Bisa kalahkan aku?","Level","dunia","Rekor pribadi baru","Tautan dibagikan terpisah sebagai teks. Beberapa aplikasi hanya menerima gambar."]};
+  const shareLanguage=()=>{const raw=window.PotatoesI18n?.language||localStorage.getItem('10potatoes_language')||navigator.language||'en';const code=String(raw).replace('_','-').toLowerCase();return code.startsWith('zh')?'zh-CN':(shareTranslations[code.split('-')[0]]?code.split('-')[0]:'en');};
+  const tr=(i)=>shareTranslations[shareLanguage()][i];
+  const levelName=mode=>mode===14?'Overall':tr(6)+' '+String(MODES.indexOf(mode)+1).padStart(2,'0');
+  function potatoLogo(g,h){
+    g.save();g.textAlign='center';g.shadowColor='#140905';g.shadowBlur=10;g.shadowOffsetY=8;
+    g.fillStyle='#ffdf9b';g.strokeStyle='#8e512b';g.lineWidth=7;
+    g.font='900 92px system-ui';g.strokeText('10 POTATOES',540,h*.105,950);g.fillText('10 POTATOES',540,h*.105,950);
+    g.shadowBlur=0;g.shadowOffsetY=0;g.font='bold 38px system-ui';g.fillStyle='#ffc456';g.fillText(tr(4),540,h*.145,970);g.restore();
+  }
   const defaults = {challenges:true,digest:true,digest_time:'19:00',show_name:true,analytics:false};
   let prefs={...defaults,...read('preferences',{})}, bridge, active=null, ticket=null, last=null, generation=0, authFlight=null, submitting=null;
   let startPending=false, shareUrl=null, profileReady=false, pendingCode=null, rankingTarget=null;
@@ -167,35 +177,31 @@
     finally{send.disabled=!rankingTarget||!config.enabled;}
   }
   async function card(result,shape,achievement){
-    const c=document.createElement('canvas');c.width=1080;c.height=shape==='portrait'?1920:1080;const g=c.getContext('2d'),h=c.height;
-    g.fillStyle='#351b12';g.fillRect(0,0,1080,h);
-    // Fine matte skin grain; deterministic and independent of gameplay RNG.
-    g.fillStyle='#d3a15a';g.globalAlpha=.13;
-    for(let i=0;i<650;i++){g.beginPath();g.ellipse((i*173)%1080,(i*241)%h,i%7===0?2:1,i%7===0?1.2:.7,0,0,Math.PI*2);g.fill();}g.globalAlpha=1;
-    g.textAlign='center';
-    // Reuse the supplied brand board, cropping only the logo's source rectangle.
-    // The same-origin JPEG keeps exported share cards origin-clean.
-    try{const logo=new Image();logo.src='./assets/brand/10potatoes-board.jpeg?v=0.22.5';await logo.decode();g.drawImage(logo,0,0,1536,375,60,h*.035,960,960*375/1536);}catch{
-      g.fillStyle='#fff0d0';g.font='bold 62px system-ui';g.fillText(config.brand.toUpperCase(),540,h*.18,920);
-    }
-    g.fillStyle='#e5d7b6';g.font='36px system-ui';g.fillText(label(result.mode).toUpperCase(),540,h*.34,920);
-    g.fillStyle='#fff0d0';g.font='bold 128px system-ui';g.fillText(seconds(result.ms),540,h*.49,950);
-    g.font='32px system-ui';if(prefs.show_name)g.fillText(bridge.profile().nickname,540,h*.58,900);
-    if(achievement){g.fillStyle='#efc47a';g.fillText(achievement,540,h*.66,920);}
-    else if(result.server?.rank){g.fillStyle='#efc47a';g.fillText('N° '+result.server.rank+' / '+result.server.total+' · mondiale',540,h*.66,920);}
-    if(!achievement&&(!result.previous||result.ms<result.previous)){g.fillStyle='#ffcf79';g.font='bold 28px system-ui';g.fillText('NUOVO RECORD PERSONALE',540,h*.72,920);}
-    g.fillStyle='#fff0d0';g.font='bold 46px system-ui';g.fillText('10 patate. Riesci a battermi?',540,h*.79,940);
-    g.fillStyle='#d9b98e';g.font='26px system-ui';const publicLink=new URL(config.publicUrl);g.fillText(publicLink.host+publicLink.pathname,540,h*.91,920);
+    const c=document.createElement('canvas');c.width=1080;c.height=shape==='portrait'?1920:1080;
+    const g=c.getContext('2d'),h=c.height;
+    const bg=g.createLinearGradient(0,0,1080,h);bg.addColorStop(0,'#4d2819');bg.addColorStop(1,'#2b160e');g.fillStyle=bg;g.fillRect(0,0,1080,h);
+    // Reproducible potato skin freckles.
+    for(let i=0;i<1200;i++){const x=(i*173+37)%1080,y=(i*241+91)%h;g.fillStyle=i%3?'#a16d3a':'#e7b66d';g.globalAlpha=.10+(i%5)*.016;g.beginPath();g.ellipse(x,y,1+(i%7),1+(i%3),i*.23,0,Math.PI*2);g.fill();}g.globalAlpha=1;
+    potatoLogo(g,h);
+    g.textAlign='center';g.fillStyle='#fce6b5';g.font='bold 54px system-ui';g.fillText(levelName(result.mode).toUpperCase(),540,h*.31,960);
+    g.font='900 154px system-ui';g.fillText(seconds(result.ms),540,h*.46,1000);
+    g.font='bold 48px system-ui';if(prefs.show_name)g.fillText(bridge.profile().nickname,540,h*.54,950);
+    g.font='bold 40px system-ui';g.fillStyle='#f5c56c';
+    if(achievement)g.fillText(achievement,540,h*.62,980);
+    else if(result.server?.rank)g.fillText('N° '+result.server.rank+' / '+result.server.total+' · '+tr(7),540,h*.62,960);
+    if(!achievement&&(!result.previous||result.ms<result.previous)){g.font='bold 36px system-ui';g.fillText(tr(8).toUpperCase(),540,h*.70,950);}
+    g.fillStyle='#fff0d0';g.font='bold 52px system-ui';g.fillText(tr(5),540,h*.80,970);
+    g.fillStyle='#e4b77b';g.font='32px system-ui';const publicLink=new URL(config.publicUrl);g.fillText(publicLink.host+publicLink.pathname,540,h*.91,970);
     return new Promise(resolve=>c.toBlob(resolve,'image/png'));
   }
   async function shareResult(achievement,provided){
     const result=provided||last;if(!result?.won)return;
     event(achievement?'achievement_share_clicked':'share_clicked',{level:result.mode});
-    const d=dialog(achievement||'Condividi risultato'),select=node('select');
+    const d=dialog(achievement||tr(0)),select=node('select');
     for(const [v,t] of [['portrait','Verticale · 1080 × 1920'],['square','Quadrato · 1080 × 1080']]){const o=node('option',t);o.value=v;select.append(o);}
     select.setAttribute('aria-label','Formato immagine');const preview=node('img');preview.alt='Anteprima del risultato';
-    const note=node('p','Il link viene condiviso come testo separato: alcune app accettano solo l’immagine. Puoi copiarlo qui.','social-note');
-    let file=null,version=0;const send=button('Condividi immagine',async()=>{
+    const note=node('p',tr(9),'social-note');
+    let file=null,version=0;const send=button(tr(1),async()=>{
       if(!file)return;
       send.disabled=true;
       try{
@@ -203,9 +209,9 @@
         else {const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata. Condividila dall’app che preferisci.');}
       }catch(e){if(e.name!=='AbortError')toast('Condivisione non riuscita. Usa Scarica immagine.');}finally{send.disabled=false;}
     });
-    const download=button('Scarica immagine',()=>{if(file){const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata.');}});
+    const download=button(tr(2),()=>{if(file){const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata.');}});
     const build=async()=>{const id=++version;send.disabled=true;download.disabled=true;try{const blob=await card(result,select.value,achievement);if(id!==version||!d.isConnected)return;if(!blob)throw Error('Impossibile generare l’immagine.');if(shareUrl)URL.revokeObjectURL(shareUrl);shareUrl=URL.createObjectURL(blob);file=new File([blob],'10Potatoes-'+select.value+'.png',{type:'image/png'});preview.src=shareUrl;send.disabled=false;download.disabled=false;}catch(e){note.textContent=errorText(e);}};
-    select.onchange=build;d.append(select,preview,send,download,note,button('Copia link del gioco',async()=>{try{await navigator.clipboard.writeText(config.publicUrl);toast('Link copiato.');}catch{const a=node('textarea');a.value=config.publicUrl;d.append(a);a.select();}}));
+    select.onchange=build;d.append(select,preview,send,download,note,button(tr(3),async()=>{try{await navigator.clipboard.writeText(config.publicUrl);toast('Link copiato.');}catch{const a=node('textarea');a.value=config.publicUrl;d.append(a);a.select();}}));
     d.addEventListener('close',()=>{version++;if(shareUrl){const finishedUrl=shareUrl;shareUrl=null;setTimeout(()=>URL.revokeObjectURL(finishedUrl),1000);}});build();
   }
   function renderRematch(){const b=document.getElementById('social-rematch');b.hidden=!last?.challenge;}
