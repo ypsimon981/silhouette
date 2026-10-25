@@ -56,3 +56,17 @@
 @keyframes potatoPfft{from{scale:1 1}to{scale:1.08 .94}}
 @keyframes potatoTongueFlutter{from{rotate:-7deg}to{rotate:7deg}}
 @media(prefers-reduced-motion:reduce){#app #board.complete .piece.done[data-peer-mood=raspberry] .potatoMouth,#app #board.complete .piece.done[data-peer-mood=raspberry] .potatoTongue{animation:none!important}}
+
+/* The blush and green pallor affect peel only, preserving faces and ground shadows. */
+#app #board.complete .piece[data-prank] .front-face{transition:filter .65s ease}
+#app #board.complete .piece[data-prank=blush] .front-face{filter:sepia(.25) saturate(3) hue-rotate(-40deg)!important}
+#app #board.complete .piece[data-prank=hold] .front-face{filter:sepia(.35) saturate(1.8) hue-rotate(55deg)!important}
+#app #board.complete .piece[data-prank] .potatoEyes{animation:none!important}
+#app #board.complete .piece[data-prank=hold] .potatoMouth{scale:1 1}
+#app #board.complete .piece[data-prank=laugh] .potatoMouth{animation:peerLaugh .2s ease-in-out infinite alternate}
+#app #board.complete .piece[data-prank] .potatoPupils{translate:var(--peer-x,0px) var(--peer-y,0px)!important;animation:none!important}
+#app #board.complete .piece[data-prank=blush]::after{content:"";position:absolute;right:-4%;bottom:8%;width:40%;height:25%;pointer-events:none;border-radius:50%;background:radial-gradient(ellipse,#a0b96866,transparent 70%);opacity:0;animation:potatoPuff 1.3s .8s ease-out both}
+#app #board.complete .piece[data-prank=whistle]::after{content:"♪";position:absolute;right:5%;top:14%;font-size:clamp(16px,4vw,24px);color:#fff0bf;text-shadow:0 1px 2px #54361c;pointer-events:none;animation:potatoWhistleNote 1.1s ease-out 2}
+@keyframes potatoPuff{0%{opacity:0;transform:scale(.4)}30%{opacity:.8}100%{opacity:0;transform:translate(18px,-14px) scale(1.6)}}
+@keyframes potatoWhistleNote{0%{opacity:0;transform:translate(0,0)}25%{opacity:1}100%{opacity:0;transform:translate(10px,-20px)}}
+@media(prefers-reduced-motion:reduce){#app #board.complete .piece[data-prank] .potatoMouth,#app #board.complete .piece[data-prank]::after{animation:none!important}}
