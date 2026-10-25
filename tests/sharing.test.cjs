@@ -4,8 +4,10 @@ const flush=()=>new Promise(r=>setTimeout(r,15));
 function fixture(){
  const dom=new JSDOM(fs.readFileSync('index.html','utf8'),{url:'https://ypsimon981.github.io/silhouette/',runScripts:'outside-only'}),w=dom.window;
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new w.Event('close'));};
+ w.localStorage.setItem('10potatoes_language','it');
  w.localStorage.setItem('10shapes_social_session',JSON.stringify({access_token:'TEST_ONLY',expires_at:9999999999,user:{id:'00000000-0000-4000-8000-000000000001'}}));
  const requests=[];w.fetch=async(url,opts)=>{const b=JSON.parse(opts.body);requests.push(b);return {ok:true,json:async()=>b.action==='profile'?{preferences:{}}:b.action==='challenge_best'?{code:'a'.repeat(32),level:1,time_ms:6953}:{}};};
+ w.Image=class {set src(value){queueMicrotask(()=>this.onerror?.());}};
  w.URL.createObjectURL=()=> 'blob:TEST_ONLY';w.URL.revokeObjectURL=()=>{};
  w.HTMLCanvasElement.prototype.getContext=()=>new Proxy({createLinearGradient:()=>({addColorStop(){}})},{get:(t,k)=>t[k]||(()=>{})});
  w.HTMLCanvasElement.prototype.toBlob=function(fn){fn(new w.Blob(['fixture'],{type:'image/png'}));};

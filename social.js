@@ -12,11 +12,21 @@
   const shareLanguage=()=>{const raw=window.PotatoesI18n?.language||localStorage.getItem('10potatoes_language')||navigator.language||'en';const code=String(raw).replace('_','-').toLowerCase();return code.startsWith('zh')?'zh-CN':(shareTranslations[code.split('-')[0]]?code.split('-')[0]:'en');};
   const tr=(i)=>shareTranslations[shareLanguage()][i];
   const levelName=mode=>mode===14?'Overall':tr(6)+' '+String(MODES.indexOf(mode)+1).padStart(2,'0');
-  function potatoLogo(g,h){
-    g.save();g.textAlign='center';g.shadowColor='#140905';g.shadowBlur=10;g.shadowOffsetY=8;
-    g.fillStyle='#ffdf9b';g.strokeStyle='#8e512b';g.lineWidth=7;
-    g.font='900 92px system-ui';g.strokeText('10 POTATOES',540,h*.105,950);g.fillText('10 POTATOES',540,h*.105,950);
-    g.shadowBlur=0;g.shadowOffsetY=0;g.font='bold 38px system-ui';g.fillStyle='#ffc456';g.fillText(tr(4),540,h*.145,970);g.restore();
+  const logoWords={it:'POTATOES',en:'POTATOES',es:'PATATAS',fr:'PATATES',de:'KARTOFFELN',pt:'BATATAS',ja:'ポテト',ko:'감자','zh-CN':'土豆',id:'KENTANG'};
+  const extraShare={it:['Chiudi','Formato immagine','Verticale','Quadrato','Anteprima del risultato'],en:['Close','Image format','Portrait','Square','Result preview'],es:['Cerrar','Formato de imagen','Vertical','Cuadrado','Vista previa del resultado'],fr:['Fermer','Format de l’image','Portrait','Carré','Aperçu du résultat'],de:['Schließen','Bildformat','Hochformat','Quadratisch','Ergebnisvorschau'],pt:['Fechar','Formato da imagem','Vertical','Quadrado','Pré-visualização do resultado'],ja:['閉じる','画像形式','縦長','正方形','結果のプレビュー'],ko:['닫기','이미지 형식','세로','정사각형','결과 미리보기'],'zh-CN':['关闭','图片格式','竖版','方形','成绩预览'],id:['Tutup','Format gambar','Potret','Persegi','Pratinjau hasil']};
+  const tx=i=>extraShare[shareLanguage()][i];
+  const artCache=new Map();
+  function shareArt(path){
+    if(!artCache.has(path))artCache.set(path,new Promise(resolve=>{
+      const img=new Image();const timer=setTimeout(()=>resolve(null),4000);
+      img.onload=()=>{clearTimeout(timer);resolve(img);};img.onerror=()=>{clearTimeout(timer);artCache.delete(path);resolve(null);};img.src=path;
+    }));return artCache.get(path);
+  }
+  function potatoLogo(g,h,logo){
+    g.save();g.textAlign='center';g.shadowColor='#180800';g.shadowBlur=5;g.shadowOffsetY=7;
+    if(logo&&['it','en'].includes(shareLanguage()))g.drawImage(logo,540-h*.27,h*.028,h*.54,h*.18);
+    else {g.fillStyle='#ffe6ad';g.strokeStyle='#8a4b20';g.lineWidth=5;g.font='900 105px system-ui';const name='10 '+logoWords[shareLanguage()];g.strokeText(name,540,h*.16,930);g.fillText(name,540,h*.16,930);}
+    g.restore();
   }
   const defaults = {challenges:true,digest:true,digest_time:'19:00',show_name:true,analytics:false};
   let prefs={...defaults,...read('preferences',{})}, bridge, active=null, ticket=null, last=null, generation=0, authFlight=null, submitting=null;
@@ -177,41 +187,43 @@
     finally{send.disabled=!rankingTarget||!config.enabled;}
   }
   async function card(result,shape,achievement){
-    const c=document.createElement('canvas');c.width=1080;c.height=shape==='portrait'?1920:1080;
+    const c=document.createElement('canvas');c.width=1080;c.height=shape==='portrait'?1350:1080;
     const g=c.getContext('2d'),h=c.height;
-    const bg=g.createLinearGradient(0,0,1080,h);bg.addColorStop(0,'#4d2819');bg.addColorStop(1,'#2b160e');g.fillStyle=bg;g.fillRect(0,0,1080,h);
-    // Reproducible potato skin freckles.
-    for(let i=0;i<1200;i++){const x=(i*173+37)%1080,y=(i*241+91)%h;g.fillStyle=i%3?'#a16d3a':'#e7b66d';g.globalAlpha=.10+(i%5)*.016;g.beginPath();g.ellipse(x,y,1+(i%7),1+(i%3),i*.23,0,Math.PI*2);g.fill();}g.globalAlpha=1;
-    potatoLogo(g,h);
-    g.textAlign='center';g.fillStyle='#fce6b5';g.font='bold 54px system-ui';g.fillText(levelName(result.mode).toUpperCase(),540,h*.31,960);
-    g.font='900 154px system-ui';g.fillText(seconds(result.ms),540,h*.46,1000);
-    g.font='bold 48px system-ui';if(prefs.show_name)g.fillText(bridge.profile().nickname,540,h*.54,950);
-    g.font='bold 40px system-ui';g.fillStyle='#f5c56c';
-    if(achievement)g.fillText(achievement,540,h*.62,980);
-    else if(result.server?.rank)g.fillText('N° '+result.server.rank+' / '+result.server.total+' · '+tr(7),540,h*.62,960);
-    if(!achievement&&(!result.previous||result.ms<result.previous)){g.font='bold 36px system-ui';g.fillText(tr(8).toUpperCase(),540,h*.70,950);}
-    g.fillStyle='#fff0d0';g.font='bold 52px system-ui';g.fillText(tr(5),540,h*.80,970);
-    g.fillStyle='#e4b77b';g.font='32px system-ui';const publicLink=new URL(config.publicUrl);g.fillText(publicLink.host+publicLink.pathname,540,h*.91,970);
-    return new Promise(resolve=>c.toBlob(resolve,'image/png'));
+    const [art,logo]=await Promise.all([shareArt('./assets/brand/share-celebration.webp'),shareArt('./assets/brand/10potatoes-logo-transparent.png')]);
+    const bg=g.createLinearGradient(0,0,1080,h);bg.addColorStop(0,'#572c18');bg.addColorStop(1,'#301308');g.fillStyle=bg;g.fillRect(0,0,1080,h);
+    if(art)g.drawImage(art,0,0,1080,h);
+    potatoLogo(g,h,logo);
+    g.textAlign='center';g.fillStyle='#ffedc4';g.shadowColor='#160800';g.shadowBlur=4;g.shadowOffsetY=5;
+    g.font='900 49px system-ui';g.fillText(levelName(result.mode).toUpperCase(),540,h*.335,940);
+    g.font='900 168px system-ui';g.fillText((Math.round(result.ms/10)/100).toLocaleString(shareLanguage(),{minimumFractionDigits:2,maximumFractionDigits:2})+' s',540,h*.49,940);
+    g.font='bold 49px system-ui';if(prefs.show_name)g.fillText(bridge.profile().nickname,540,h*.55,930);
+    g.font='bold 40px system-ui';g.fillStyle='#ffc656';
+    if(achievement)g.fillText(achievement,540,h*.605,930);
+    else if(result.server?.rank)g.fillText('🌐 N° '+result.server.rank+'/'+result.server.total+' · '+tr(7),540,h*.605,930);
+    else if(!result.previous||result.ms<result.previous){g.font='bold 36px system-ui';g.fillText(tr(8),540,h*.605,930);}
+    g.shadowBlur=0;g.shadowOffsetY=0;
+    return new Promise((resolve,reject)=>c.toBlob(blob=>blob?resolve(blob):reject(Error('Impossibile generare l’immagine.')),'image/png'));
   }
   async function shareResult(achievement,provided){
     const result=provided||last;if(!result?.won)return;
     event(achievement?'achievement_share_clicked':'share_clicked',{level:result.mode});
     const d=dialog(achievement||tr(0)),select=node('select');
-    for(const [v,t] of [['portrait','Verticale · 1080 × 1920'],['square','Quadrato · 1080 × 1080']]){const o=node('option',t);o.value=v;select.append(o);}
-    select.setAttribute('aria-label','Formato immagine');const preview=node('img');preview.alt='Anteprima del risultato';
+    d.classList.add('potato-share');d.firstChild.setAttribute('aria-label',tx(0));
+    for(const [v,t] of [['portrait',tx(2)+' · 1080 × 1350'],['square',tx(3)+' · 1080 × 1080']]){const o=node('option',t);o.value=v;select.append(o);}
+    select.setAttribute('aria-label',tx(1));const preview=node('img');preview.alt=tx(4);
     const note=node('p',tr(9),'social-note');
     let file=null,version=0;const send=button(tr(1),async()=>{
       if(!file)return;
       send.disabled=true;
       try{
-        if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:config.brand,text:label(result.mode)+' · '+seconds(result.ms)+'\n'+config.publicUrl});event(achievement?'achievement_shared':'share_handoff',{level:result.mode});d.close();toast('Condivisione completata.');}
+        if(navigator.canShare?.({files:[file]})){await navigator.share({files:[file],title:config.brand,text:levelName(result.mode)+' · '+seconds(result.ms)+'\n'+config.publicUrl});event(achievement?'achievement_shared':'share_handoff',{level:result.mode});d.close();toast('Condivisione completata.');}
         else {const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata. Condividila dall’app che preferisci.');}
       }catch(e){if(e.name!=='AbortError')toast('Condivisione non riuscita. Usa Scarica immagine.');}finally{send.disabled=false;}
     });
     const download=button(tr(2),()=>{if(file){const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata.');}});
     const build=async()=>{const id=++version;send.disabled=true;download.disabled=true;try{const blob=await card(result,select.value,achievement);if(id!==version||!d.isConnected)return;if(!blob)throw Error('Impossibile generare l’immagine.');if(shareUrl)URL.revokeObjectURL(shareUrl);shareUrl=URL.createObjectURL(blob);file=new File([blob],'10Potatoes-'+select.value+'.png',{type:'image/png'});preview.src=shareUrl;send.disabled=false;download.disabled=false;}catch(e){note.textContent=errorText(e);}};
-    select.onchange=build;d.append(select,preview,send,download,note,button(tr(3),async()=>{try{await navigator.clipboard.writeText(config.publicUrl);toast('Link copiato.');}catch{const a=node('textarea');a.value=config.publicUrl;d.append(a);a.select();}}));
+    const actions=node('div',undefined,'potato-share-actions');send.className='potato-share-send';download.className='potato-share-download';actions.append(send,download);
+    select.onchange=build;d.append(preview,select,actions,note,button(tr(3),async()=>{try{await navigator.clipboard.writeText(config.publicUrl);toast('Link copiato.');}catch{const a=node('textarea');a.value=config.publicUrl;d.append(a);a.select();}}));
     d.addEventListener('close',()=>{version++;if(shareUrl){const finishedUrl=shareUrl;shareUrl=null;setTimeout(()=>URL.revokeObjectURL(finishedUrl),1000);}});build();
   }
   function renderRematch(){const b=document.getElementById('social-rematch');b.hidden=!last?.challenge;}
