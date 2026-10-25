@@ -169,11 +169,12 @@
   }
   function ranking(mode,score,state='ready'){
     const area=document.getElementById('social-ranking-challenge'),note=document.getElementById('social-ranking-record'),send=document.getElementById('social-ranking-send');
+    const share=document.getElementById('social-ranking-share');share.textContent=tr(0);share.disabled=true;
     rankingTarget=null;send.disabled=true;area.hidden=!MODES.includes(mode);
     if(area.hidden)return;
     if(state==='loading'){note.textContent='Caricamento del tuo record…';return;}
     if(!score){note.textContent=state==='error'?'Record online temporaneamente non disponibile.':'Completa una partita online per sfidare un amico con il tuo record in questo livello.';return;}
-    rankingTarget={mode,time_ms:score.time_ms};
+    rankingTarget={mode,time_ms:score.time_ms};share.disabled=false;
     note.textContent=(mode===14?'Overall':'Liv. '+(MODES.indexOf(mode)+1))+' · Il tuo record: '+seconds(score.time_ms);
     send.textContent='Sfida un amico';send.disabled=!config.enabled;
   }
@@ -185,6 +186,27 @@
       await shareText('Il mio record · '+label(c.level)+': '+seconds(c.time_ms)+'. Riesci a battermi?',link(c.code),'share_handoff',c.code);
     }catch(e){toast(errorText(e));}
     finally{send.disabled=!rankingTarget||!config.enabled;}
+  }
+  async function globalShareRank(result){
+    if(!config.enabled)return null;
+    const id=read('session',null)?.user?.id||localStorage.getItem('10shapes_player_id');if(!id)return null;
+    try{
+      const params=new URLSearchParams({level:String(result.mode),scope:'world',player_id:id,country:bridge.profile().country||'IT'});
+      const response=await fetch(config.supabaseUrl+'/functions/v1/ten-shapes-ranking?'+params,{signal:AbortSignal.timeout(4000)});
+      if(!response.ok)return null;const data=await response.json();
+      return Number.isInteger(Number(data.my_rank))&&Number(data.my_rank)>0?{rank:Number(data.my_rank),total:Number(data.total)}:null;
+    }catch{return null;}
+  }
+  function rankPlaque(g,h,rank){
+    const x=365,y=h*.818,w=350,height=h*.108;
+    g.save();g.shadowColor='#3a1709';g.shadowBlur=8;g.shadowOffsetY=5;
+    const skin=g.createLinearGradient(x,y,x,y+height);skin.addColorStop(0,'#ffe2a0');skin.addColorStop(1,'#d69944');
+    g.fillStyle=skin;g.beginPath();g.roundRect(x,y,w,height,25);g.fill();
+    g.shadowBlur=0;g.shadowOffsetY=0;g.strokeStyle='#b6752c';g.lineWidth=3;g.stroke();
+    for(let i=0;i<75;i++){g.fillStyle=i%2?'#af722c55':'#fff0bb80';g.beginPath();g.ellipse(x+12+(i*73)%(w-24),y+8+(i*41)%(height-16),1+i%3,1+i%2,i,0,Math.PI*2);g.fill();}
+    const text=rank?'#'+rank:'—';g.textAlign='center';g.font='900 76px system-ui';
+    g.fillStyle='#ffe6ac';g.fillText(text,541,y+height*.74+2,w-28);
+    g.fillStyle='#693109';g.shadowColor='#8b521e';g.shadowBlur=2;g.shadowOffsetY=-2;g.fillText(text,540,y+height*.74,w-28);g.restore();
   }
   async function card(result,shape,achievement){
     const c=document.createElement('canvas');c.width=1080;c.height=shape==='portrait'?1350:1080;
@@ -199,13 +221,14 @@
     g.font='bold 49px system-ui';if(prefs.show_name)g.fillText(bridge.profile().nickname,540,h*.55,930);
     g.font='bold 40px system-ui';g.fillStyle='#ffc656';
     if(achievement)g.fillText(achievement,540,h*.605,930);
-    else if(result.server?.rank)g.fillText('🌐 N° '+result.server.rank+'/'+result.server.total+' · '+tr(7),540,h*.605,930);
+    else if(result.globalRank?.rank)g.fillText('🌐 N° '+result.globalRank.rank+'/'+result.globalRank.total+' · '+tr(7),540,h*.605,930);
     else if(!result.previous||result.ms<result.previous){g.font='bold 36px system-ui';g.fillText(tr(8),540,h*.605,930);}
-    g.shadowBlur=0;g.shadowOffsetY=0;
+    g.shadowBlur=0;g.shadowOffsetY=0;rankPlaque(g,h,result.globalRank?.rank);
     return new Promise((resolve,reject)=>c.toBlob(blob=>blob?resolve(blob):reject(Error('Impossibile generare l’immagine.')),'image/png'));
   }
   async function shareResult(achievement,provided){
-    const result=provided||last;if(!result?.won)return;
+    const original=provided||last;if(!original?.won)return;const result={...original};
+    const rankReady=globalShareRank(result).then(rank=>{result.globalRank=rank;});
     event(achievement?'achievement_share_clicked':'share_clicked',{level:result.mode});
     const d=dialog(achievement||tr(0)),select=node('select');
     d.classList.add('potato-share');d.firstChild.setAttribute('aria-label',tx(0));
@@ -221,7 +244,7 @@
       }catch(e){if(e.name!=='AbortError')toast('Condivisione non riuscita. Usa Scarica immagine.');}finally{send.disabled=false;}
     });
     const download=button(tr(2),()=>{if(file){const a=node('a');a.href=shareUrl;a.download=file.name;a.click();d.close();toast('Immagine scaricata.');}});
-    const build=async()=>{const id=++version;send.disabled=true;download.disabled=true;try{const blob=await card(result,select.value,achievement);if(id!==version||!d.isConnected)return;if(!blob)throw Error('Impossibile generare l’immagine.');if(shareUrl)URL.revokeObjectURL(shareUrl);shareUrl=URL.createObjectURL(blob);file=new File([blob],'10Potatoes-'+select.value+'.png',{type:'image/png'});preview.src=shareUrl;send.disabled=false;download.disabled=false;}catch(e){note.textContent=errorText(e);}};
+    const build=async()=>{const id=++version;send.disabled=true;download.disabled=true;try{await rankReady;const blob=await card(result,select.value,achievement);if(id!==version||!d.isConnected)return;if(!blob)throw Error('Impossibile generare l’immagine.');if(shareUrl)URL.revokeObjectURL(shareUrl);shareUrl=URL.createObjectURL(blob);file=new File([blob],'10Potatoes-'+select.value+'.png',{type:'image/png'});preview.src=shareUrl;send.disabled=false;download.disabled=false;}catch(e){note.textContent=errorText(e);}};
     const actions=node('div',undefined,'potato-share-actions');send.className='potato-share-send';download.className='potato-share-download';actions.append(send,download);
     select.onchange=build;d.append(preview,select,actions,note,button(tr(3),async()=>{try{await navigator.clipboard.writeText(config.publicUrl);toast('Link copiato.');}catch{const a=node('textarea');a.value=config.publicUrl;d.append(a);a.select();}}));
     d.addEventListener('close',()=>{version++;if(shareUrl){const finishedUrl=shareUrl;shareUrl=null;setTimeout(()=>URL.revokeObjectURL(finishedUrl),1000);}});build();
@@ -264,7 +287,9 @@
     const area=node('section');area.id='social-history';area.textContent='Confronto delle classifiche nelle ultime 24 ore.';document.getElementById('progressStats').before(area,button('Aggiorna confronto',history));
     const rankArea=node('section');rankArea.id='social-ranking-challenge';rankArea.hidden=true;
     const recordNote=node('p');recordNote.id='social-ranking-record';const rankSend=button('Sfida un amico',challengeFromRanking);rankSend.id='social-ranking-send';rankSend.disabled=true;
-    rankArea.append(recordNote,rankSend);document.getElementById('rankSpotlight').after(rankArea);
+    const rankShare=button(tr(0),()=>{if(!rankingTarget)return;const target={...rankingTarget};shareResult(null,{won:true,mode:target.mode,ms:target.time_ms,previous:target.time_ms});});rankShare.id='social-ranking-share';rankShare.disabled=true;
+    const rankActions=node('div',undefined,'social-ranking-actions');rankActions.append(rankShare,rankSend);
+    rankArea.append(recordNote,rankActions);document.getElementById('rankSpotlight').after(rankArea);
     window.addEventListener('hashchange',()=>{const c=getCode();if(bridge.playing()){pendingCode=c;toast(c?'Il link verrà aperto dopo la partita.':'Link della sfida non valido.');return;}if(c)openChallenge(c);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');});
     const c=getCode();if(c)setTimeout(()=>openChallenge(c),0);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');
     return {begin,requiresOnlineStart:()=>!!active,finish,leave,resetAttempt,score,profile,history,ranking,openPending:()=>{const c=getCode();if(c)openChallenge(c);}};
