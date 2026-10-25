@@ -312,3 +312,21 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
 #app.game-toolbar header .gameLevelInfo{grid-column:3;grid-row:1}
 #app:not(.game-toolbar) header #clock{display:none}
 @media(max-width:360px){#app.game-toolbar header>div:nth-child(3){column-gap:5px}#app.game-toolbar #levelTitle{font-size:17px}}
+
+/* Compact leaderboard controls; keep the record above a full-width action row. */
+#app #ranking{gap:5px;padding:8px 12px}
+#app #ranking .rankingTop{min-height:34px;gap:6px}
+#app #ranking .rankingTop h2{font-size:clamp(18px,4.7vw,24px);line-height:1.15}
+#app #ranking #closeRanking{min-height:34px;height:34px;width:34px}
+#app #ranking .sectionSwitch{gap:6px;margin:0}
+#app #ranking .sectionSwitch button{min-height:34px;padding:6px 4px;line-height:1.15;border-width:1px!important}
+#app #ranking .rankCarouselShell{gap:5px;margin:0}
+#app #ranking #rankTabs{padding:2px 1px;gap:6px}
+#app #ranking #rankTabs button{min-height:34px;padding:5px 10px;border-width:1px!important}
+#app #ranking .rankSlideArrow{height:34px;min-height:34px;border-width:1px!important}
+#app #ranking #rankScopes{gap:6px;margin:0}
+#app #ranking #rankScopes button{min-height:34px;padding:5px 2px;line-height:1.15;border-width:1px!important}
+#app #ranking #social-ranking-challenge:not([hidden]){display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;gap:8px;padding:10px;border:1px solid #c29a65;border-radius:11px;flex:none}
+#app #ranking #social-ranking-record{width:100%;min-width:0;max-width:none;margin:0;font-size:14px;line-height:1.25;text-align:center;white-space:normal}
+#app #ranking .social-ranking-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;min-width:0}
+#app #ranking .social-ranking-actions button{width:100%;max-width:none;min-width:0;min-height:44px;margin:0;padding:7px 8px;font-size:13px;line-height:1.2;white-space:normal;word-break:normal;overflow-wrap:normal;flex:initial;border-width:1px!important}
