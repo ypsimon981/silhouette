@@ -1,0 +1,27 @@
+/* Animate facial parts only. Piece position, silhouette and peel are never transformed. */
+#app #board .piece.done[data-peer-seed] .potatoEyes{transform-box:fill-box;transform-origin:center;animation:peerBlink var(--peer-blink,6s) var(--peer-delay,0s) infinite}
+#app #board .piece.done[data-peer-busy] .potatoPupils{translate:var(--peer-x,0px) var(--peer-y,0px)!important;transition:translate .24s ease}
+#app #board .piece.done[data-peer-busy] .potatoBrows,#app #board .piece.done[data-peer-busy] .potatoMouth{transform-box:fill-box;transform-origin:center;transition:scale .2s,rotate .2s,translate .2s}
+#app #board .piece.done[data-peer-mood=cheeky] .potatoBrows{rotate:-9deg;translate:0 -4px}
+#app #board .piece.done[data-peer-mood=cheeky] .potatoMouth{rotate:8deg;scale:1.12 .75}
+#app #board .piece.done[data-peer-mood=curious] .potatoBrows{rotate:8deg;translate:0 -6px}
+#app #board .piece.done[data-peer-mood=curious] .potatoMouth{scale:.8 .9}
+#app #board .piece.done[data-peer-mood=surprise] .potatoEyes{animation:none;scale:1 1.12}
+#app #board .piece.done[data-peer-mood=surprise] .potatoBrows{translate:0 -10px}
+#app #board .piece.done[data-peer-mood=surprise] .potatoMouth{scale:.65 1.35}
+#app #board .piece.done[data-peer-mood=laugh] .potatoEyes{animation:none;scale:1 .7}
+#app #board .piece.done[data-peer-mood=laugh] .potatoMouth{animation:peerLaugh .24s ease-in-out 4 alternate}
+@keyframes peerLaugh{from{scale:1.05 1.05}to{scale:1.2 1.4}}
+@keyframes peerBlink{0%,91%,96%,100%{scale:1 1}93%{scale:1 .08}}
+@media(prefers-reduced-motion:reduce){#app #board .piece.done[data-peer-seed] .potatoEyes,#app #board .piece.done[data-peer-busy] .potatoMouth{animation:none!important;transition:none!important}}
+
+#app #board.game-screen:not(.complete) .piece.done[data-peer-seed] .potatoPupils{translate:var(--peer-x,0px) var(--peer-y,0px)!important;transition:translate .14s ease-out}
+#app #board.game-screen:not(.complete) .piece.done[data-peer-seed] .potatoMouth{transform-box:fill-box;transform-origin:center;scale:var(--peer-smile-x,.7) var(--peer-smile-y,.3)!important;transition:scale .65s ease}
+#app #board.game-screen:not(.complete) .piece.done[data-peer-seed] .potatoBrows{translate:0 var(--peer-brow-y,0px);transition:translate .65s ease}
+
+/* Animate the inner SVG, preserving the seated piece's exact board coordinates. */
+#app #board .piece.done[data-seat-pop] > svg{transform-origin:50% 65%;animation:potatoSeatPop .44s cubic-bezier(.22,.7,.35,1) both}
+@keyframes potatoSeatPop{0%{scale:1 1}22%{scale:1.1 .86}48%{scale:.94 1.08}72%{scale:1.035 .97}100%{scale:1 1}}
+@media(prefers-reduced-motion:reduce){#app #board .piece.done[data-seat-pop] > svg{animation:none}}
+#app #board.game-screen .piece.done[data-peer-seed] .potatoPupils{transform:none!important}
+#app #board.game-screen .piece.done[data-peer-busy] .potatoPupils{animation:none!important}
