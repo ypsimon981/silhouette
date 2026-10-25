@@ -31,3 +31,12 @@
 #social-preferences,#social-history,#social-ranking-challenge{background:#2c4030;border-color:#7b9167}
 #social-ranking-record{color:#e2e6be}
 #social-toast{background:#334a34;border-color:#b3bf87;color:#fff0d1}
+
+/* Potato-textured sharing dialog, optimized for phone screens. */
+.social-dialog:has(img){background-color:#ffedc8;background-image:radial-gradient(ellipse 3px 2px at 18% 24%,#b37d4830 98%,transparent),radial-gradient(ellipse 2px 4px at 71% 65%,#8d5a3230 98%,transparent),radial-gradient(circle at 42% 80%,#bf8c4d25 1px,transparent 3px);background-size:93px 87px,131px 119px,47px 51px;color:#422415;border:2px solid #b57d40;width:min(460px,calc(100vw - 24px));padding:clamp(14px,4vw,24px)}
+.social-dialog:has(img) h2{font-size:clamp(25px,6vw,33px);line-height:1.1;color:#3b2016;margin:6px 0 22px}
+.social-dialog:has(img) select{font-size:clamp(16px,4vw,20px);background:#fff8e9;color:#513321;border:1px solid #b7844d;min-height:48px}
+.social-dialog:has(img) img{max-height:48dvh;border-radius:7px;object-fit:contain;background:#351b12}
+.social-dialog:has(img) button:not(.social-close){font-size:clamp(15px,3.8vw,19px);font-weight:800;background:#e3b363;color:#422415;border:2px solid #ba8545;min-height:50px;padding:11px 14px}
+.social-dialog:has(img) .social-note{font-size:clamp(14px,3.5vw,17px);color:#805338;line-height:1.5}
+.social-dialog:has(img) .social-close{background:#e3b363;color:#422415;border:2px solid #a96835;font-size:24px;min-width:44px;min-height:44px}
