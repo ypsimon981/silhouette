@@ -33,3 +33,14 @@
 
 #app #board.game-screen .piece.done[data-seat-pop] > svg.ground-shadow{transform-origin:50% 65%;animation:potatoSeatPop .44s cubic-bezier(.22,.7,.35,1) both!important}
 @media(prefers-reduced-motion:reduce){#app #board.game-screen .piece.done[data-seat-pop] > svg.ground-shadow{animation:none!important}}
+
+/* Discreet live easter eggs; the body and ground shadow stay untouched. */
+#app #board.game-screen:not(.complete) .piece.done[data-egg=complicit] .potatoBrows{rotate:-7deg;translate:0 -6px}
+#app #board.game-screen:not(.complete) .piece.done[data-egg=complicit] .potatoMouth{scale:.95 .6!important;rotate:5deg;transition:scale .18s,rotate .18s}
+#app #board.game-screen:not(.complete) .piece.done[data-egg=sleep] .potatoEyes{animation:none!important;scale:1 .08;transition:scale .55s ease}
+#app #board.game-screen:not(.complete) .piece.done[data-egg=sleep] .potatoBrows{translate:0 5px;rotate:0deg}
+#app #board.game-screen:not(.complete) .piece.done[data-egg=sleep] .potatoMouth{scale:.55 .18!important}
+#app #board.game-screen:not(.complete) .piece.done[data-egg=wake] .potatoEyes{animation:none!important;scale:1 1.13;transition:scale .15s ease-out}
+#app #board.game-screen[data-last-piece] .piece.done .potatoEyes{animation:none!important;scale:1 1.07;transition:scale .3s}
+#app #board.game-screen[data-last-piece] .piece.done .potatoBrows{translate:0 -8px}
+@media(prefers-reduced-motion:reduce){#app #board .piece.done[data-egg] .potatoEyes,#app #board .piece.done[data-egg] .potatoMouth{transition:none!important}}
