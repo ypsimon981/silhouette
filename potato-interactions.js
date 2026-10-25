@@ -59,7 +59,7 @@
    const choices=seated().filter(p=>!p.dataset.egg);if(!choices.length)return;
    sleeper=choices[pick(choices.length)];sleeper.dataset.egg='sleep';napUsed=true;
    liveLater(()=>wake(),3800);
-  },10000+pick(8000));
+  },1800+pick(2200));
  }
  function complicitGlance(){
   const all=seated();if(!live()||dragging||reduced.matches||all.length<2||performance.now()<errorCooldown||all.length===9)return;
@@ -70,6 +70,25 @@
   function glance(p,friend){if(!live()||dragging||!p.isConnected||!friend.isConnected)return;p.dataset.egg='complicit';p.dataset.peerBusy='true';aim(p,friend)}
   glance(a,b);liveLater(()=>glance(b,a),180);
   liveLater(()=>{[a,b].forEach(clearEgg);requestGaze()},1050);
+ }
+
+
+ const mouthShapes={
+  neutral:'M215 300 Q250 297 285 300 L285 307 Q250 304 215 307Z',
+  smallSmile:'M214 295 Q250 313 286 295 Q281 324 250 326 Q220 324 214 295Z',
+  smile:'M212 294 C218 286 226 302 248 302 C270 302 280 285 288 284 C302 282 290 322 263 329 C237 336 209 317 208 301 Q208 296 212 294Z',
+  cheeky:'M212 303 Q244 312 286 288 Q291 311 267 322 Q234 333 212 303Z',
+  surprise:'M250 283 C277 283 277 329 250 329 C223 329 223 283 250 283Z',
+  sleep:'M247 300 C257 300 259 314 250 317 C239 317 236 301 247 300Z',
+  laugh:'M209 288 Q250 312 292 285 Q293 337 251 341 Q210 338 209 288Z'
+ };
+ function expression(p,count,complete){
+  const egg=p.dataset.egg,mood=p.dataset.peerMood;
+  const key=egg==='sleep'?'sleep':egg==='wake'?'surprise':egg==='complicit'?'cheeky':mood==='surprise'?'surprise':mood==='laugh'?'laugh':mood==='cheeky'?'cheeky':mood==='curious'?'smallSmile':complete||count>=7?'smile':count>=4?'smallSmile':'neutral';
+  if(p.dataset.faceExpression===key)return;
+  const mouth=p.querySelector('.potatoMouth'),path=mouth?.querySelector('path');if(!path)return;
+  path.setAttribute('d',mouthShapes[key]);const rim=mouth.querySelectorAll('path')[1];if(rim)rim.style.opacity=key==='smile'?'.75':'0';
+  p.dataset.faceExpression=key;
  }
 
  function sync(){
@@ -87,10 +106,11 @@
    if(oops&&!wasOops)complicitGlance();
    planNap();
   }else clearLive();
+  all.forEach(p=>expression(p,all.length,complete));
   lastCount=all.length;wasOops=oops;
   if(!complete||all.length<2||document.hidden){clearTimeout(loop);running=false;requestGaze();return}if(!running)schedule()
  }
- new MutationObserver(sync).observe(board,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+ new MutationObserver(sync).observe(board,{childList:true,subtree:true,attributes:true,attributeFilter:['class','data-egg','data-peer-mood']});
  board.addEventListener('pointermove',requestGaze,{passive:true});
  board.addEventListener('pointerdown',e=>{if(e.target.closest('.piece:not(.done)')){dragging=true;stop()}},true);
  const release=()=>{if(dragging){dragging=false;schedule(1600)}};window.addEventListener('pointerup',release);window.addEventListener('pointercancel',release);

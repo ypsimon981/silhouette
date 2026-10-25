@@ -44,3 +44,7 @@
 #app #board.game-screen[data-last-piece] .piece.done .potatoEyes{animation:none!important;scale:1 1.07;transition:scale .3s}
 #app #board.game-screen[data-last-piece] .piece.done .potatoBrows{translate:0 -8px}
 @media(prefers-reduced-motion:reduce){#app #board .piece.done[data-egg] .potatoEyes,#app #board .piece.done[data-egg] .potatoMouth{transition:none!important}}
+
+/* Mouth silhouettes now express neutral, surprise and sleep instead of scaling one smile. */
+#app #board.game-screen:not(.complete) .piece.done[data-peer-seed] .potatoMouth{scale:1 1!important}
+#app #board.game-screen:not(.complete) .piece.done[data-peer-seed][data-egg] .potatoMouth{scale:1 1!important}
