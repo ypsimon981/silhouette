@@ -332,3 +332,8 @@ html,body{background:var(--potato-dark);color:var(--potato-ink);font-family:ui-r
 #app #ranking #social-ranking-record{width:100%;min-width:0;max-width:none;margin:0;font-size:14px;line-height:1.25;text-align:center;white-space:normal}
 #app #ranking .social-ranking-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;min-width:0}
 #app #ranking .social-ranking-actions button{width:100%;max-width:none;min-width:0;min-height:44px;margin:0;padding:7px 8px;font-size:13px;line-height:1.2;white-space:normal;word-break:normal;overflow-wrap:normal;flex:initial;border-width:1px!important}
+
+/* Full-width ad inventory; keep the reserved height when no ad is available. */
+#app:not(.show-hand-controls) footer{padding-left:0;padding-right:0}
+#app #adSlot{width:100%;min-width:0;flex-shrink:0;min-height:61.6px}
+#app #adSlot>ins.adsbygoogle{width:100%;margin:0}
