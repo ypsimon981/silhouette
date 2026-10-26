@@ -3,6 +3,21 @@
  'use strict';
  const slot=document.getElementById('adSlot');
  if(!slot)return;
+ const preferenceButtons=[];
+ for(const host of [document.querySelector('#homePage .homeLinks'),document.querySelector('.profilePanel')]){
+  if(!host)continue;
+  const links=document.createElement('div');
+  links.style.cssText='display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;font-size:13px';
+  const privacy=document.createElement('a');privacy.href='./privacy.html';privacy.textContent='Privacy e cookie';privacy.style.color='inherit';
+  const preferences=document.createElement('button');preferences.type='button';preferences.textContent='Preferenze pubblicitarie';preferences.hidden=true;
+  preferences.addEventListener('click',()=>window.googlefc.callbackQueue.push({CONSENT_API_READY:()=>window.googlefc.showRevocationMessage()}));
+  preferenceButtons.push(preferences);links.append(privacy,preferences);host.append(links);
+ }
+ window.googlefc=window.googlefc||{};
+ window.googlefc.callbackQueue=window.googlefc.callbackQueue||[];
+ window.googlefc.callbackQueue.push({CONSENT_API_READY:()=>{
+  if(typeof window.googlefc.showRevocationMessage==='function')preferenceButtons.forEach(button=>button.hidden=false);
+ }});
  let requested=false,consented=false,subscribed=false;
  const queue=()=>window.adsbygoogle=window.adsbygoogle||[];
  queue().pauseAdRequests=1;
