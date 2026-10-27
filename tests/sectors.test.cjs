@@ -40,10 +40,10 @@ test('analysis omits historical timeouts and over-limit wins, and navigation fol
   g.analysis();
   assert.equal(w.document.querySelectorAll('#progressGraph circle').length,1);
   assert.equal(w.document.querySelector('#progressStats').hidden,true);
-  assert.equal(w.document.querySelector('#myProgress h2').textContent,'Analisi delle performance');
+  assert.equal(w.document.querySelector('#myProgress h2').textContent,'Profilo cognitivo');
   assert.equal(w.document.querySelector('#statsPrev').disabled,true);
   w.document.querySelector('#statsNext').click();
-  assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca di nuovo livello 2');
+  assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca di nuovo Livello 2');
   assert.equal(w.document.querySelectorAll('#myProgress [data-scope]').length,0);
   assert.equal(g.accepts({won:true,level:1,ms:60000}),true);
   assert.equal(g.accepts({won:true,level:1,ms:60001}),false);
