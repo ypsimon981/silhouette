@@ -24,6 +24,8 @@ test('four macrosections, direct levels, real completion, contextual return, ret
   assert.equal(await nav.locator('[data-section="'+source+'"]').isVisible(),true);
   assert.equal(await nav.locator('[data-section="'+source+'"]').getAttribute('aria-current'),'page');
   assert.equal(await nav.locator('[data-section="'+source+'"]').isDisabled(),true);
+  assert.equal(await nav.locator('[data-section="'+source+'"]').evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(237, 183, 68)');
+  assert.notEqual(await nav.locator('button:not([aria-current="page"])').first().evaluate(e=>getComputedStyle(e).backgroundColor),'rgb(237, 183, 68)');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   assert.ok(await header.isVisible());
   assert.ok(Math.abs((await header.boundingBox()).height-baselineHeight)<=1);
