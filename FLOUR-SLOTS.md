@@ -7,3 +7,6 @@ The decorative raster is generated once per outline with Canvas/Path2D, independ
 `shape()` explicitly excludes both animal and flower modes. New CSS also excludes both board classes. Existing animals, flowers, sizes, input handling, matching tolerance, timing, scoring and central piece shadows are unchanged.
 
 Validation: real Chromium pointer placement across three viewports and modes 1, 13 and 17; ten pieces complete; shadow regression checks; flour pixel test for a fully transparent interior beyond the contour; exact path/rotation checks across the potato catalog; cached artwork reuse; no gameplay RNG use; original targets in modes 17 and 18; mobile-size visual inspection. No physical iPhone FPS measurements are claimed.
+
+## v0.22.49 — flour well
+The flour berm is now roughly 2.3 times wider: a broad sloping outer foot, a pale raised crest and a shaded inner wall. The opening itself remains transparent and exact, with the same fine contour. Loose flour extends irregularly beyond the outer foot. The width is identical on upper/lower edges; rotation, matching and non-potato targets remain unchanged.

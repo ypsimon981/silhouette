@@ -14,10 +14,11 @@ function bake(d){
  const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
  c.scale(scale,scale);c.translate(pad,pad);c.lineJoin='round';c.lineCap='round';
  // Flour is outside the silhouette. The opening is cleared exactly after all grains.
- c.strokeStyle='#d1c0a4';c.lineWidth=8.6;c.stroke(path);
- c.strokeStyle='#e4d6bd';c.lineWidth=8.2;c.stroke(path);
- c.strokeStyle='#f7edd8';c.lineWidth=7.8;c.stroke(path);
- const shades=['#fff8e8','#f9efdc','#eee1c8','#ded0b7','#fffdf3'];
+ // Cross-section of a flour well: feathered foot, rising outer slope,
+ // bright crest and a steeper shaded inner wall, entirely outside the opening.
+ for(const [width,tone] of [[19.6,'#d4cbbb'],[18.8,'#e4ded1'],[17.4,'#ede8dd'],[15.8,'#f3efe5'],[13.8,'#faf7ee'],[11.4,'#fffdf5'],[8.8,'#e8e1d4'],[6.2,'#d6cdbd'],[3.8,'#c4b9a6']]){
+  c.strokeStyle=tone;c.lineWidth=width;c.stroke(path);
+ }
  const samples=Array.from({length:Math.max(3,Math.ceil(length))},(_,i)=>probe.getPointAtLength(i*length/Math.max(3,Math.ceil(length))));
  for(let i=0;i<samples.length;i++){
   const p=samples[i],a=samples[(i+samples.length-1)%samples.length],b=samples[(i+1)%samples.length];
@@ -26,11 +27,12 @@ function bake(d){
   if(hit.isPointInPath(path,p.x+nx*.45,p.y+ny*.45,'evenodd')){nx=-nx;ny=-ny;}
   // Cluster the loose powder on the outer edge; the core has uniform thickness.
   for(let j=0;j<15;j++){
-   const outer=j>9,dist=outer?3.4+random()*2.4:random()*4.1;
+   const outer=j>9,dist=outer?7.8+random()*4.5:random()*9;
    const tangent=(random()-.5)*1.1,x=p.x+nx*dist+dx/n*tangent,y=p.y+ny*dist+dy/n*tangent;
-   c.globalAlpha=outer?.5+random()*.5:.55+random()*.45;
-   c.fillStyle=shades[Math.floor(random()*shades.length)];c.beginPath();
-   const r=outer?.18+random()*.62:.12+random()*.34;
+   c.globalAlpha=outer?.3+random()*.5:.35+random()*.45;
+   const light=dist<2.5?['#b5a891','#d8cebd','#ede5d7']:dist<6.5?['#fffef8','#f8f4e9','#e4dccd']:['#efe9dd','#ded5c5','#faf7ef'];
+   c.fillStyle=light[Math.floor(random()*light.length)];c.beginPath();
+   const r=outer?.2+random()*.8:.2+random()*.6;
    c.ellipse(x,y,r,r*(.55+random()*.65),random()*Math.PI,0,Math.PI*2);c.fill();
   }
  }
