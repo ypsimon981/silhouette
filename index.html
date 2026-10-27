@@ -3501,8 +3501,7 @@ function applyLanguage(){
  music.options[0].textContent=t.cinematic;music.options[1].textContent=t.ambient;music.options[2].textContent=t.techno;
  document.getElementById("leftHand").textContent=t.left;document.getElementById("rightHand").textContent=t.right;
  document.querySelector("#handControls .handLabel").textContent=t.hand;
- document.getElementById("rankingToStats").textContent="📈 "+t.performance;
- document.getElementById("statsToRanking").textContent="🏆 "+t.ranking;
+ // Shared macrosection labels are intentionally fixed to the approved Italian UI_COPY.
 }
 
 function applyLocaleContent(){
@@ -3529,6 +3528,9 @@ function applyLocaleContent(){
 }
 function openProfile(first=false){if(!first)navigation.section="settings";updateToolbar();
  const overlay=document.getElementById("profileOverlay");overlay.hidden=false;overlay.classList.toggle("firstSetup",first);
+ const panel=overlay.querySelector('.profilePanel');
+ panel.setAttribute('role',first?'dialog':'region');
+ if(first)panel.setAttribute('aria-modal','true');else panel.removeAttribute('aria-modal');
  const t=translations[currentLanguage()]||translations.en;
  document.getElementById("profileTitle").textContent=first?t.welcome:t.profile;
  document.getElementById("profileIntro").textContent=first?t.first:t.intro;
