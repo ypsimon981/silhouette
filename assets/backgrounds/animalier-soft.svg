@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="288" viewBox="0 0 288 288">
+<!-- Quiet greige leopard rosettes. Every mark stays far below target contrast. -->
+<defs><g id="rosette" fill="none" stroke="#999b92" stroke-opacity=".24" stroke-width="5" stroke-linecap="round"><path d="M-15-8C-20-2-17 8-10 12M-7-16C1-21 13-16 16-9M19-3C24 5 15 16 8 16"/><path d="M-4 1Q0-3 5 1" stroke-width="3" stroke-opacity=".12"/></g></defs>
+<g>
+<use href="#rosette" transform="translate(31 32) rotate(-20) scale(.82 1)"/>
+<use href="#rosette" transform="translate(118 39) rotate(34) scale(1.05 .8)"/>
+<use href="#rosette" transform="translate(219 28) rotate(-61) scale(.95 1.1)"/>
+<use href="#rosette" transform="translate(75 113) rotate(76) scale(1.12 .86)"/>
+<use href="#rosette" transform="translate(177 117) rotate(-12) scale(.87 1.1)"/>
+<use href="#rosette" transform="translate(258 101) rotate(31) scale(.83 .9)"/>
+<use href="#rosette" transform="translate(29 209) rotate(-56) scale(.92 .8)"/>
+<use href="#rosette" transform="translate(124 217) rotate(20) scale(1 .9)"/>
+<use href="#rosette" transform="translate(232 221) rotate(91) scale(1.15 .94)"/>
+</g>
+<g fill="#999b92" opacity=".13"><ellipse cx="66" cy="61" rx="3" ry="5" transform="rotate(20 66 61)"/><ellipse cx="168" cy="61" rx="4" ry="2.5"/><ellipse cx="36" cy="145" rx="3" ry="4"/><ellipse cx="119" cy="153" rx="2.7" ry="4"/><ellipse cx="214" cy="160" rx="4" ry="3"/><ellipse cx="77" cy="258" rx="3" ry="4"/><ellipse cx="180" cy="265" rx="4" ry="2.5"/></g>
+</svg>

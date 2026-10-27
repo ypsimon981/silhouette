@@ -18,3 +18,6 @@ Animal and flower modes keep the previous atlas crops, cover sizing and no-repea
 Real Chromium: all six materials load; opposite RGB borders of the plain repeat match exactly (maximum difference zero); background repeats at a fixed 256px on 320, 390 and 768px-wide viewports; animal/flower modes retain cover and no-repeat; no JavaScript errors. Mobile-size visual inspection completed. No physical phone FPS claim.
 
 The motif printing is a periodic colour treatment over real linen fibres, rather than six independent photographs of woven designs. tests/tablecloths.html previews all six repeating materials.
+
+## v0.22.55 animal-only exception
+The Animals background now has a quiet greige animalier print over the repeating plain linen tile. It uses the existing small linen source and does not need the legacy atlas. Flowers keep the prior background. The explicit exception is documented in AGENTS.md; animal shapes, target artwork and reveal behaviour remain original.

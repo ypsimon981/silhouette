@@ -8,7 +8,7 @@ async function fixture(){
  await page.addInitScript(()=>{localStorage.setItem('10shapes_profile_setup','yes');localStorage.setItem('10shapes_music','off');localStorage.setItem('10potatoes_voices','off');});await page.goto('https://shadow.test/');try{await page.waitForFunction(()=>!!window.shadowGameTest&&!!window.PotatoShadows,null,{timeout:10000});}catch(e){console.error('Page errors:',errors);await browser.close();throw e;}return {browser,page,errors};
 }
 
-test('potato linen repeats at fixed size without seams and non-potato cloth stays unchanged',async()=>{
+test('potato linen repeats at fixed size and the animalier exception stays scoped',async()=>{
  const {browser,page,errors}=await fixture();try{
   await page.evaluate(()=>shadowGameTest.setLevel(1));
   await page.waitForFunction(()=>document.querySelector('#board').dataset.tileCloth==='true');
@@ -28,9 +28,9 @@ test('potato linen repeats at fixed size without seams and non-potato cloth stay
   await page.screenshot({path:'/workspace/scratch/e0742c94b4af/seamless-cloth-mobile.png'});
   for(const mode of [17,18]){
    await page.evaluate(m=>shadowGameTest.setLevel(m),mode);
-   await page.waitForFunction(()=>!document.querySelector('#board').dataset.tileCloth);
-   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundSize),'cover');
-   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundRepeat),'no-repeat');
+   await page.waitForFunction(mode=>{const b=document.querySelector('#board');return !b.dataset.tileCloth&&(mode===17?b.dataset.photoCloth==='animalier-soft':b.dataset.photoCloth!=='animalier-soft');},mode);
+   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundSize),mode===17?'288px 288px, 256px 256px':'cover');
+   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundRepeat),mode===17?'repeat, repeat':'no-repeat');
   }
   assert.deepEqual(errors,[]);
  }finally{await browser.close();}

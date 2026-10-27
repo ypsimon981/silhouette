@@ -93,5 +93,15 @@ function apply(board,index,tiled=false){
   return true;
  }).catch(()=>false);
 }
-window.Tablecloths=Object.freeze({apply,textures});
+function applyAnimals(board){
+ if(!board)return Promise.resolve(false);
+ const token={};selected.set(board,token);
+ return tileTexture(5).then(url=>{
+  if(selected.get(board)!==token)return false;
+  board.style.setProperty('--animal-linen','url("'+url+'")');
+  board.dataset.photoCloth='animalier-soft';delete board.dataset.tileCloth;
+  return true;
+ }).catch(()=>false);
+}
+window.Tablecloths=Object.freeze({apply,applyAnimals,textures});
 })();

@@ -1,0 +1,7 @@
+/* Explicit animal-level exception. Flowers and potato boards are untouched. */
+#board.game-screen.level-animals:not(.level-flowers)::before,
+#board.game-screen.level-animals.stage-raised:not(.level-flowers)::before,
+#board.game-screen.level-animals.countdown-light:not(.level-flowers)::before{
+ opacity:1;background-image:url('./assets/backgrounds/animalier-soft.svg'),var(--animal-linen,linear-gradient(#e8e5da,#e8e5da));
+ background-size:288px 288px,256px 256px;background-position:0 0;background-repeat:repeat;
+}
