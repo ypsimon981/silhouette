@@ -16,8 +16,12 @@ test('flour preserves exact potato openings, deterministic cache and untouched a
    if(!slots.every(s=>s.querySelector('.flour-slot')))throw Error('Missing flour targets');
    const selected=slots[0].querySelector('.recess-floor'),d=selected.getAttribute('d');
    const old=Math.random;Math.random=()=>{throw Error('Cosmetic RNG')};
-   const a=PotatoFlour.create(d,0),b=PotatoFlour.create(d,90);Math.random=old;
+   const a=PotatoFlour.create(d,0,42),b=PotatoFlour.create(d,90,42);Math.random=old;
    if(a.querySelector('image').getAttribute('href')!==b.querySelector('image').getAttribute('href'))throw Error('Cache not reused');
+   if(a.querySelector('image').getAttribute('href')===PotatoFlour.create(d,0,43).querySelector('image').getAttribute('href'))throw Error('Variants repeat');
+   const fresh=()=>PotatoFlour.create(d,0).querySelector('image').getAttribute('href');
+   const one=fresh(),two=fresh();PotatoFlour.beginLevel();const nextLevel=fresh();
+   if(new Set([one,two,nextLevel]).size!==3)throw Error('Instances or levels repeat');
    const image=new Image();image.src=a.querySelector('image').getAttribute('href');await image.decode();
    const c=document.createElement('canvas');c.width=c.height=512;const ctx=c.getContext('2d');ctx.drawImage(image,0,0);
    const extent=Number(a.querySelector('image').getAttribute('width')),pad=-Number(a.querySelector('image').getAttribute('x'));
@@ -43,6 +47,6 @@ test('flour preserves exact potato openings, deterministic cache and untouched a
    return {interior,occupied,leaks,potatoShapes};
   });
   assert.equal(result.leaks,0);assert.deepEqual(errors,[]);
-  await page.screenshot({path:'/workspace/scratch/e0742c94b4af/flour-targets-mobile.png'});
+  if(process.env.FLOUR_SCREENSHOT)await page.screenshot({path:process.env.FLOUR_SCREENSHOT});
  }finally{await browser.close();}
 });

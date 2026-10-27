@@ -13,3 +13,6 @@ The flour berm is now roughly 2.3 times wider: a broad sloping outer foot, a pal
 
 ## v0.22.50 — wider, regular exterior
 The bank is a further 40% wider. Exterior grains are smaller and less scattered, and a uniform offset mask keeps the outer edge regular. The internal opening and thin contour are unchanged. Raster padding increases to preserve the expanded exterior. Only potato targets change.
+
+## v0.22.52 — approved irregular mounds
+Broad exterior heaps and recesses are generated from smooth periodic random widths, with smaller powder clusters beyond their edges. Every slot receives a distinct cosmetic seed, renewed per level using crypto, independently of gameplay randomness. Explicit seed variants are cached; no work is done while dragging. The exact vector opening is cleared after every mound and grain is drawn, keeping the cloth visible and original matching geometry. Non-potato modes retain their original targets.
