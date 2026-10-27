@@ -3121,15 +3121,14 @@ function updatePreGameIdentity(){
 }
 /* Six static compositions; cosmetic randomness never consumes the shape RNG. */
 const ARENA_TEXTURES=[
- // Gingham, ticking stripes, windowpane, diamonds, damask flowers, linen.
- "repeating-linear-gradient(0deg,#ffffff12 0 22px,#2733210a 22px 44px),repeating-linear-gradient(90deg,#ffffff16 0 22px,#2733210a 22px 44px)",
- "repeating-linear-gradient(90deg,transparent 0 12px,#ffffff20 12px 16px,transparent 16px 20px,#ffffff12 20px 22px)",
- "repeating-linear-gradient(0deg,transparent 0 35px,#ffffff25 35px 37px,transparent 37px 44px),repeating-linear-gradient(90deg,transparent 0 35px,#ffffff25 35px 37px,transparent 37px 44px)",
- "repeating-linear-gradient(45deg,transparent 0 24px,#ffffff20 24px 26px,transparent 26px 48px),repeating-linear-gradient(-45deg,transparent 0 24px,#ffffff20 24px 26px,transparent 26px 48px)",
- 'url("data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><g fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="1.4"><path d="M32 8C10 10 12 27 32 32C52 27 54 10 32 8ZM32 56C10 54 12 37 32 32C52 37 54 54 32 56ZM8 32C10 10 27 12 32 32C27 52 10 54 8 32ZM56 32C54 10 37 12 32 32C37 52 54 54 56 32Z"/><circle cx="32" cy="32" r="4"/></g></svg>')+'")',
- "repeating-linear-gradient(0deg,#ffffff0d 0 1px,transparent 1px 3px),repeating-linear-gradient(90deg,#ffffff0d 0 1px,transparent 1px 3px)"
+ "repeating-linear-gradient(90deg,transparent 0 42px,#7180870a 42px 44px)",
+ "repeating-linear-gradient(90deg,transparent 0 20px,#78847509 20px 21px)",
+ "repeating-linear-gradient(90deg,transparent 0 43px,#8b806d09 43px 44px)",
+ "repeating-linear-gradient(45deg,transparent 0 24px,#887b6908 24px 25px)",
+ "repeating-linear-gradient(-45deg,transparent 0 30px,#887b6907 30px 31px)",
+ "repeating-linear-gradient(0deg,#ffffff08 0 1px,transparent 1px 3px)"
 ];
-const TABLECLOTH_COLORS=["#c5ab83","#b68b68","#d7bf96","#bca17c","#c8a189","#c6ad7d"];
+const TABLECLOTH_COLORS=["#e3dfd2","#e0dfd3","#e3dfd2","#ddd7ca","#e4dfd1","#e0d9ca"];
 let arenaTextureIndex=-1;
 function chooseArenaTexture(){
  const value=new Uint32Array(1);crypto.getRandomValues(value);
@@ -3620,9 +3619,9 @@ if(new URLSearchParams(location.search).get("level")==="flowers")setLevel(MODE_F
 if(localStorage.getItem("10shapes_profile_setup")!=="yes"){if(!/^Player-\d+$/.test(playerNick)&&playerNick.length>=2){localStorage.setItem("10shapes_profile_setup","yes")}else openProfile(true)}
 })();
 </script><script src="./potato-shadows.js?v=2"></script>
-<script src="./tablecloths.js?v=5"></script>
+<script src="./tablecloths.js?v=6"></script>
 <script src="./flour-slots.js?v=6"></script>
-<link rel="stylesheet" href="./flour-slots.css?v=3">
+<link rel="stylesheet" href="./flour-slots.css?v=4">
 <link rel="stylesheet" href="./tablecloths.css?v=2">
 <link rel="stylesheet" href="./animal-background.css?v=2">
 <link rel="stylesheet" href="./flower-background.css?v=2"><script src="./web-ads.js?v=2"></script></body></html>

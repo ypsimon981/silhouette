@@ -1,6 +1,6 @@
 /* Clean targets apply only to potato levels; animal and flower targets are unchanged. */
 #board.game-screen:not(.level-animals):not(.level-flowers) .slot .clean-slot .clean-cavity{
- fill:rgba(48,33,23,.50)!important;
+ fill:rgba(48,33,23,.70)!important;
  stroke:#514334!important;stroke-width:1px!important;stroke-opacity:1!important;
  stroke-linejoin:round;vector-effect:non-scaling-stroke;
  filter:none!important;opacity:1!important;pointer-events:none;

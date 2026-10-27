@@ -5,7 +5,7 @@ const atlasURL=new URL('./assets/tablecloths/linen-atlas.png',document.currentSc
 const textures=Object.freeze([
 {id:'blue-windowpane',name:'Quadri blu',color:'#e3dfd2'},
 {id:'sage-ticking',name:'Righe salvia',color:'#e3dfd2'},
-{id:'red-gingham',name:'Quadretti rossi',color:'#e3d8ca'},
+{id:'sand-pinstripe',name:'Righe sabbia',color:'#e3dfd2'},
 {id:'oat-herringbone',name:'Spigato naturale',color:'#ddd4c3'},
 {id:'cream-damask',name:'Damasco avorio',color:'#e4dfd1'},
 {id:'plain-flax',name:'Lino naturale',color:'#e0d9ca'}
@@ -22,6 +22,7 @@ function loadAtlas(){
  return atlasPromise;
 }
 function texture(index){
+ if(index===2)return tileTexture(index);
  if(!cache.has(index)){
   const pending=loadAtlas().then(image=>{
    const canvas=document.createElement('canvas');
@@ -53,24 +54,26 @@ function tileTexture(index){
  if(!tileCache.has(index))tileCache.set(index,loadLinen().then(image=>{
   const canvas=document.createElement('canvas');canvas.width=canvas.height=512;
   const c=canvas.getContext('2d');if(!c)throw new Error('Canvas unavailable');
+  // Neutral backing softens fibre contrast without removing the weave.
+  c.fillStyle=textures[index].color;c.fillRect(0,0,512,512);c.globalAlpha=.45;
   // Mirrored texture addressing makes opposite borders match exactly.
   // Four reflected quadrants retain the photographic fibres without stretching.
   for(let y=0;y<2;y++)for(let x=0;x<2;x++){
    c.save();c.translate(x?512:0,y?512:0);c.scale(x?-1:1,y?-1:1);
    c.drawImage(image,0,0,256,256);c.restore();
   }
-  c.globalCompositeOperation='multiply';
+  c.globalAlpha=1;c.globalCompositeOperation='multiply';
   if(index===0){
-   c.fillStyle='rgba(72,106,132,.3)';for(let p=0;p<512;p+=64){c.fillRect(p,0,3,512);c.fillRect(0,p,512,3);c.fillRect(p+6,0,1,512);c.fillRect(0,p+6,512,1);}
+   c.fillStyle='rgba(72,106,132,.06)';for(let p=0;p<512;p+=64){c.fillRect(p,0,3,512);c.fillRect(0,p,512,3);c.fillRect(p+6,0,1,512);c.fillRect(0,p+6,512,1);}
   }else if(index===1){
-   c.fillStyle='rgba(67,98,70,.27)';for(let p=0;p<512;p+=64){c.fillRect(p,0,4,512);c.fillRect(p+8,0,2,512);}
+   c.fillStyle='rgba(67,98,70,.05)';for(let p=0;p<512;p+=64){c.fillRect(p,0,4,512);c.fillRect(p+8,0,2,512);}
   }else if(index===2){
-   c.fillStyle='rgba(152,65,48,.2)';for(let p=0;p<512;p+=64){c.fillRect(p,0,32,512);c.fillRect(0,p,512,32);}
+   c.fillStyle='rgba(120,109,87,.05)';for(let p=0;p<512;p+=64){c.fillRect(p,0,1,512);}
   }else if(index===3){
-   c.strokeStyle='rgba(120,99,68,.13)';c.lineWidth=1;
+   c.strokeStyle='rgba(120,99,68,.04)';c.lineWidth=1;
    for(let y=-32;y<544;y+=8)for(let x=0;x<512;x+=32){c.beginPath();c.moveTo(x,y);c.lineTo(x+16,y+8);c.lineTo(x+32,y);c.stroke();}
   }else if(index===4){
-   c.strokeStyle='rgba(122,109,85,.12)';c.lineWidth=1.5;
+   c.strokeStyle='rgba(122,109,85,.035)';c.lineWidth=1.5;
    for(let y=0;y<=512;y+=128)for(let x=0;x<=512;x+=128){
     for(let a=0;a<4;a++){c.save();c.translate(x,y);c.rotate(a*Math.PI/2);c.beginPath();c.moveTo(0,0);c.bezierCurveTo(-23,-24,-20,-45,0,-54);c.bezierCurveTo(20,-45,23,-24,0,0);c.stroke();c.restore();}
    }
