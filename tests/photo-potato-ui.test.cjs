@@ -8,10 +8,17 @@ async function fixture(){
  await page.addInitScript(()=>{localStorage.setItem('10shapes_profile_setup','yes');localStorage.setItem('10shapes_music','off');localStorage.setItem('10potatoes_voices','off');});await page.goto('https://shadow.test/');try{await page.waitForFunction(()=>!!window.shadowGameTest&&!!window.PotatoShadows,null,{timeout:10000});}catch(e){console.error('Page errors:',errors);await browser.close();throw e;}return {browser,page,errors};
 }
 
-test('photographic base potatoes preserve every original contour, rotations, placement and non-potato rendering',async()=>{
+test('all photographic potatoes preserve every original contour, rotations, placement and non-potato rendering',async()=>{
  const {browser,page,errors}=await fixture();try{
   await page.evaluate(()=>shadowGameTest.setLevel(1));
   assert((await page.evaluate(()=>PhotoPotatoes.preload())).every(Boolean));
+  const requests=[];page.on('request',r=>{if(r.url().includes('/assets/potato-photo/'))requests.push(r.url());});
+  await page.evaluate(()=>shadowGameTest.setLevel(13));
+  assert((await page.evaluate(()=>PhotoPotatoes.preload(PhotoPotatoes.entries.filter(e=>e.family.startsWith('organic10-'))))).every(Boolean));
+  assert.equal(new Set(requests).size,10);
+  assert((await page.evaluate(()=>PhotoPotatoes.preload(PhotoPotatoes.entries))).every(Boolean));
+  assert.equal(await page.evaluate(()=>PhotoPotatoes.entries.length),91);
+  await page.evaluate(()=>shadowGameTest.setLevel(1));
   const result=await page.evaluate(()=>{
    const original=Math.random;Math.random=()=>{throw Error('Cosmetic RNG')};
    let variants=0;
@@ -23,8 +30,8 @@ test('photographic base potatoes preserve every original contour, rotations, pla
     if(svg.querySelector('filter')||svg.querySelector('.potatoFace'))throw Error('Unexpected live filter or face');variants++;
    }
    Math.random=original;return variants;
-  });assert(result>=20);
-  for(const mode of [1,2]){
+  });assert.equal(result,123);
+  for(const mode of [1,2,4,7,8,9,10,11,12,13]){
    await page.evaluate(m=>{shadowGameTest.setLevel(m);shadowGameTest.play();},mode);
    for(let i=0;i<10;i++){
     assert.equal(await page.locator('.piece:not(.done) .photo-potato').count(),1);
@@ -34,7 +41,7 @@ test('photographic base potatoes preserve every original contour, rotations, pla
    }
    assert.equal((await page.evaluate(()=>shadowGameTest.state())).phase,'finished');
   }
-  for(const mode of [4,17,18]){await page.evaluate(m=>{shadowGameTest.setLevel(m);shadowGameTest.play();},mode);assert.equal(await page.locator('.piece .photo-potato').count(),0);}
+  for(const mode of [17,18]){await page.evaluate(m=>{shadowGameTest.setLevel(m);shadowGameTest.play();},mode);assert.equal(await page.locator('.piece .photo-potato').count(),0);}
   await page.evaluate(()=>{shadowGameTest.setLevel(1);shadowGameTest.play();});
   if(process.env.PHOTO_POTATO_SCREENSHOTS)await page.screenshot({path:process.env.PHOTO_POTATO_SCREENSHOTS+'-playing.png'});
   await page.evaluate(()=>{

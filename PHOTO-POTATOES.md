@@ -1,21 +1,28 @@
-# Photographic base potatoes — v0.22.53
+# Photographic potato rendering — v0.22.54
 
-The approved overhead raw-potato appearance now replaces the flat skin in levels 1 and 2, including their stages in the sequence modes. Eleven distinct images cover ten base families and both star variants; existing rotations reuse those images. Levels 3–10 retain the prior artwork for the next stage of the conversion. Animals and flowers keep their original rendering.
+All 91 distinct potato contours and all 123 orientations now use photographic potato surfaces across levels 1–10 and their stages in Overall, Odd and Even modes. Animals and flowers retain their original rendering. Existing matching geometry, tolerances, timing, scoring, audio and central ground shadows are unchanged.
 
-## Production assets and generation
+## Assets and method
 
-The assets are `assets/potato-photo/{circle,square,ell,ring,square-hole,star-1,star-2,rectangle,semicircle,triangle,crescent}.webp`. Together they weigh 696,990 bytes (about 681 KiB), with a maximum image size of 512 × 512. Alpha transparency is preserved. Asset metadata, the final exact prompts for each image, raw/rounded geometry, registration bounds and pre-clip silhouette comparisons are in `assets/potato-photo/manifest.json`.
+The eleven approved base sprites remain unchanged. The 80 additional sprites are rendered offline by projecting those photographed convex potato surfaces onto each original catalog contour. Radial UV coordinates retain the photographed skin and volume falloff; the actual contour distance/normal adds a restrained matte contact rim, including in concave regions. Crosses and early lobed shapes use matching star or triangle source surfaces to reduce texture stretch. Source material and orientation vary deterministically per shape. This is a reuse of approved photographic material, not eighty new independently generated photographs.
 
-Built-in image generation was used, one call per shape. Grey silhouettes exported from the original rounded paths supplied geometry references. The approved L photograph supplied the initial material reference; square, L and crescent were regenerated with geometry-only references when the first outputs failed contour inspection. WebP conversion only downsizes/compresses the original generated images. It does not paint or recolour them.
+All production sprites are under `assets/potato-photo/`. Names for level 3 are diamond3, hexagon3, cross3, pentagon3, trapezoid3, arrow3, hourglass3, chevron3, shield3 and kite3. Levels 4–10 use organic{level}-{0..9}.webp. The full metadata, exact contours, per-asset source material and sizes are in `assets/potato-photo/manifest.json`; the original eleven generation prompts are retained there. Total catalog size is 2,885,302 bytes, about 2.75 MiB. Each sprite is at most 512 × 512 with transparency.
 
-## Geometry and rendering
+`photo-potatoes.js` looks up the exact original path, preserves the vector front path and rotation, and clips the image to that same outline. Only the selected level's material set is preloaded. No mesh renderer, Canvas generation, texture projection, new filter or frame loop runs during gameplay. The original eleven registrations use their measured photographic bounds; derived sprites use the catalog's 0–100 coordinates directly.
 
-`photo-potatoes.js` selects an image by the exact original catalog path. An affine registration aligns the photograph's opaque bounding box to the original contour bounds. The original rounded vector is then used as the SVG clip and as the opaque edge backing, so minor generative perimeter differences cannot produce holes or change the piece silhouette. The original front path, rotation, CSS box, placement tolerance and slots remain unchanged. Photo surfaces have baked overhead light; central ground shadows remain dynamic and use the existing actual-position shadow module.
+## Reproducing advanced assets
 
-There is no runtime 3D engine, Canvas baking, live filter or new animation loop in the photo renderer. Images are preloaded for the two base levels. If a catalog path has no photo asset the original rendering is used. No changes to audio, timings, score, shape randomization or non-potato artwork are introduced.
+The native renderer is in tools/potato-photo/:
 
-## Verification
+1. `node tools/potato-photo/export-all.cjs`
+2. `node tools/potato-photo/render-all.cjs`
+3. `python tools/potato-photo/compress.py`
+4. `python tools/potato-photo/build-runtime.py`
 
-Real Chromium: every base rotation uses the exact original vector/clip; no gameplay RNG is consumed; all images load; ten placements complete in each of levels 1 and 2; levels 3, animals and flowers retain original rendering; all 173 catalog variants retain matching shadows; real pointer play on 320, 390 and 768px viewports passes; dragging with nine seated pieces performs no seated SVG geometry reads or live shadow filtering. Mobile-size inspection of all eleven assets and a live board completed. No physical iPhone FPS claim is made.
+Use the project Playwright dependency and an available Chromium (`CHROMIUM_EXECUTABLE` overrides the task environment default). Pillow is used only to encode the pre-rendered output as WebP. The rendering code itself does the geometry/UV work. Intermediate PNGs and exported geometry are reproducible and do not ship to players.
 
-The assets are photographic sprites, not freely rotatable 3D models. The visual conversion of the remaining 80 distinct silhouettes is not part of this base-set release.
+## Verification and limits
+
+Real Chromium checks all 91 images decode, all 123 original contours/rotations are preserved, each of the ten levels completes through real pointer placements, a new level fetches only ten sprites, animals/flowers retain their original renderer, and no gameplay RNG is consumed. Existing shadow regression checks cover all 173 catalog variants and verify dragging does not revisit seated geometry or run live blur filters. Gallery inspection includes levels 3, 4, 7 and 10. No physical phone FPS is claimed.
+
+The advanced skins use UV projection: freckles can elongate in strong lobes and recesses, and the surface lighting is baked into the sprite. Dynamic ground shadows still follow the actual piece position. The images are not freely rotatable 3D models. `tests/photo-potatoes.html` offers a per-level visual gallery.
