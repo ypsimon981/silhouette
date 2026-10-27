@@ -1,0 +1,19 @@
+/* Local review artifact only. Production index/config are never rewritten here. */
+const fs=require('fs'),path=require('path'),cp=require('child_process');const root=path.resolve(__dirname,'..'),out=process.env.SHADOW_PREVIEW||path.resolve(root,'../10Potatoes-prova-ombre.html');
+const mime={'.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.mp3':'audio/mpeg','.wav':'audio/wav','.ogg':'audio/ogg','.json':'application/json'},data={};
+const files=cp.execFileSync('git',['ls-files','assets'],{cwd:root,encoding:'utf8'}).trim().split('\n');for(const f of files){const ext=path.extname(f);if(mime[ext])data[f]='data:'+mime[ext]+';base64,'+fs.readFileSync(path.join(root,f)).toString('base64');}
+function resolveAsset(s){const key=s.replace(/^\.\//,'').split('?')[0];return data[key]||s;}
+function css(s){return s.replace(/url\((['"]?)([^)'"\s]+)\1\)/g,(_,q,url)=>'url("'+resolveAsset(url)+'")');}
+function js(s){return s.replace(/(['"])(\.?\/?assets\/[^'"\n]+)\1/g,(_,q,url)=>q+resolveAsset(url)+q).replaceAll('</script','<\\/script');}
+let html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+// Keep real artwork and logic. Review is ephemeral and cannot submit records.
+const prelude=`<script>(()=>{const assets=${JSON.stringify(data)},originalFetch=window.fetch.bind(window),resolve=s=>{if(String(s).startsWith('data:'))return String(s).split('?')[0];try{const key=new URL(String(s),location.href).pathname.replace(/^\\//,'');return assets[key]||assets[String(s).replace(/^\\.\\//,'').split('?')[0]]||null;}catch{return null;}};window.fetch=(input,init)=>{const uri=resolve(input instanceof Request?input.url:input);return uri?originalFetch(uri,init):Promise.resolve(new Response(JSON.stringify({scores:[],total:0}),{headers:{'Content-Type':'application/json'}}));};const values=new Map([['10shapes_profile_setup','yes'],['10shapes_music','off'],['10potatoes_voices','off']]);try{Object.defineProperty(window,'localStorage',{value:{getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,String(v)),removeItem:k=>values.delete(k),clear:()=>values.clear(),key:i=>[...values.keys()][i],get length(){return values.size;}}});}catch{}const nativeSrc=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'src');Object.defineProperty(HTMLMediaElement.prototype,'src',{get:nativeSrc.get,set(v){nativeSrc.set.call(this,resolve(v)||v);}});const AudioOriginal=window.Audio;window.Audio=function(src){return src?new AudioOriginal(resolve(src)||src):new AudioOriginal();};window.Audio.prototype=AudioOriginal.prototype;})();<\/script>`;
+html=html.replace('<title>10 Potatoes</title>','<title>10 Potatoes · Prova ombre locale</title>');
+html=html.replace(/<script\b[^>]*\bsrc="([^\"]+)"[^>]*><\/script>/g,(_,url)=>{const f=url.replace(/^\.\//,'').split('?')[0];if(/^https?:/.test(url)||f==='web-ads.js')return '<!-- Advertising is disabled only in this offline review copy. -->';let s=fs.readFileSync(path.join(root,f),'utf8');if(f==='social-config.js')s=s.replace('enabled: true','enabled: false');return '<script>'+js(s)+'</script>';});
+html=html.replace(/<link\b[^>]*rel="stylesheet"[^>]*href="([^\"]+)"[^>]*>/g,(_,url)=>'<style>'+css(fs.readFileSync(path.join(root,url.replace(/^\.\//,'').split('?')[0]),'utf8'))+'</style>');
+html=html.replace(/\b(src|href)="(\.?\/?assets\/[^\"]+)"/g,(_,attr,url)=>attr+'="'+resolveAsset(url)+'"');
+// Inline main script literal asset URLs as well; CSS data URLs remain untouched.
+html=html.replace(/<script>([\s\S]*?)<\/script>/g,(_,s)=>'<script>'+js(s)+'</script>');
+html=html.replace('<meta charset="utf-8">','').replace('<head>','<head><meta charset="utf-8">'+prelude);
+html=html.replace('./favicon.svg?v=0.22.41','data:image/svg+xml;base64,'+fs.readFileSync(path.join(root,'favicon.svg')).toString('base64'));
+fs.writeFileSync(out,html);console.log('Offline game preview:',out,Buffer.byteLength(html),'bytes');
