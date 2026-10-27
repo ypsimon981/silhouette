@@ -20,10 +20,11 @@ test('flour preserves exact potato openings, deterministic cache and untouched a
    if(a.querySelector('image').getAttribute('href')!==b.querySelector('image').getAttribute('href'))throw Error('Cache not reused');
    const image=new Image();image.src=a.querySelector('image').getAttribute('href');await image.decode();
    const c=document.createElement('canvas');c.width=c.height=512;const ctx=c.getContext('2d');ctx.drawImage(image,0,0);
+   const extent=Number(a.querySelector('image').getAttribute('width')),pad=-Number(a.querySelector('image').getAttribute('x'));
    const pixels=ctx.getImageData(0,0,512,512).data,hit=document.createElement('canvas').getContext('2d'),path=new Path2D(d);
    hit.lineWidth=1.7;let interior=0,occupied=0,leaks=0;
    for(let y=0;y<512;y++)for(let x=0;x<512;x++){
-    const px=(x+.5)*120/512-10,py=(y+.5)*120/512-10,alpha=pixels[(y*512+x)*4+3];
+    const px=(x+.5)*extent/512-pad,py=(y+.5)*extent/512-pad,alpha=pixels[(y*512+x)*4+3];
     if(alpha)occupied++;
     if(hit.isPointInPath(path,px,py,'evenodd')&&!hit.isPointInStroke(path,px,py)){interior++;if(alpha)leaks++;}
    }

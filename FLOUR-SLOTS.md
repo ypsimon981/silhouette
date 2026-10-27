@@ -10,3 +10,6 @@ Validation: real Chromium pointer placement across three viewports and modes 1, 
 
 ## v0.22.49 — flour well
 The flour berm is now roughly 2.3 times wider: a broad sloping outer foot, a pale raised crest and a shaded inner wall. The opening itself remains transparent and exact, with the same fine contour. Loose flour extends irregularly beyond the outer foot. The width is identical on upper/lower edges; rotation, matching and non-potato targets remain unchanged.
+
+## v0.22.50 — wider, regular exterior
+The bank is a further 40% wider. Exterior grains are smaller and less scattered, and a uniform offset mask keeps the outer edge regular. The internal opening and thin contour are unchanged. Raster padding increases to preserve the expanded exterior. Only potato targets change.
