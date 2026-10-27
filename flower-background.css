@@ -2,8 +2,8 @@
 #board.game-screen.level-flowers::before,
 #board.game-screen.level-flowers.stage-raised::before,
 #board.game-screen.level-flowers.countdown-light::before{
- opacity:1;background-color:#1b3527;background-image:url('./assets/backgrounds/grass-dark.webp');
- background-size:256px 256px;background-position:0 0;background-repeat:repeat;
+ opacity:1;background-color:#1b3527;background-image:url('./assets/backgrounds/grass-stylized.webp');
+ background-size:512px 512px;background-position:0 0;background-repeat:repeat;
 }
 /* Keep detailed target edges readable over the dark grass, without changing paths. */
 #app #board.game-screen.level-flowers .slot:not(.done) path.recess-rim{
