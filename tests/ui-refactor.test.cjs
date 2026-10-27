@@ -20,32 +20,39 @@ test('four macrosections, direct levels, real completion, contextual return, ret
  for(const [source,root] of Object.entries(roots)){
   if(source!=='levels')await nav.locator('[data-section="'+source+'"]').click();
   assert.ok(await page.locator(root).isVisible());
-  assert.equal(await nav.locator('button:visible').count(),3);
-  assert.equal(await nav.locator('[data-section="'+source+'"]').isVisible(),false);
+  assert.equal(await nav.locator('button:visible').count(),4);
+  assert.equal(await nav.locator('[data-section="'+source+'"]').isVisible(),true);
+  assert.equal(await nav.locator('[data-section="'+source+'"]').getAttribute('aria-current'),'page');
+  assert.equal(await nav.locator('[data-section="'+source+'"]').isDisabled(),true);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
   assert.ok(await header.isVisible());
   assert.ok(Math.abs((await header.boundingBox()).height-baselineHeight)<=1);
   assert.equal(await header.evaluate(e=>getComputedStyle(e).backgroundImage),baselineBackground);
   if(source==='settings')assert.equal(await page.locator('#closeProfile').isVisible(),false);
   for(const target of Object.keys(roots).filter(v=>v!==source)){
    await nav.locator('[data-section="'+target+'"]').click();assert.ok(await page.locator(roots[target]).isVisible());
-   assert.equal(await nav.locator('button:visible').count(),3);
+   assert.equal(await nav.locator('button:visible').count(),4);
    await nav.locator('[data-section="'+source+'"]').click();
   }
   if(source!=='levels')await nav.locator('[data-section="levels"]').click();
  }
- assert.equal(await page.locator('#refresh').isVisible(),false);
+ assert.equal(await page.locator('#refresh').isVisible(),true);
+ assert.match(await header.locator('.macroBrand').getAttribute('src'),/10potatoes-logo-transparent\.png/);
+ assert.equal(await page.locator('#homePage .homeSubtitle').count(),0);
+ assert.equal(await page.locator('#homePage .seriesModes button').count(),3);
  assert.equal(await page.locator('#trainingModes').isVisible(),false);
  assert.ok(await page.locator('[data-mode="14"]').isVisible());
  await page.locator('[data-mode="4"]').click();assert.match(await page.locator('#levelTitle').innerText(),/3/);
+ const gameHeaderHeight=(await header.boundingBox()).height;
  assert.ok(await header.isVisible());
- assert.ok(Math.abs((await header.boundingBox()).height-baselineHeight)<=1);
+ assert.ok(Math.abs((await header.boundingBox()).height-gameHeaderHeight)<=1);
  assert.equal(await nav.isVisible(),false);
  assert.equal(await page.locator('#adSlot').isVisible(),false);
  assert.ok(await page.locator('#handControls').isVisible());
  await play(page,()=>{rank=3});await page.waitForTimeout(200);
  assert.equal(await page.locator('#finishLevelName').innerText(),'Livello 3');
  assert.ok(await header.isVisible());
- assert.ok(Math.abs((await header.boundingBox()).height-baselineHeight)<=1);
+ assert.ok(Math.abs((await header.boundingBox()).height-gameHeaderHeight)<=1);
  assert.equal(await page.locator('#finishSectors .sector').count(),3);
  assert.ok(await page.locator('#adSlot').isVisible());
  const snapshot=await page.locator('#finishScore').innerText();
