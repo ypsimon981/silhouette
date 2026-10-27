@@ -1,40 +1,30 @@
-# Ombre morbide nel gioco — integrazione locale
+# v0.22.44 — ombre leggere e patate senza faccine
 
-Questa modifica introduce esclusivamente il sistema delle ombre. Pezzi, facce, sagome, incastri, texture, tovaglia attuale, audio, regole, tempi e classifiche restano quelli del gioco esistente. La L fotografica e gli incastri di farina non fanno parte di questo passaggio.
+Correzione del rallentamento avvertito durante il trascinamento, crescente con i pezzi già posati. Le nuove ombre mantengono la luce virtuale centrale, la direzione basata sulla posizione attuale e le opacità approvate (.36 contatto, .30 proiezione a riposo, .23 sollevamento).
 
-## Comportamento
+## Modifiche
 
-La luce virtuale è al centro del campo di gioco. La proiezione usa la posizione attuale del pezzo, anche durante il trascinamento: attraversando il centro cambia il verso dell’ombra. Al centro l’ombra resta sotto il pezzo. L’altezza simulata è proporzionata alla dimensione del pezzo; durante il trascinamento aumenta e rende l’ombra più lunga e diffusa.
+- I filtri SVG di sfocatura in tempo reale sono sostituiti da tre immagini alpha già sfocate. Il profilo è sempre quello del pezzo esistente, compresa la rotazione.
+- Ogni sagoma/rotazione viene preparata una sola volta e conservata in cache. Il calcolo della sfocatura avviene in un Web Worker; se i Worker non sono disponibili, viene diviso in piccoli passaggi durante i tempi liberi del browser. Non richiede `CanvasRenderingContext2D.filter`.
+- Durante il trascinamento si aggiornano solo trasformazioni e opacità dell’ombra del pezzo attivo. Le patate ferme non vengono ripercorse, né si leggono le loro matrici SVG o dimensioni a ogni movimento.
+- Le faccine non vengono più costruite, sia nel renderer normale sia nel fallback. È rimosso il caricamento del gestore delle animazioni facciali e delle gag. Resta il breve assestamento del corpo all’incastro, con ombra stabile a terra.
+- Corpi, sagome, texture, incastri, sfondo, regole, audio di gioco, tempi, settori e classifiche restano quelli esistenti. La L fotografica e gli incastri di farina sono esclusi da questo passaggio.
 
-Ogni pezzo ha tre livelli: contatto, proiezione morbida a riposo e proiezione più morbida durante il sollevamento. Le opacità riprendono lo Studio 05.3 approvato: .36, .30 e .23. Le ombre usano filtri SVG, separati dalla grafica del pezzo, e mantengono il profilo e la rotazione originali. La piccola animazione già esistente all’incastro muove il pezzo mentre l’ombra rimane a terra.
+## Verifiche
 
-Il modulo osserva creazione, posizione e stato dei pezzi; non riscrive il trascinamento, non legge gli incastri assegnati e non usa il generatore casuale del gioco. Aggiorna solo quando serve. La luce sulla buccia resta incorporata nella grafica esistente: questa modifica proietta le ombre e non ricalcola il materiale.
+- 173 varianti del catalogo: stesso profilo per pezzo e ombra, nessuna faccina e nessun filtro SVG nelle nuove ombre.
+- Trascinamento con nove pezzi posati e uno attivo: zero letture `getCTM` durante il movimento e zero nodi di sfocatura SVG.
+- Partite complete tramite puntatore a 320×568, 390×844 e 768×1024 nei livelli 1, 13 e 17; annullamento del trascinamento, cambio di direzione della luce, sollevamento, assestamento e risultato finale.
+- Test aggiornati delle patate senza volto: preservazione dei contorni, delle varietà e delle regole di posizionamento.
 
-## File modificati e creati
+Nei controlli aggiuntivi su comportamento, settori e voci sono passati 12 test su 13. Il solo errore riguarda la maiuscola della parola «Livello» nell’etichetta di un pulsante: è stato riprodotto anche sulla versione precedente, commit `2f292007`, e non è causato da questa modifica.
 
-- `index.html`: due riferimenti al nuovo CSS e al nuovo script; script di gameplay invariato.
-- `potato-shadows.js`, `potato-shadows.css`: modulo cosmetico e livelli delle ombre, compatibili con il precedente sistema delle interazioni.
-- `tests/shadows-ui.test.cjs`: regressioni su catalogo, posizionamento, trascinamento e partite complete.
-- `tests/build-shadow-game-preview.cjs`: costruzione della copia HTML autonoma per revisione.
-- `SHADOWS.md`: questa documentazione.
+Queste sono verifiche Chromium desktop. Non costituiscono una certificazione delle prestazioni del telefono reale né una promessa di 60 FPS.
 
-Non sono richieste nuove dipendenze per il gioco. I test usano Playwright già previsto dal progetto, con `PLAYWRIGHT_MODULE` e `CHROMIUM_EXECUTABLE` opzionali.
+## File e uso
 
-## Verifiche eseguite
+`potato-shadows.js` prepara le immagini e aggiorna le sole ombre interessate. `potato-shadows.css` gestisce i livelli compositi. `index.html` mantiene il trascinamento esistente, rimuove la costruzione delle facce e carica la revisione 2 delle ombre; numero visibile v0.22.44.
 
-- Confronto byte per byte dello script di gameplay e dei file grafici esistenti rispetto alla versione precedente: invariati.
-- Ombre su tutte le 173 varianti attualmente nel catalogo, comprese le rotazioni e le sagome animali/fiori; nessuna sostituzione della grafica originale e nessun consumo di casualità del gioco.
-- Direzione legata alla posizione attuale, sollevamento, ritorno dopo annullamento del trascinamento, una sola ombra composita per pezzo.
-- Partite complete con spostamenti reali del puntatore su tre dimensioni: 320×568, 390×844 e 768×1024; livelli 1, 13 e 17. Dieci pezzi completati, interfaccia senza overflow ed esito corretto.
-- Controllo che le ombre restino ferme durante l’animazione di assestamento esistente.
-- Copia HTML autonoma: partita di dieci incastri, pezzi e facce originali, nessun errore JavaScript e nessuna richiesta di rete.
+Test mirati: `node --test tests/potatoes.test.cjs tests/shadows-ui.test.cjs`. Playwright è già una dipendenza di sviluppo del progetto; `PLAYWRIGHT_MODULE` e `CHROMIUM_EXECUTABLE` permettono di usare installazioni/browser alternativi.
 
-Non sono dichiarate prestazioni su smartphone: le verifiche sono state eseguite con Chromium desktop. Il test sul telefono resta necessario per giudicare resa e fluidità del sistema nel dispositivo reale.
-
-## Aprire e applicare
-
-L’HTML `10Potatoes-prova-ombre.html` è una copia autonoma per provare il gioco. In questa sola copia, profilo e risultati sono temporanei e le richieste di rete sono disattivate: non può inviare record né pubblicità. Il repository mantiene la propria configurazione normale.
-
-Lo ZIP dell’aggiornamento contiene solo i file modificati/creati: va estratto sopra una copia del repository esistente, che contiene già gli altri asset. Dalla radice del repository avviare `python3 -m http.server 8000` e aprire `http://localhost:8000/`.
-
-Sviluppato e verificato sul branch `feature/central-soft-shadows`. Il rilascio include solo questo aggiornamento delle ombre; prototipi fotografici, nuova tovaglia e incastri di farina restano esclusi.
+`tests/build-shadow-game-preview.cjs` produce una copia HTML autonoma per revisione. Solo nella copia autonoma profilo e risultati sono temporanei e le richieste di rete sono disattivate. La configurazione social del repository non viene modificata.

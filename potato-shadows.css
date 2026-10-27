@@ -1,9 +1,9 @@
-/* Shadow layers only; artwork, seats, board and logical piece dimensions unchanged. */
+/* Preblurred shadow images: no SVG filters or layout work during dragging. */
 #app #board .piece[data-central-shadow]{filter:none!important}
-#app #board .piece[data-central-shadow] > svg.central-shadow{
- position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:0;pointer-events:none;
- opacity:1!important;filter:none!important;transform:none!important;animation:none!important;
-}
+#app #board .piece[data-central-shadow] > .central-shadow{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:0;pointer-events:none;opacity:1!important;filter:none!important;transform:none!important;animation:none!important}
+#app #board .central-shadow .shadow-layer{position:absolute;inset:0;transform-origin:50% 50%;pointer-events:none}
+#app #board .central-shadow .shadow-layer img{position:absolute;left:-12.5%;top:-12.5%;width:125%;height:125%;max-width:none;pointer-events:none;user-select:none}
+#app #board .central-shadow:not([data-ready="true"]){visibility:hidden}
 #app #board .piece[data-central-shadow] > svg:not(.ground-shadow){position:relative;z-index:1}
-/* The pre-existing seating animation moves the potato, never its ground shadow. */
-#app #board.game-screen .piece[data-central-shadow].done[data-seat-pop] > svg.ground-shadow.central-shadow{animation:none!important;transform:none!important}
+#app #board .piece.drag .shadow-layer{will-change:transform,opacity}
+#app #board .piece.drag{transition:none!important;will-change:transform}
