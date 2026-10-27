@@ -372,8 +372,12 @@ body:not(:has(#board.game-screen.level-animals)):not(:has(#board.game-screen.lev
  background-color:#edb744!important;border-color:#cf9d42!important;color:#493222!important;
 }
 #app:not(:has(#board.game-screen.level-animals)):not(:has(#board.game-screen.level-flowers)) #bestWorldRank{border-color:#a38660}
-#app #homePage,#app #ranking,#app #myProgress{
+#app #ranking,#app #myProgress{
  background-color:#f5eedd!important;background-image:none!important;
+}
+/* Softer cream-grey on level selection, retaining the existing dark text. */
+#app #homePage{
+ background-color:#ded6c5!important;background-image:none!important;
 }
 #app #homePage .homeSubtitle{color:#493222}
 #app #homePage .levelGrid button,#app #homePage .levelGrid button.percentile-ranked{
