@@ -1,5 +1,8 @@
 /* Shared navigation and results layout; gameplay artwork is unchanged. */
-#app.macro-view>header{display:none!important}
+/* Header is a permanent flex sibling of the board and footer, never a menu overlay. */
+#app>header{height:var(--shared-toolbar-height,auto);min-height:var(--shared-toolbar-height,0px);flex-shrink:0;box-sizing:border-box}
+#app.macro-view>header{display:flex!important;align-items:center;justify-content:center;padding:calc(6px + env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 6px max(10px,env(safe-area-inset-left));overflow:hidden}
+#app.macro-view>header>:not(.macroNavigation){display:none!important}
 #app #refresh,#app #homeRanking,#app #previousLevel{display:none!important}
 #app .macroNavigation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;flex:none;margin:0 0 10px;position:relative;z-index:2}
 #app .macroNavigation button{min-width:0;min-height:46px;padding:8px 4px;margin:0;white-space:normal;font:inherit;font-size:clamp(11px,2.9vw,14px);line-height:1.2}
@@ -47,10 +50,31 @@
 #app #profileOverlay .profilePanel{max-height:100%;overflow:auto}
 #app #profileOverlay #closeProfile{position:static;align-self:flex-end;flex:none;order:0;margin-top:-4px;margin-bottom:-42px;z-index:2}
 #app #profileOverlay .macroNavigation{order:-1}
-#app.game-finished>header{display:none!important}
+/* Completed games keep exactly the same header and its reserved height. */
 #app .macroNavigation{position:sticky;top:0;z-index:5}
 /* Settings is a macrosection; keep onboarding as its existing dialog. */
 #app #ranking,#app #myProgress{padding:14px}
 #app #profileOverlay:not(.firstSetup){padding:0;align-items:stretch;background:var(--potato-grain) #fff0d0!important}
 #app #profileOverlay:not(.firstSetup) .profilePanel{width:100%;height:100%;max-width:none;padding:14px!important;border:0!important;border-radius:0!important;box-shadow:none!important}
 #app .macroNavigation{background:inherit}
+
+/* Shared navigation occupies the game header itself, never a separate page row. */
+#app>header .macroNavigation{display:none!important}
+#app.macro-view>header .macroNavigation{
+ display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:6px;width:100%;margin:0;padding:0;flex:1;min-width:0;
+ position:static;top:auto;z-index:auto;background:transparent;
+ align-items:center;
+}
+#app.macro-view>header .macroNavigation button{
+ min-width:0;width:100%;min-height:46px;height:auto;
+ margin:0;padding:8px 4px;font-size:clamp(10px,2.8vw,13px);
+ line-height:1.15;white-space:normal;overflow-wrap:break-word;
+}
+#app>header .macroNavigation button[hidden]{display:none!important}
+/* Only contextual results can be closed back to the still-present result screen. */
+#app.macro-view:not(.context-view) #closeRanking,
+#app.macro-view:not(.context-view) #closeProgress{display:none!important}
+/* Settings is a full main-area screen; only first-run onboarding remains modal. */
+#app #profileOverlay:not(.firstSetup) #closeProfile{display:none!important}
+#app:has(#profileOverlay.firstSetup:not([hidden]))>header .macroNavigation{visibility:hidden}
