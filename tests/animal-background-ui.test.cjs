@@ -8,12 +8,12 @@ async function fixture(){
  await page.addInitScript(()=>{localStorage.setItem('10shapes_profile_setup','yes');localStorage.setItem('10shapes_music','off');localStorage.setItem('10potatoes_voices','off');});await page.goto('https://shadow.test/');try{await page.waitForFunction(()=>!!window.shadowGameTest&&!!window.PotatoShadows,null,{timeout:10000});}catch(e){console.error('Page errors:',errors);await browser.close();throw e;}return {browser,page,errors};
 }
 
-test('animalier background is static, animal-only and preserves silhouette play',async()=>{
+test('animal-footprint background is static, animal-only and preserves silhouette play',async()=>{
  const {browser,page,errors}=await fixture();try{
   await page.evaluate(()=>{shadowGameTest.setLevel(17);shadowGameTest.play();});
-  await page.waitForFunction(()=>document.querySelector('#board').dataset.photoCloth==='animalier-soft');
+  await page.waitForFunction(()=>document.querySelector('#board').dataset.photoCloth==='animal-tracks');
   const style=await page.locator('#board').evaluate(e=>({image:getComputedStyle(e,'::before').backgroundImage,size:getComputedStyle(e,'::before').backgroundSize,animation:getComputedStyle(e,'::before').animationName}));
-  assert(style.image.includes('animalier-soft.svg'));assert.equal(style.size,'288px 288px, 256px 256px');assert.equal(style.animation,'none');
+  assert(style.image.includes('animal-tracks.svg'));assert.equal(style.size,'288px 288px');assert.equal(style.animation,'none');
   assert.equal(await page.locator('.flour-slot,.photo-potato').count(),0);
   assert.equal(await page.locator('.slot .recess-rim').count(),10);
   if(process.env.ANIMAL_BACKGROUND_SCREENSHOT)await page.screenshot({path:process.env.ANIMAL_BACKGROUND_SCREENSHOT});
@@ -24,8 +24,8 @@ test('animalier background is static, animal-only and preserves silhouette play'
   assert.equal((await page.evaluate(()=>shadowGameTest.state())).phase,'finished');
   for(const mode of [18,1]){
    await page.evaluate(m=>shadowGameTest.setLevel(m),mode);
-   await page.waitForFunction(()=>document.querySelector('#board').dataset.photoCloth!=='animalier-soft');
-   assert(!await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundImage.includes('animalier-soft.svg')));
+   await page.waitForFunction(()=>document.querySelector('#board').dataset.photoCloth!=='animal-tracks');
+   assert(!await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundImage.includes('animal-tracks.svg')));
   }
   assert.deepEqual(errors,[]);
  }finally{await browser.close();}

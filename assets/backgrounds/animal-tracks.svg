@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="288" height="288" viewBox="0 0 288 288">
+<defs>
+<g id="paw"><path d="M-10 7C-12 1-6-5 0-5S12 1 10 7C8 13 3 9 0 10S-8 13-10 7Z"/><ellipse cx="-10" cy="-7" rx="3.5" ry="5" transform="rotate(-25 -10 -7)"/><ellipse cx="-3.5" cy="-13" rx="3.5" ry="5" transform="rotate(-8 -3.5 -13)"/><ellipse cx="4.5" cy="-13" rx="3.5" ry="5" transform="rotate(10 4.5 -13)"/><ellipse cx="11" cy="-6" rx="3.5" ry="5" transform="rotate(25 11 -6)"/></g>
+<g id="hoof"><path d="M-2-14C-12-8-13 4-8 12L-1 10Z M2-14C12-8 13 4 8 12L1 10Z"/></g>
+<g id="bird" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M0 11V-13M0 2L-10-8M0 2L10-8M0 7L5 14"/></g>
+<g id="rabbit"><ellipse cx="-5" cy="-5" rx="3.2" ry="10" transform="rotate(-12 -5 -5)"/><ellipse cx="6" cy="-7" rx="3.2" ry="10" transform="rotate(10 6 -7)"/><ellipse cx="-4" cy="12" rx="2.7" ry="4"/><ellipse cx="5" cy="13" rx="2.7" ry="4"/></g>
+</defs>
+<g fill="#b6b3a9" color="#b6b3a9" opacity=".28">
+<use href="#paw" transform="translate(32 34) rotate(-25) scale(.85)"/>
+<use href="#bird" transform="translate(126 28) rotate(23) scale(.9)"/>
+<use href="#hoof" transform="translate(227 42) rotate(-34) scale(.86)"/>
+<use href="#rabbit" transform="translate(76 113) rotate(18) scale(.9)"/>
+<use href="#paw" transform="translate(181 119) rotate(35) scale(.95)"/>
+<use href="#bird" transform="translate(260 132) rotate(-40) scale(.8)"/>
+<use href="#hoof" transform="translate(28 213) rotate(22) scale(.85)"/>
+<use href="#paw" transform="translate(125 222) rotate(-48) scale(.86)"/>
+<use href="#rabbit" transform="translate(229 226) rotate(-20) scale(.85)"/>
+<use href="#bird" transform="translate(174 277) rotate(10) scale(.6)"/>
+</g></svg>

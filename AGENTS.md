@@ -6,4 +6,4 @@ This rule starts with the flour-target change. Do not retroactively revert previ
 
 Explicit exception approved by the user: the photographic potato START and 3–2–1 countdown artwork is shared by all levels, including animals and flowers. This exception does not extend to pieces, flour targets or other future cosmetic changes.
 
-Explicit animal-only exception: a low-contrast, desaturated animalier linen background is approved for the Animals level. This changes its background only; its pieces/targets and the Flowers level retain their existing appearance.
+Explicit animal-only exception: a neutral, low-contrast tone-on-tone animal-footprint background is approved for the Animals level. This changes its background only; its pieces/targets and the Flowers level retain their existing appearance.

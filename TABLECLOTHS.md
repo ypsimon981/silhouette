@@ -21,3 +21,6 @@ The motif printing is a periodic colour treatment over real linen fibres, rather
 
 ## v0.22.55 animal-only exception
 The Animals background now has a quiet greige animalier print over the repeating plain linen tile. It uses the existing small linen source and does not need the legacy atlas. Flowers keep the prior background. The explicit exception is documented in AGENTS.md; animal shapes, target artwork and reveal behaviour remain original.
+
+## v0.22.56 neutral animal tracks
+The Animals exception is now a flat neutral ground with tone-on-tone footprints. Its earlier leopard/linen layers are superseded; Animals no longer prepares or loads a linen tile. Potato and flower treatments remain unchanged.

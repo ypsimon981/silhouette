@@ -95,13 +95,9 @@ function apply(board,index,tiled=false){
 }
 function applyAnimals(board){
  if(!board)return Promise.resolve(false);
- const token={};selected.set(board,token);
- return tileTexture(5).then(url=>{
-  if(selected.get(board)!==token)return false;
-  board.style.setProperty('--animal-linen','url("'+url+'")');
-  board.dataset.photoCloth='animalier-soft';delete board.dataset.tileCloth;
-  return true;
- }).catch(()=>false);
+ selected.set(board,{}); // Invalidate pending backgrounds from the previous mode.
+ board.dataset.photoCloth='animal-tracks';delete board.dataset.tileCloth;
+ return Promise.resolve(true);
 }
 window.Tablecloths=Object.freeze({apply,applyAnimals,textures});
 })();
