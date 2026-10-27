@@ -13,22 +13,39 @@ test('four macrosections, direct levels, real completion, contextual return, ret
  await page.route(/^https:\/\//,async r=>{if(!r.request().url().includes('ten-shapes-ranking')||!online)return r.abort();const id=new URL(r.request().url()).searchParams.get('player_id');const scores=Array.from({length:7},(_,i)=>({player_id:i===rank-1?id:'fixture-'+i,nickname:'Giocatore '+(i+1),country:'IT',time_ms:10000+i*1000}));return r.fulfill({headers:{'access-control-allow-origin':'*'},json:{scores,total:7,my_rank:rank,my_score:scores[rank-1],leader:scores[0],my_context:[]}})});
  await page.goto(url);await page.waitForTimeout(100);
  const roots={levels:'#homePage',rankings:'#ranking',cognitive:'#myProgress',settings:'#profileOverlay'};
+ const header=page.locator('#app > header'),nav=header.locator('.macroNavigation');
+ const baselineHeight=(await header.boundingBox()).height;
+ const baselineBackground=await header.evaluate(e=>getComputedStyle(e).backgroundImage);
+ assert.match(baselineBackground,/jute-natural/);
  for(const [source,root] of Object.entries(roots)){
-  if(source!=='levels')await page.locator('#homePage [data-section="'+source+'"]').click();
-  assert.equal(await page.locator(root+' .macroNavigation button').count(),3);
-  assert.equal(await page.locator(root+' [data-section="'+source+'"]').count(),0);
+  if(source!=='levels')await nav.locator('[data-section="'+source+'"]').click();
+  assert.ok(await page.locator(root).isVisible());
+  assert.equal(await nav.locator('button:visible').count(),3);
+  assert.equal(await nav.locator('[data-section="'+source+'"]').isVisible(),false);
+  assert.ok(await header.isVisible());
+  assert.ok(Math.abs((await header.boundingBox()).height-baselineHeight)<=1);
+  assert.equal(await header.evaluate(e=>getComputedStyle(e).backgroundImage),baselineBackground);
+  if(source==='settings')assert.equal(await page.locator('#closeProfile').isVisible(),false);
   for(const target of Object.keys(roots).filter(v=>v!==source)){
-   await page.locator(root+' [data-section="'+target+'"]').click();assert.ok(await page.locator(roots[target]).isVisible());
-   await page.locator(roots[target]+' [data-section="'+source+'"]').click();
+   await nav.locator('[data-section="'+target+'"]').click();assert.ok(await page.locator(roots[target]).isVisible());
+   assert.equal(await nav.locator('button:visible').count(),3);
+   await nav.locator('[data-section="'+source+'"]').click();
   }
-  if(source!=='levels')await page.locator(root+' [data-section="levels"]').click();
+  if(source!=='levels')await nav.locator('[data-section="levels"]').click();
  }
  assert.equal(await page.locator('#refresh').isVisible(),false);
  assert.equal(await page.locator('#trainingModes').isVisible(),false);
  assert.ok(await page.locator('[data-mode="14"]').isVisible());
  await page.locator('[data-mode="4"]').click();assert.match(await page.locator('#levelTitle').innerText(),/3/);
+ assert.ok(await header.isVisible());
+ assert.ok(Math.abs((await header.boundingBox()).height-baselineHeight)<=1);
+ assert.equal(await nav.isVisible(),false);
+ assert.equal(await page.locator('#adSlot').isVisible(),false);
+ assert.ok(await page.locator('#handControls').isVisible());
  await play(page,()=>{rank=3});await page.waitForTimeout(200);
  assert.equal(await page.locator('#finishLevelName').innerText(),'Livello 3');
+ assert.ok(await header.isVisible());
+ assert.ok(Math.abs((await header.boundingBox()).height-baselineHeight)<=1);
  assert.equal(await page.locator('#finishSectors .sector').count(),3);
  assert.ok(await page.locator('#adSlot').isVisible());
  const snapshot=await page.locator('#finishScore').innerText();
@@ -40,6 +57,15 @@ test('four macrosections, direct levels, real completion, contextual return, ret
  await page.locator('#again').click();assert.ok(await page.locator('#startButton').isVisible());
  await play(page);await page.locator('#nextLevel').click();assert.match(await page.locator('#levelTitle').innerText(),/4/);assert.ok(await page.locator('#startButton').isVisible());
  await page.locator('#homeButton').click();
+ await page.locator('[data-mode="1"]').click();
+ await page.locator('#homeButton').click();
+ await nav.locator('[data-section="settings"]').click();
+ assert.ok(await page.locator('#profileOverlay').isVisible());
+ assert.equal(await page.locator('#closeProfile').isVisible(),false);
+ assert.equal(await page.locator('#board').evaluate(e=>e.classList.contains('game-screen')),false);
+ await nav.locator('[data-section="levels"]').click();
+ assert.ok(await page.locator('#homePage').isVisible());
+ assert.equal(await page.locator('#finish').isVisible(),false);
  // Non-potato appearance and direct launch remain available.
  for(const [mode,css] of [[17,'level-animals'],[18,'level-flowers']]){await page.locator('[data-mode="'+mode+'"]').click();assert.ok(await page.locator('#board').evaluate((e,c)=>e.classList.contains(c),css));await page.locator('#homeButton').click()}
  online=false;await page.locator('[data-mode="1"]').click();await play(page);await page.waitForTimeout(50);assert.match(await page.locator('#recordPositions').innerText(),/temporaneamente non disponibile/);
