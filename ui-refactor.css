@@ -2,7 +2,7 @@
 /* Header is a permanent flex sibling of the board and footer, never a menu overlay. */
 #app>header{height:var(--shared-toolbar-height,auto);min-height:var(--shared-toolbar-height,0px);flex-shrink:0;box-sizing:border-box}
 #app.macro-view>header{display:flex!important;align-items:center;justify-content:center;padding:calc(6px + env(safe-area-inset-top)) max(10px,env(safe-area-inset-right)) 6px max(10px,env(safe-area-inset-left));overflow:hidden}
-#app.macro-view>header>:not(.macroNavigation){display:none!important}
+#app.macro-view>header>:not(.macroNavigation):not(#refresh){display:none!important}
 #app #refresh,#app #homeRanking,#app #previousLevel{display:none!important}
 #app .macroNavigation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;flex:none;margin:0 0 10px;position:relative;z-index:2}
 #app .macroNavigation button{min-width:0;min-height:46px;padding:8px 4px;margin:0;white-space:normal;font:inherit;font-size:clamp(11px,2.9vw,14px);line-height:1.2}
@@ -78,3 +78,9 @@
 /* Settings is a full main-area screen; only first-run onboarding remains modal. */
 #app #profileOverlay:not(.firstSetup) #closeProfile{display:none!important}
 #app:has(#profileOverlay.firstSetup:not([hidden]))>header .macroNavigation{visibility:hidden}
+
+/* Keep refresh available beside navigation without adding another toolbar row. */
+#app.macro-view>header #refresh{
+ display:grid!important;place-items:center;flex:0 0 40px;order:1;
+ width:40px;height:46px;min-height:46px;margin:0;padding:0;font-size:22px;
+}
