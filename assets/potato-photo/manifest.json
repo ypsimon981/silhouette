@@ -1,0 +1,189 @@
+[
+  {
+    "family": "circle",
+    "name": "circle",
+    "raw": "M 50 10 A 40 40 0 1 1 49.99 10 Z",
+    "path": "M 50 10 A 40 40 0 1 1 49.99 10 Z",
+    "url": "./assets/potato-photo/circle.webp",
+    "bounds": [
+      1.858915441176471,
+      2.253887910798122,
+      96.47058823529412,
+      96.24413145539906
+    ],
+    "iou": 0.9949362436513605,
+    "source": "exec-60bf61c1-011c-46c2-9d0e-3661b4c787a0.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: circle. Render only this one object.",
+    "bytes": 76706
+  },
+  {
+    "family": "square",
+    "name": "square",
+    "raw": "M 12 12 H 88 V 88 H 12 Z",
+    "path": "M 19.000 12.000 L 81.000 12.000 A 7.000 7.000 0 0 1 88.000 19.000 L 88.000 81.000 A 7.000 7.000 0 0 1 81.000 88.000 L 19.000 88.000 A 7.000 7.000 0 0 1 12.000 81.000 L 12.000 19.000 A 7.000 7.000 0 0 1 19.000 12.000 Z",
+    "url": "./assets/potato-photo/square.webp",
+    "bounds": [
+      0.6633208069620249,
+      0.6633208069620249,
+      98.48101265822785,
+      98.48101265822785
+    ],
+    "iou": 0.9898160905768885,
+    "source": "exec-4db6771c-d035-46a7-9475-1b8b5252b821.png",
+    "prompt": "Render ONE SQUARE raw potato, NOT AN L. The supplied image is the exact square silhouette to fill: a SOLID ROUNDED SQUARE with four sides of EQUAL length, NO notch, no cutout, no hole, no letters. Preserve the exact silhouette, placement and margins shown. Photorealistic raw natural buff/tan potato skin with tiny pores, subtle mottled brown blemishes and small potato eyes, a few papery flakes. Thin but plump convex body rounded INSIDE the given square silhouette. EXACT overhead orthographic camera, broad soft overhead light, matte skin, darker rounded perimeter to show volume, no harsh yellow. Replace grey object with this real potato, remove white background to actual alpha transparency. No ground, no cloth, no baked shadow, no text, no face, no cartoon eyes, no mouth, no plastic. Square 1024x1024 canvas. Object is a completely solid SQUARE.",
+    "bytes": 71792
+  },
+  {
+    "family": "ell",
+    "name": "ell",
+    "raw": "M 12 12 H 60 V 40 H 88 V 88 H 12 Z",
+    "path": "M 19.000 12.000 L 53.000 12.000 A 7.000 7.000 0 0 1 60.000 19.000 L 60.000 33.000 A 7.000 7.000 0 0 0 67.000 40.000 L 81.000 40.000 A 7.000 7.000 0 0 1 88.000 47.000 L 88.000 81.000 A 7.000 7.000 0 0 1 81.000 88.000 L 19.000 88.000 A 7.000 7.000 0 0 1 12.000 81.000 L 12.000 19.000 A 7.000 7.000 0 0 1 19.000 12.000 Z",
+    "url": "./assets/potato-photo/ell.webp",
+    "bounds": [
+      0.12820512820512775,
+      0.12820512820512775,
+      99.74358974358975,
+      99.74358974358975
+    ],
+    "iou": 0.9979730328592182,
+    "source": "exec-5ed7ab76-6b36-4205-b440-3c329c255d4f.png",
+    "prompt": "Use case: sketch-to-render. Replace ONLY the grey filled shape in the supplied image with a photographic real raw potato shaped as a solid capital L shape, with a broad vertical left stem and bottom horizontal arm. Preserve the EXACT inner elbow and arm widths shown. Preserve the supplied silhouette and its position pixel for pixel; do NOT narrow the strokes or change proportions. Camera EXACTLY overhead orthographic. Plump thin convex body, soft rounded edges INSIDE the given outline. Pale natural buff/tan raw potato skin with tiny pores, small brown eyes and mottling, sparse papery flakes, matte dry skin, neutral soft broad overhead light, gentle darker edges showing volume. The entire grey region must become opaque potato. The entire white background must become TRANSPARENT alpha, including the notch. No ground, no cloth, no shadow halo or cast shadow, no text, face, cartoon eyes or mouth, plastic or fried food. Square canvas 1024x1024; retain the reference canvas margins.",
+    "bytes": 50714
+  },
+  {
+    "family": "ring",
+    "name": "ring",
+    "raw": "M 50 7 C 72 7 84 25 84 50 C 84 75 72 93 50 93 C 28 93 16 75 16 50 C 16 25 28 7 50 7 Z",
+    "path": "M 50 7 C 72 7 84 25 84 50 C 84 75 72 93 50 93 C 28 93 16 75 16 50 C 16 25 28 7 50 7 Z",
+    "url": "./assets/potato-photo/ring.webp",
+    "bounds": [
+      -2.7272727272727266,
+      0.42067307692307665,
+      105.45454545454544,
+      99.5475113122172
+    ],
+    "iou": 0.9799236621296298,
+    "source": "exec-a8335edc-6d95-4e50-b35d-ed958192d7d7.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: ring. Render only this one object.",
+    "bytes": 64170
+  },
+  {
+    "family": "square-hole",
+    "name": "square-hole",
+    "raw": "M 50 8 C 72 8 83 12 87 23 C 94 40 94 60 87 77 C 83 88 72 92 50 92 C 28 92 17 88 13 77 C 6 60 6 40 13 23 C 17 12 28 8 50 8 Z",
+    "path": "M 50 8 C 72 8 83 12 87 23 C 94 40 94 60 87 77 C 83 88 72 92 50 92 C 28 92 17 88 13 77 C 6 60 6 40 13 23 C 17 12 28 8 50 8 Z",
+    "url": "./assets/potato-photo/square-hole.webp",
+    "bounds": [
+      -0.8215962441314542,
+      1.7374858597285066,
+      101.6431924882629,
+      97.28506787330316
+    ],
+    "iou": 0.9856982725527831,
+    "source": "exec-6435d832-a945-4074-a1b6-a2780b89eaf0.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: square-hole. Render only this one object.",
+    "bytes": 92316
+  },
+  {
+    "family": "star",
+    "name": "star-1",
+    "raw": "M 50 8 L 66 34 L 92 50 L 66 66 L 50 92 L 34 66 L 8 50 L 34 34 Z",
+    "path": "M 55.962 17.688 L 65.127 32.581 A 7.000 7.000 0 0 0 67.419 34.873 L 82.312 44.038 A 7.000 7.000 0 0 1 82.312 55.962 L 67.419 65.127 A 7.000 7.000 0 0 0 65.127 67.419 L 55.962 82.312 A 7.000 7.000 0 0 1 44.038 82.312 L 34.873 67.419 A 7.000 7.000 0 0 0 32.581 65.127 L 17.688 55.962 A 7.000 7.000 0 0 1 17.688 44.038 L 32.581 34.873 A 7.000 7.000 0 0 0 34.873 32.581 L 44.038 17.688 A 7.000 7.000 0 0 1 55.962 17.688 Z",
+    "url": "./assets/potato-photo/star-1.webp",
+    "bounds": [
+      6.957547169811321,
+      7.125681751179246,
+      86.08490566037736,
+      86.08490566037736
+    ],
+    "iou": 0.9891214925811664,
+    "source": "exec-9cc6a834-7e22-4188-a018-07a236ef312a.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: star-1. Render only this one object.",
+    "bytes": 54116
+  },
+  {
+    "family": "star",
+    "name": "star-2",
+    "raw": "M 50 8 L 65 29 L 90 36 L 77 57 L 76 84 L 50 75 L 24 84 L 23 57 L 10 36 L 35 29 Z",
+    "path": "M 55.696 15.975 L 63.566 26.993 A 7.000 7.000 0 0 0 67.375 29.665 L 81.036 33.490 A 7.000 7.000 0 0 1 85.100 43.915 L 77.975 55.425 A 7.000 7.000 0 0 0 76.931 58.851 L 76.350 74.551 A 7.000 7.000 0 0 1 67.065 80.907 L 52.290 75.793 A 7.000 7.000 0 0 0 47.710 75.793 L 32.935 80.907 A 7.000 7.000 0 0 1 23.650 74.551 L 23.069 58.851 A 7.000 7.000 0 0 0 22.025 55.425 L 14.900 43.915 A 7.000 7.000 0 0 1 18.964 33.490 L 32.625 29.665 A 7.000 7.000 0 0 0 36.434 26.993 L 44.304 15.975 A 7.000 7.000 0 0 1 55.696 15.975 Z",
+    "url": "./assets/potato-photo/star-2.webp",
+    "bounds": [
+      10.970464135021096,
+      7.213630850456621,
+      78.05907172995781,
+      79.90867579908677
+    ],
+    "iou": 0.9594528895083136,
+    "source": "exec-a3c2262b-6bd8-47eb-9963-93414160c1f1.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: star-2. Render only this one object.",
+    "bytes": 73726
+  },
+  {
+    "family": "rectangle",
+    "name": "rectangle",
+    "raw": "M 10 25 H 90 V 75 H 10 Z",
+    "path": "M 17.000 25.000 L 83.000 25.000 A 7.000 7.000 0 0 1 90.000 32.000 L 90.000 68.000 A 7.000 7.000 0 0 1 83.000 75.000 L 17.000 75.000 A 7.000 7.000 0 0 1 10.000 68.000 L 10.000 32.000 A 7.000 7.000 0 0 1 17.000 25.000 Z",
+    "url": "./assets/potato-photo/rectangle.webp",
+    "bounds": [
+      1.650943396226415,
+      -0.2964426877470352,
+      96.69811320754717,
+      101.18577075098814
+    ],
+    "iou": 0.9911367412294431,
+    "source": "exec-bbe91ff9-78c2-4a0f-8d17-2384cad3f64e.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: rectangle. Render only this one object.",
+    "bytes": 56592
+  },
+  {
+    "family": "semicircle",
+    "name": "semicircle",
+    "raw": "M 18 54 Q 10 54 11 46 C 14 23 30 10 50 10 C 70 10 86 23 89 46 Q 90 54 82 54 Z",
+    "path": "M 18 54 Q 10 54 11 46 C 14 23 30 10 50 10 C 70 10 86 23 89 46 Q 90 54 82 54 Z",
+    "url": "./assets/potato-photo/semicircle.webp",
+    "bounds": [
+      5.444444444444445,
+      -6.246874999999999,
+      89.11111111111111,
+      90.2
+    ],
+    "iou": 0.9696495094091319,
+    "source": "exec-6bcc4b41-90d2-4505-be83-0e725e7e581e.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: semicircle. Render only this one object.",
+    "bytes": 49900
+  },
+  {
+    "family": "triangle",
+    "name": "triangle",
+    "raw": "M 50 8 L 92 84 H 8 Z",
+    "path": "M 56.127 19.086 L 86.260 73.614 A 7.000 7.000 0 0 1 80.134 84.000 L 19.866 84.000 A 7.000 7.000 0 0 1 13.740 73.614 L 43.873 19.086 A 7.000 7.000 0 0 1 56.127 19.086 Z",
+    "url": "./assets/potato-photo/triangle.webp",
+    "bounds": [
+      5.813953488372093,
+      3.7683231314432994,
+      88.37209302325581,
+      90.4639175257732
+    ],
+    "iou": 0.9919691280767626,
+    "source": "exec-58c62d33-39d5-4d7e-879b-aa08ac71406a.png",
+    "prompt": "Use case: sketch-to-render. Production game sprite, square 1024x1024 transparent canvas. Image 1 is the EXACT TARGET silhouette and canvas placement: replace only its grey filled region with a photographic raw potato body. Preserve its precise outline, proportions, orientation and position, including ALL white negative spaces which must become transparent. Do NOT make the object bigger, narrower, taller or rounder in silhouette. Image 2 is ONLY the approved material/photorealism reference, do not copy its L geometry. Render a real organically grown raw tan potato in the exact Image 1 shape, gently convex thin body with soft rounded edges INSIDE the given outline, exact overhead orthographic camera, no perspective. Pale warm buff/tan skin, naturally uneven small brown blemishes, tiny shallow potato eyes, fine pores and a few papery peeling patches, coherent soft broad overhead illumination, subtle darker perimeter shading to show real volume. Match image 2 material. No cartoon features, face, mouth, eyebrows or cartoon eyes. No plastic, gloss, fried crust, dough or harsh yellow. Truly transparent background; remove all white from Image 1, no tablecloth, no ground, no baked cast shadow, no shadow halo, no text, no extra objects. Exact silhouette fidelity is essential. The entire object fits within the original margins of Image 1. Asset identifier: triangle. Render only this one object.",
+    "bytes": 58192
+  },
+  {
+    "family": "crescent",
+    "name": "crescent",
+    "raw": "M 69 12 C 48 0 10 17 10 50 C 10 83 48 100 69 88 C 76 84 74 78 68 75 C 48 67 48 33 68 25 C 74 22 76 16 69 12 Z",
+    "path": "M 69 12 C 48 0 10 17 10 50 C 10 83 48 100 69 88 C 76 84 74 78 68 75 C 48 67 48 33 68 25 C 74 22 76 16 69 12 Z",
+    "url": "./assets/potato-photo/crescent.webp",
+    "bounds": [
+      0.0,
+      -0.11682242990654146,
+      100.0,
+      100.23364485981307
+    ],
+    "iou": 0.9931158939518591,
+    "source": "exec-96421c65-46bc-43bd-b16b-727a0bc3c961.png",
+    "prompt": "Use case: sketch-to-render. Replace ONLY the grey filled shape in the supplied image with a photographic real raw potato shaped as a thick crescent shape, open to the right. Preserve the EXACT concave right edge and rounded upper and lower tips shown. Preserve the supplied silhouette and its position pixel for pixel; do NOT narrow the strokes or change proportions. Camera EXACTLY overhead orthographic. Plump thin convex body, soft rounded edges INSIDE the given outline. Pale natural buff/tan raw potato skin with tiny pores, small brown eyes and mottling, sparse papery flakes, matte dry skin, neutral soft broad overhead light, gentle darker edges showing volume. The entire grey region must become opaque potato. The entire white background must become TRANSPARENT alpha, including the notch. No ground, no cloth, no shadow halo or cast shadow, no text, face, cartoon eyes or mouth, plastic or fried food. Square canvas 1024x1024; retain the reference canvas margins.",
+    "bytes": 48766
+  }
+]
