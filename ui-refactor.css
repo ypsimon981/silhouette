@@ -1,0 +1,56 @@
+/* Shared navigation and results layout; gameplay artwork is unchanged. */
+#app.macro-view>header{display:none!important}
+#app #refresh,#app #homeRanking,#app #previousLevel{display:none!important}
+#app .macroNavigation{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;flex:none;margin:0 0 10px;position:relative;z-index:2}
+#app .macroNavigation button{min-width:0;min-height:46px;padding:8px 4px;margin:0;white-space:normal;font:inherit;font-size:clamp(11px,2.9vw,14px);line-height:1.2}
+#app #homePage{overflow:auto;justify-content:flex-start;padding-top:8px}
+#app #homePage .levelGroupHeading{font-size:14px;margin:8px 0 6px;text-align:left;width:100%;flex:none}
+#app #homePage .levelGrid,#app #homePage .seriesModes,#app #homePage .legacyModes{flex:none;width:100%}
+#app #homePage .seriesModes{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#app #homePage .legacyModes button{width:100%;min-height:44px}
+#app #profileOverlay .profilePanel{padding-top:12px}
+#app #profileOverlay.firstSetup .macroNavigation{display:none}
+#app #profileOverlay #profileTitle{padding-right:35px}
+#app #board.game-screen.complete #finish{inset:6px!important;width:auto!important;height:auto!important;max-width:none!important;max-height:none!important;display:flex!important;flex-direction:column;gap:10px;padding:12px!important;overflow:auto!important;justify-content:space-between!important;z-index:35;touch-action:pan-y;pointer-events:auto;background:var(--potato-grain) #4a281bf2!important;border-radius:15px!important}
+#app #board.complete #finish #finishScore,#app #board.complete #finish #finishCommands{position:static!important;inset:auto!important;transform:none!important;width:100%!important;height:auto!important;overflow:visible!important;flex:none;max-height:none!important;padding:0!important;background:none!important;border:0!important;box-shadow:none!important}
+#app #board.complete #finish #finishScore{gap:8px;justify-content:flex-start}
+#app #board.complete #finish #finishScore #finishLevelName{font-size:17px;margin:0;color:inherit}
+#app #board.complete #finish #finishScore h2{font-size:14px;margin:0}
+#app #board.complete #finish #finishScore #finishTimeValue{font-size:clamp(34px,10vw,52px);line-height:1.1}
+#app #board.complete #finish #finishScore #finishTimeDelta{font-size:12px}
+#app #board.complete #finish #finishSectors{width:100%;gap:6px;margin:4px 0}
+#app #board.complete #finish #finishSectors .sector{display:flex;flex:1;flex-direction:column;gap:4px;padding:8px 3px;min-width:0}
+#app #board.complete #finish #finishSectors .sector strong{font-size:17px}
+#app #board.complete #finish #finishSectors .sector small{font-size:10px;line-height:1.3;font-weight:600}
+#app #board.complete #finish #recordPositions{width:100%;margin:2px 0;gap:3px;font-size:11px}
+#app #finish .resultRankRow{display:flex;justify-content:space-between;gap:8px;padding:3px 5px;border-radius:5px;line-height:1.3}
+#app #finish .resultRankRow span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+#app #finish .resultRankRow strong{white-space:nowrap;font-variant-numeric:tabular-nums}
+#app #finish .resultRankRow.me{background:#deb26730;font-weight:800}
+#app #finish .resultMyRank{font-weight:800}
+#app #board.complete #finish #finishCommands{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#app #board.complete #finish #finishCommands .finishPrimary,#app #board.complete #finish #finishCommands .finishNav,#app #board.complete #finish #finishCommands .finishOverviewRow{display:contents}
+#app #board.complete #finish #finishCommands button{width:100%;height:auto;min-height:42px;padding:7px;font-size:12px;margin:0;grid-column:auto;grid-row:auto}
+#app #board.complete #finish #finishCommands #again,#app #board.complete #finish #finishCommands #nextLevel{grid-row:1;min-height:50px;font-size:15px;background-color:#ecc784!important}
+#app #board.complete #finish #finishCommands #again{grid-column:1}
+#app #board.complete #finish #finishCommands #nextLevel{grid-column:2}
+#app #board.complete #finish #finishCommands #finishHome{grid-column:2;grid-row:2}
+#app #board.complete #finish #finishCommands #finishRanking{grid-column:1;grid-row:2}
+#app #board.complete #finish #finishCommands #finishProgress{grid-column:1 / -1;grid-row:3}
+#app #board.complete #finish #finishCommands .social-actions,#app #board.complete #finish #finishCommands #social-result{grid-column:1 / -1;order:4}
+#app #board.complete #finish #finishCommands .social-actions{display:flex;flex-wrap:wrap}
+#app #board.complete #finish #finishCommands .social-actions[hidden]{display:none}
+#app #board.complete #finish #finishCommands .social-actions button{flex:1;min-width:100px}
+#app #board.complete #finish #finishCommands .finishNav #nextLevel .levelCaption{font-size:12px}
+#app #board.complete #finish #finishCommands .finishNav #nextLevel .levelArrow{display:none}
+@media(max-height:650px){#app #board.game-screen.complete #finish{gap:7px;padding:8px!important}#app #board.complete #finish #finishScore{gap:4px}#app #board.complete #finish #finishScore #finishTimeValue{font-size:32px}#app #board.complete #finish #finishSectors .sector{padding:5px 2px}}
+#app #profileOverlay .profilePanel{max-height:100%;overflow:auto}
+#app #profileOverlay #closeProfile{position:static;align-self:flex-end;flex:none;order:0;margin-top:-4px;margin-bottom:-42px;z-index:2}
+#app #profileOverlay .macroNavigation{order:-1}
+#app.game-finished>header{display:none!important}
+#app .macroNavigation{position:sticky;top:0;z-index:5}
+/* Settings is a macrosection; keep onboarding as its existing dialog. */
+#app #ranking,#app #myProgress{padding:14px}
+#app #profileOverlay:not(.firstSetup){padding:0;align-items:stretch;background:var(--potato-grain) #fff0d0!important}
+#app #profileOverlay:not(.firstSetup) .profilePanel{width:100%;height:100%;max-width:none;padding:14px!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+#app .macroNavigation{background:inherit}
