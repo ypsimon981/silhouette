@@ -1,0 +1,7 @@
+/* Potato levels only. Animals and flowers keep their original targets. */
+#board.game-screen:not(.level-animals):not(.level-flowers) .slot .flour-slot .recess-floor{
+ fill:none!important;stroke:none!important;filter:none!important;opacity:0!important;
+}
+#board.game-screen:not(.level-animals):not(.level-flowers) .slot .flour-slot .flour-art{
+ pointer-events:none;filter:none;
+}
