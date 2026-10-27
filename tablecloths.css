@@ -1,0 +1,6 @@
+/* One static layer below the original slots, pieces and central shadows. */
+#board.game-screen[data-photo-cloth]::before,
+#board.game-screen.stage-raised[data-photo-cloth]::before,
+#board.game-screen.countdown-light[data-photo-cloth]::before{
+ background-position:center;background-repeat:no-repeat;
+}

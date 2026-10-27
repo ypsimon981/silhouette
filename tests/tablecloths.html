@@ -1,0 +1,12 @@
+<!doctype html><html lang="it"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>10Potatoes — Tovaglie</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f6f2e9;color:#3d3025;font:16px system-ui;padding:24px}main{max-width:1000px;margin:auto}h1{font-size:24px}.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}figure{margin:0}button{padding:0;width:100%;aspect-ratio:1;border:1px solid #bcb1a1;border-radius:8px;background-color:#e3dfd2;background-image:var(--arena-art);background-position:center;background-size:cover;cursor:pointer}figcaption{margin:6px 0 16px}#detail{max-width:440px;aspect-ratio:3/4;background:var(--arena-art) center/cover;margin-top:24px;border:1px solid #bcb1a1;border-radius:8px}p{line-height:1.5}@media(max-width:600px){body{padding:16px}.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style><main><h1>Tovaglie fotografiche</h1><p>Sei tessuti visti dall’alto. Tocca un campione per vederlo in formato verticale.</p><div class="gallery"></div><div id="detail" aria-label="Tovaglia selezionata"></div><p id="status" role="status">Caricamento dei tessuti…</p></main><script src="../tablecloths.js?v=1"></script><script>
+const gallery=document.querySelector('.gallery'),detail=document.querySelector('#detail'),status=document.querySelector('#status');
+Promise.all(Tablecloths.textures.map((item,index)=>{
+ const figure=document.createElement('figure'),button=document.createElement('button'),caption=document.createElement('figcaption');
+ button.type='button';button.setAttribute('aria-label',item.name);caption.textContent=item.name;
+ button.onclick=()=>Tablecloths.apply(detail,index).then(ok=>{status.textContent=ok?item.name:'Impossibile caricare il tessuto.';});
+ figure.append(button,caption);gallery.append(figure);return Tablecloths.apply(button,index);
+})).then(results=>{status.textContent=results.every(Boolean)?'Tessuti caricati.': 'Alcuni tessuti non sono disponibili.';});
+void Tablecloths.apply(detail,0);
+</script></html>
