@@ -1,13 +1,20 @@
-# Photographic tablecloths
-Six generated photographic textile panels: blue windowpane, sage ticking, red gingham, oatmeal herringbone, cream damask, plain flax. Camera and lighting are overhead. Source atlas: 1536 × 1024 PNG, about 4.51 MiB. This source download is not yet offline-compressed to WebP; browser crops are encoded to WebP once per selected fabric and cached for the page lifetime. Browsers without WebP encoding fall back to PNG via the Canvas API.
+# Repeating photographic tablecloths — v0.22.51
 
-## Integration
-Existing six-choice cosmetic selection and crypto randomness are unchanged. After the existing CSS fallback is selected, tablecloths.js crops the selected panel (512 × 512), predecodes it, and updates existing CSS variables. Each result is cached; stale asynchronous selections are discarded. Canvas work happens only on a fabric's first load, never during pointer movement. No requestAnimationFrame loop, WebGL, animated filter, pointer listener or gameplay RNG is added. Image/Canvas failure leaves the prior CSS fabric in place. Tablecloths use one cover image with its aspect ratio preserved, rather than repeating an atlas or stretching the weave.
+Potato levels now use a fixed 256 × 256 CSS-pixel repeat rather than enlarging a whole photograph to cover the board. The texture therefore keeps its natural scale on different screen sizes. Each selected material is prepared once and cached; there are no pointer listeners, frame loops or continuous Canvas updates.
 
-index.html, tablecloths.js and tablecloths.css are the integration files. Existing pieces, central shadows, slot geometry, timing, audio, scoring and game input handlers are unchanged.
+## Material and asset
 
-## Review
-Open tests/tablecloths.html through the normal local HTTP server to inspect all six materials. The game uses the same module.
+assets/tablecloths/linen-fine.webp: 512 × 512, 132,774 bytes. Generated with the built-in image tool, then resized and WebP-compressed without artistic edits. The browser uses reflected texture addressing in a 2 × 2 quadrant tile, making opposite borders exactly equal. This avoids depending on an approximate AI-generated seam. Six periodic, low-contrast textile motifs are composed over those real photographed fibres: blue windowpane, sage ticking, red gingham, oatmeal herringbone, cream damask and plain flax. Pattern periods divide the tile size. The photographic grain remains visible through the motif colours.
 
-Validation performed: module and inline-script JavaScript syntax; mocked checks of all six source crop bounds, cache reuse, asynchronous selection races, failed image fallback.
-Validation unavailable: real browser rendering, physical phone FPS, initial-load timing and in-game contrast. Execution environment was unavailable during this change. Do not treat the mocked checks as browser or performance measurements. The PNG source increases the initial download by roughly 4.5 MiB; offline WebP compression remains a follow-up optimization.
+Generation prompt:
+> Production material texture. One seamless tileable square swatch of plain natural ivory linen/cotton, photorealistic macro textile surface, overhead orthographic camera. Edge-to-edge uninterrupted fine warp and weft threads, tiny natural yarn slubs, delicate irregular fibres. Extremely even neutral soft light, flat planar cloth. Warm off-white, subtle low-contrast beige yarn variation. Fine dense weave with at least 180 threads across image. Texture must repeat with no visible seams; no directional gradients, no vignette, no folds, no shadows, no marks, no stains, no printed pattern, no checks, no stripes, no objects, no text. Real tactile woven linen, not noise, not plastic, not a large exaggerated weave. Square composition.
+
+## Scope and compatibility
+
+Animal and flower modes keep the previous atlas crops, cover sizing and no-repeat behaviour. The old atlas is loaded lazily only for that legacy path; potato modes use the new smaller source. Existing cosmetic selection and gameplay randomness are unchanged. Stale asynchronous results are discarded and failed loads leave the previous CSS background intact. Future CSS rules explicitly exclude animal and flower boards.
+
+## Validation
+
+Real Chromium: all six materials load; opposite RGB borders of the plain repeat match exactly (maximum difference zero); background repeats at a fixed 256px on 320, 390 and 768px-wide viewports; animal/flower modes retain cover and no-repeat; no JavaScript errors. Mobile-size visual inspection completed. No physical phone FPS claim.
+
+The motif printing is a periodic colour treatment over real linen fibres, rather than six independent photographs of woven designs. tests/tablecloths.html previews all six repeating materials.

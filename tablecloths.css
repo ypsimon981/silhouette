@@ -4,3 +4,10 @@
 #board.game-screen.countdown-light[data-photo-cloth]::before{
  background-position:center;background-repeat:no-repeat;
 }
+
+/* Future cloth treatment is restricted to potato modes. */
+#board.game-screen[data-tile-cloth]:not(.level-animals):not(.level-flowers)::before,
+#board.game-screen.stage-raised[data-tile-cloth]:not(.level-animals):not(.level-flowers)::before,
+#board.game-screen.countdown-light[data-tile-cloth]:not(.level-animals):not(.level-flowers)::before{
+ background-size:256px 256px;background-repeat:repeat;background-position:0 0;
+}
