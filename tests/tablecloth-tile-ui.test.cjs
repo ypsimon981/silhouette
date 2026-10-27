@@ -29,8 +29,8 @@ test('potato linen repeats at fixed size and the animal-footprint exception stay
   for(const mode of [17,18]){
    await page.evaluate(m=>shadowGameTest.setLevel(m),mode);
    await page.waitForFunction(mode=>{const b=document.querySelector('#board');return !b.dataset.tileCloth&&(mode===17?b.dataset.photoCloth==='animal-tracks':b.dataset.photoCloth!=='animal-tracks');},mode);
-   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundSize),mode===17?'288px 288px':'cover');
-   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundRepeat),mode===17?'repeat':'no-repeat');
+   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundSize),mode===17?'288px 288px':'256px 256px');
+   assert.equal(await page.locator('#board').evaluate(e=>getComputedStyle(e,'::before').backgroundRepeat),'repeat');
   }
   assert.deepEqual(errors,[]);
  }finally{await browser.close();}

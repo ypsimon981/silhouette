@@ -24,3 +24,6 @@ The Animals background now has a quiet greige animalier print over the repeating
 
 ## v0.22.56 neutral animal tracks
 The Animals exception is now a flat neutral ground with tone-on-tone footprints. Its earlier leopard/linen layers are superseded; Animals no longer prepares or loads a linen tile. Potato and flower treatments remain unchanged.
+
+## v0.22.57 flower grass exception
+Flowers now use a dark-green photographic grass repeat instead of the legacy atlas. This exception is flower-only, and its target outlines are pale sage for readability. Potato linen and animal footprints are unchanged.
