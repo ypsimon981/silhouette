@@ -43,8 +43,10 @@ function bake(d,variant){
   }
  }
  c.globalAlpha=1;c.globalCompositeOperation='destination-out';c.fill(path,'evenodd');
- // A thin, continuous, equally weighted contour. No interior tint or inner shadow.
- c.globalCompositeOperation='source-over';c.strokeStyle='#514334';c.lineWidth=.72;c.stroke(path);
+ // Light translucent shading across the entire cavity; retain the board texture below.
+ c.globalCompositeOperation='source-over';c.fillStyle='rgba(48,33,23,.14)';c.fill(path,'evenodd');
+ // Keep the existing contour unchanged.
+ c.strokeStyle='#514334';c.lineWidth=.72;c.stroke(path);
  const url=canvas.toDataURL('image/png');if(cache.size>=64)cache.delete(cache.keys().next().value);cache.set(key,url);return url;
 }
 function create(d,rotation,variant){
@@ -52,7 +54,7 @@ function create(d,rotation,variant){
  const url=bake(d,variant),svg=el('svg',{viewBox:'0 0 100 100','aria-hidden':'true',class:'flour-slot'});
  const g=el('g',{transform:'rotate('+rotation+' 50 50)'},svg);
  el('image',{x:-pad,y:-pad,width:extent,height:extent,href:url,class:'flour-art'},g);
- // Retain the original vector bounds used by results layout; never a filled cavity.
+ // Retain the original vector bounds used by results layout; shading is baked into the image.
  el('path',{d,'fill-rule':'evenodd',class:'recess-floor'},g);
  return svg;
 }
