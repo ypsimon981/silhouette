@@ -1,7 +1,7 @@
-/* Potato levels only. Animals and flowers keep their original targets. */
-#board.game-screen:not(.level-animals):not(.level-flowers) .slot .flour-slot .recess-floor{
- fill:none!important;stroke:none!important;filter:none!important;opacity:0!important;
-}
-#board.game-screen:not(.level-animals):not(.level-flowers) .slot .flour-slot .flour-art{
- pointer-events:none;filter:none;
+/* Clean targets apply only to potato levels; animal and flower targets are unchanged. */
+#board.game-screen:not(.level-animals):not(.level-flowers) .slot .clean-slot .clean-cavity{
+ fill:rgba(48,33,23,.14)!important;
+ stroke:#514334!important;stroke-width:1px!important;stroke-opacity:1!important;
+ stroke-linejoin:round;vector-effect:non-scaling-stroke;
+ filter:none!important;opacity:1!important;pointer-events:none;
 }
