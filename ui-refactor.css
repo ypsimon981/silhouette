@@ -148,3 +148,38 @@
  #app #homePage .levelGrid button{min-height:59px;padding-top:6px;padding-bottom:6px}
  #app #homePage .seriesModes button{min-height:54px}
 }
+
+
+/* Cognitive overview: page content only; no gameplay selectors or score calculation. */
+#app #myProgress #cognitiveOverview{flex:none;min-width:0;padding:16px;border:1px solid #b2a57466;border-radius:16px;background:#24352de6;color:#f6edd5}
+#app #myProgress .cognitiveIdentity{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#app #myProgress .cognitiveIdentity>div{min-width:0}
+#app #myProgress .cognitiveEyebrow{margin:0 0 6px;font-size:10px;letter-spacing:1px;color:#d0c39d}
+#app #myProgress #cognitiveHeading{margin:0;font-size:20px;line-height:1.2}
+#app #myProgress #cognitivePlayer{margin:6px 0 0;font-size:13px;overflow-wrap:anywhere}
+#app #myProgress .cognitiveBadge{flex:none;padding:6px 8px;border:1px solid #b2a57488;border-radius:20px;font-size:10px;color:#e9d7aa}
+#app #myProgress .cognitiveIntro,#app #myProgress .cognitiveRules p{font-size:13px;line-height:1.5}
+#app #myProgress .cognitiveRadar{max-width:390px;margin:0 auto 16px;text-align:center;color:#d7c693}
+#app #myProgress .cognitiveRadar svg{display:block;width:100%;height:auto}
+#app #myProgress .cognitiveRadar svg>g:first-of-type{opacity:.35}
+#app #myProgress .cognitiveRadar rect{fill:#24352d}
+#app #myProgress .cognitiveRadarPending{fill:#e9d7aa}
+#app #myProgress .cognitiveRadar p{margin:-8px 0 0;font-size:12px;line-height:1.5}
+#app #myProgress .cognitiveSkills{display:grid;gap:8px}
+#app #myProgress .cognitiveSkill{border:1px solid #89927066;border-radius:10px;background:#ffffff05}
+#app #myProgress .cognitiveSkill summary{display:flex;gap:10px;justify-content:space-between;align-items:center;cursor:pointer;list-style:none;padding:12px;min-height:44px;box-sizing:border-box}
+#app #myProgress .cognitiveSkill summary::-webkit-details-marker{display:none}
+#app #myProgress .cognitiveSkill summary strong{display:block;font-size:14px;color:#fff0c5}
+#app #myProgress .cognitiveSkill summary span span{display:block;margin-top:4px;font-size:12px;line-height:1.45;color:#dfd6bd}
+#app #myProgress .cognitiveExpand{flex:none;font-size:20px}
+#app #myProgress .cognitiveSkill[open] .cognitiveExpand{transform:rotate(45deg)}
+#app #myProgress .cognitiveSkill p{margin:0;padding:0 12px 12px;font-size:12px;line-height:1.6;color:#dfd6bd}
+#app #myProgress .cognitiveRules{margin-top:16px;padding-top:14px;border-top:1px solid #89927066}
+#app #myProgress .cognitiveRules h4{margin:0;font-size:14px}
+#app #myProgress .cognitiveRules p{margin:8px 0}
+#app #myProgress .cognitiveFootnote{margin:14px 0 0;font-size:11px;line-height:1.5;color:#c7bea3}
+#app #myProgress #cognitiveGameStats{flex:none;min-width:0;border:1px solid #89927066;border-radius:12px}
+#app #myProgress #cognitiveGameStats>summary{padding:14px 12px;font-size:13px;line-height:1.5;cursor:pointer;font-weight:700}
+#app #myProgress .cognitiveStatsBody{display:flex;flex-direction:column;gap:10px;padding:0 10px 14px;min-width:0}
+#app #myProgress :is(.cognitiveSkill,#cognitiveGameStats)>summary:focus-visible{outline:2px solid #f2cf8b;outline-offset:2px;border-radius:10px}
+@media(max-width:350px){#app #myProgress #cognitiveOverview{padding:12px}#app #myProgress .cognitiveIdentity{flex-wrap:wrap}#app #myProgress #cognitiveHeading{font-size:18px}}
