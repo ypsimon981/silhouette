@@ -2185,7 +2185,7 @@ const roundedGroups={};
 for(let stage=4;stage<=10;stage++){
  roundedGroups[stage]=Array.from({length:10},(_,i)=>({
   family:"organic"+stage+"-"+i,
-  variants:[{path:organicPath(stage,i),rotations:[0]}]
+  variants:[{path:organicPath(stage,i),rotations:stage<=6?[0,90,180,270]:[0,45,90,135,180,225,270,315]}]
  }));
 }
 const levelGroups={3:level3Groups,...roundedGroups};
