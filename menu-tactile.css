@@ -1,0 +1,69 @@
+/* Reference-based menu materials. Only menu controls are changed, never game pieces or targets. */
+@font-face{font-family:PotatoRound;src:url('./assets/fonts/LilitaOne-Regular.ttf') format('truetype');font-style:normal;font-weight:400;font-display:swap}
+#app.macro-view>header .macroNavigation button,
+#app #homePage :is(.levelGrid,.seriesModes) button{font-family:PotatoRound,ui-rounded,'Trebuchet MS',sans-serif;font-weight:400;touch-action:manipulation;transition:transform .12s,filter .12s;isolation:isolate}
+#app.macro-view>header .macroNavigation button{
+ position:relative;border-radius:14px;border:1px solid #b2966e!important;
+ background-image:linear-gradient(180deg,#fff5da66,#dcc09a18 48%,#6a3f1929),var(--menu-jute)!important;
+ background-size:auto,170px 170px!important;background-color:#dbc09a!important;color:#4b270f!important;
+ box-shadow:inset 0 2px 2px #fff4d9a6,inset 1px 0 2px #fff1ce55,inset 0 -4px 5px #75471e40,0 3px 4px #50361f38!important;
+ font-size:clamp(11px,3.1vw,16px);line-height:1.05;gap:3px;
+}
+#app.macro-view>header .macroNavigation svg{stroke-width:2.4;filter:drop-shadow(0 1px 0 #ffefd85c)}
+#app.macro-view>header .macroNavigation [data-section="levels"] svg{fill:currentColor;stroke-width:1.2}
+#app.macro-view>header .macroNavigation [data-section="cognitive"] svg{width:24px;height:24px;stroke-width:1.9}
+#app.macro-view>header .macroNavigation button:not(#startButton)[aria-current="page"],
+#app.macro-view:not(:has(#board.game-screen.level-animals)):not(:has(#board.game-screen.level-flowers))>header .macroNavigation button:not(#startButton)[aria-current="page"]{
+ background-image:linear-gradient(180deg,#ffeab37a,#f8c75c44 50%,#a5611a38),var(--menu-peel)!important;
+ background-size:auto,220px 220px!important;background-color:#edb744!important;color:#4b270f!important;
+ box-shadow:inset 0 2px 2px #fff2bab3,inset 0 -4px 4px #9f631b66,0 3px 5px #50361f40!important;
+}
+#app.macro-view>header .macroNavigation [aria-current="page"]:after{content:"";position:absolute;bottom:1px;left:18%;right:18%;height:3px;border-radius:4px;background:#68380f}
+#app #homePage .levelGrid button,#app #homePage .levelGrid button.percentile-ranked{
+ border-radius:18px!important;border:1px solid #b98341!important;border-left:1px solid #b98341!important;
+ background-image:radial-gradient(ellipse at 35% 14%,#fff2b888,transparent 68%),linear-gradient(180deg,#fff3cc33,transparent 45%,#95531e40),var(--menu-peel)!important;
+ background-size:100% 100%,100% 100%,240px 240px!important;background-repeat:no-repeat,no-repeat,repeat!important;
+ background-position:0 0,0 0,0 0!important;
+ box-shadow:inset 0 3px 4px #fff1b4b3,inset 3px 0 5px #fff2bd55,inset -3px -6px 8px #8c4a2373,0 4px 6px #5d402c40!important;
+ color:#4b230c!important;overflow:hidden;text-align:left;
+}
+#app #homePage .levelGrid button:nth-child(even){background-position:0 0,0 0,80px 56px!important}
+#app #homePage .levelGrid button:nth-child(3n){background-position:0 0,0 0,145px 110px!important}
+#app #homePage .levelGrid button b,#app #homePage .levelGrid button.percentile-ranked b{
+ font-family:PotatoRound,ui-rounded,sans-serif;font-weight:400;font-size:clamp(31px,8.8vw,44px);letter-spacing:-1px;color:#4b230c!important;
+ border-right:1px solid #8c572d66;text-shadow:0 1px 0 #ffe4a655!important;
+}
+#app #homePage .levelGrid button span{font-size:clamp(14px,3.7vw,19px);font-weight:400;color:#4b230c!important;letter-spacing:-.15px}
+#app #homePage .levelGrid button span small{
+ font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;font-size:clamp(10px,2.65vw,13px);font-weight:500;color:#51311d!important;letter-spacing:0;
+}
+#app #homePage .levelGrid button .rank-percentile{font-family:ui-rounded,system-ui,sans-serif;font-size:9px;font-weight:700}
+#app #homePage .seriesModes button{
+ position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:72px;
+ border:1px solid #b98341!important;border-radius:16px!important;padding:6px 3px;
+ background-image:linear-gradient(180deg,#ffdb8366,#edb74488),var(--menu-peel)!important;
+ background-size:auto,220px 220px!important;background-position:center!important;color:#4b230c!important;
+ box-shadow:inset 0 2px 3px #fff4c299,inset 0 -4px 5px #6c3d2359,0 3px 5px #50361f40!important;
+}
+#app #homePage .seriesModes .seriesIcon{display:block;flex:none;width:23px;height:23px;fill:currentColor;filter:drop-shadow(0 1px 0 #fff3d555)}
+#app #homePage .seriesModes button>span{font-family:PotatoRound,ui-rounded,sans-serif;font-size:clamp(14px,4.2vw,20px);line-height:1.1;letter-spacing:.2px}
+#app #homePage .seriesModes button small{font-family:ui-rounded,'Trebuchet MS',system-ui,sans-serif;font-size:9px;line-height:1.1;font-weight:600;color:inherit!important}
+#app #homePage .seriesModes #animalsLaunch,#app #homePage .seriesModes #flowersLaunch{
+ background-image:url('./assets/ui/series-materials.webp')!important;background-size:200% 100%!important;background-repeat:no-repeat!important;
+}
+#app #homePage .seriesModes #animalsLaunch{background-position:left center!important;color:#41200c!important;border-color:#a17b4b!important;text-shadow:0 1px 3px #ffefc8,0 0 7px #ffefc8!important}
+#app #homePage .seriesModes #flowersLaunch{background-position:right center!important;color:#fff1c9!important;border-color:#52673a!important;text-shadow:0 1px 3px #102609!important}
+#app #homePage .seriesModes :is(#animalsLaunch,#flowersLaunch) :is(span,small){display:block;margin:0;padding:0;background:none;border-radius:0;color:inherit!important}
+#app #homePage .seriesModes #animalsLaunch span{font-size:clamp(14px,4.2vw,20px)}
+#app #homePage .seriesModes #animalsLaunch small{font-size:9px}
+#app #homePage button:focus-visible,#app.macro-view>header .macroNavigation button:focus-visible{outline:3px solid #80552d;outline-offset:2px}
+#app #homePage :is(.levelGrid,.seriesModes) button:active,#app.macro-view>header .macroNavigation button:enabled:active{transform:translateY(2px);filter:brightness(.96)}
+@media(max-width:350px){
+ #app #homePage .levelGrid button{grid-template-columns:32px minmax(0,1fr);padding-left:6px;padding-right:6px;column-gap:5px}
+ #app #homePage .levelGrid button b{font-size:31px;padding-right:4px}
+ #app #homePage .levelGrid button span{font-size:14px}
+ #app #homePage .levelGrid button span small{font-size:10px}
+ #app #homePage .seriesModes{gap:7px}
+ #app #homePage .seriesModes button{min-height:64px}
+}
+@media(prefers-reduced-motion:reduce){#app #homePage :is(.levelGrid,.seriesModes) button,#app.macro-view>header .macroNavigation button{transition:none}}
