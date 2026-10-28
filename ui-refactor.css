@@ -197,3 +197,55 @@
 #app #myProgress #cognitiveTraining button{min-height:48px;width:100%;font-size:13px;padding:10px}
 #app #myProgress #cognitiveTraining button:disabled{opacity:.55;cursor:default}
 #app #myProgress .cognitiveRadar>svg{overflow:visible}
+/* End-of-game layout approved for potato modes; special-level artwork is preserved. */
+#app #board.game-screen.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish{
+ justify-content:flex-start!important;gap:12px;
+}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;
+}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands :is(.finishPrimary,.finishNav,.finishOverviewRow){display:contents}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands button{
+ min-width:0;min-height:44px;height:auto;margin:0;padding:8px 5px;font-size:12px;line-height:1.2;
+}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #again{grid-column:1;grid-row:1;min-height:48px;font-size:15px}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #finishHome{grid-column:2;grid-row:1;min-height:48px;font-size:14px;background-color:#ecc784!important}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #previousLevel{display:flex!important;grid-column:1;grid-row:2}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #nextLevel{grid-column:2;grid-row:2;min-height:44px;background-color:#dcb06b!important}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #finishRanking{grid-column:1;grid-row:3}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #finishProgress{grid-column:2;grid-row:3}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands .finishNav .levelArrow{display:none}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands .finishNav .levelCaption{font-size:11px;white-space:normal;line-height:1.2}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands .social-actions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-column:1 / -1;grid-row:4;gap:6px;margin:0;order:0;
+}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands .social-actions[hidden]{display:none}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands .social-actions button{min-width:0}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #social-result{grid-column:1 / -1;grid-row:5;margin:2px 0 0}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands #social-result:empty{display:none}
+/* Reserve more space for the existing banner without changing ad requests or consent. */
+#app.game-finished:has(#board.complete:not(.level-animals):not(.level-flowers):not(.level-shells)) footer{
+ min-height:calc(clamp(100px,15dvh,145px) + env(safe-area-inset-bottom));
+ padding-top:12px;padding-bottom:calc(12px + env(safe-area-inset-bottom));
+ display:flex;align-items:center;justify-content:center;
+}
+#app.game-finished:has(#board.complete:not(.level-animals):not(.level-flowers):not(.level-shells)) #adSlot{min-height:76px}
+#app #board.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishScore{position:relative!important;isolation:isolate;gap:4px}
+#recordConfetti{position:absolute;inset:0 0 auto;height:145px;overflow:hidden;pointer-events:none;z-index:1}
+#recordConfetti i{
+ position:absolute;left:var(--x);top:4px;width:5px;height:9px;border-radius:1px;
+ background:linear-gradient(135deg,#fff0aa,#efbf44 55%,#bb7e20);box-shadow:0 0 4px #ffd66b55;
+ opacity:0;animation:personalRecordConfetti 1.65s var(--delay) ease-out both;
+}
+#recordConfetti i:nth-child(3n){width:7px;height:4px}
+@keyframes personalRecordConfetti{
+ 0%{opacity:0;transform:translate(0,-12px) rotate(0deg)}
+ 15%{opacity:1}
+ 75%{opacity:.9}
+ 100%{opacity:0;transform:translate(var(--drift),135px) rotate(var(--turn))}
+}
+@media(max-height:680px){
+ #app.game-finished:has(#board.complete:not(.level-animals):not(.level-flowers):not(.level-shells)) footer{min-height:calc(85px + env(safe-area-inset-bottom));padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom))}
+ #app.game-finished:has(#board.complete:not(.level-animals):not(.level-flowers):not(.level-shells)) #adSlot{min-height:61.6px}
+}
+@media(prefers-reduced-motion:reduce){#recordConfetti{display:none!important}}
