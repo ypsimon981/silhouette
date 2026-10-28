@@ -37,7 +37,8 @@ test('mobile profile, real precision capture, three-stage unranked training, int
  assert.equal(await page.locator('.cognitiveMeasured circle').count(),2);assert.equal(await page.locator('.cognitiveScore').nth(0).innerText(),'—');
  await page.locator('[data-section="levels"]').click();await page.locator('[data-mode="1"]').click();await placements(page,true);
  await page.waitForFunction(id=>JSON.parse(localStorage.getItem('10potatoes_cognitive_v1:'+id)||'{}').records?.length===1,who);
- const raw=(await db.query('select releases,successes,outcome from shapes_cognitive_events order by created_at desc limit 1')).rows[0];assert.equal(raw.releases,11);assert.equal(raw.successes,10);assert.equal(raw.outcome,'completed');
+ const measuredId=await page.evaluate(id=>JSON.parse(localStorage.getItem('10potatoes_cognitive_v1:'+id)).records.at(-1).id,who);
+ let raw;for(let i=0;i<40;i++){raw=(await db.query('select releases,successes,outcome from shapes_cognitive_events where id=$1',[measuredId])).rows[0];if(raw)break;await new Promise(r=>setTimeout(r,50));}assert.ok(raw,'measurement reaches the server');assert.equal(raw.releases,11);assert.equal(raw.successes,10);assert.equal(raw.outcome,'completed');
  await page.locator('#finishHome').click();await page.locator('[data-section="cognitive"]').click();
  const recordKeys=await page.evaluate(()=>Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('silhouette_record_'))));
  const before=(await db.query('select count(*)::int n from shapes_cognitive_events')).rows[0].n;
@@ -46,7 +47,7 @@ test('mobile profile, real precision capture, three-stage unranked training, int
  await page.waitForFunction(()=>document.querySelector('.cognitiveTrialResult')?.textContent.startsWith('Ultima prova: 100/100'));
  assert.equal((await db.query('select count(*)::int n from shapes_cognitive_events')).rows[0].n,before);
  assert.deepEqual(await page.evaluate(()=>Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('silhouette_record_')))),recordKeys);
- assert.equal(await page.locator('.cognitiveScore').nth(3).innerText(),'—','daily profile stays frozen');
+ assert.equal(await page.locator('.cognitiveScore').nth(3).innerText(),'100/100','first adaptability score appears immediately');
  await page.locator('#cognitiveTraining button').click();await page.locator('#restart').click();await page.locator('#homeButton').click();await page.locator('[data-section="cognitive"]').click();
  await page.waitForFunction(()=>document.querySelector('.cognitiveTrialResult')?.textContent.includes('tentativo consumato'));
  await page.locator('#cognitiveTraining button').click();await page.waitForFunction(()=>document.getElementById('levelTitle').textContent.startsWith('ADATTABILITÀ'));await page.reload();await page.locator('[data-section="cognitive"]').click();
@@ -56,3 +57,4 @@ test('mobile profile, real precision capture, three-stage unranked training, int
  assert.deepEqual(errors,[]);
  }finally{await browser?.close();await new Promise(r=>server.close(r));await db.close()}
 });
+

@@ -64,3 +64,26 @@ test('Edge dispatch derives ownership from Auth and keeps existing sector routin
  await context.handle(request('performance_sectors',{id:crypto.randomUUID(),sectors:[1000,2000,3000]}));last=requests.at(-1);assert.ok(last.url.endsWith('/rpc/shapes_performance_submit'));
  result=await context.handle(new Request('https://fixture.test',{method:'POST',body:'{}'}));assert.equal(result.status,401);
 });
+
+
+test('first appearance unlocks each missing skill immediately, while existing scores stay frozen',async()=>{
+ const db=await database();try{
+  let d=await call(db,'read');assert.equal(d.profile.unlocked,false);assert.equal(d.profile.consistency,null);
+  await seed(db,who,12);
+  d=await call(db,'read');assert.equal(d.profile.unlocked,true);assert.equal(d.profile.consistency,100);assert.equal(d.profile.precision,83.3);assert.equal(d.profile.adaptability,null);
+  let t=(await call(db,'trial_start')).trial;await db.query("update shapes_cognitive_trials set started_at=now()-interval '90 seconds' where id=$1",[t.id]);
+  await call(db,'trial_finish',{id:t.id,outcome:'completed',times:[20000,20000,20000]});d=await call(db,'read');assert.equal(d.profile.adaptability,50);
+  t=(await call(db,'trial_start')).trial;await db.query("update shapes_cognitive_trials set started_at=now()-interval '90 seconds' where id=$1",[t.id]);
+  await call(db,'trial_finish',{id:t.id,outcome:'completed',times:[5000,5000,5000]});d=await call(db,'read');assert.equal(d.profile.adaptability,50,'a better second trial does not replace the first score during the day');
+  await db.query("update shapes_cognitive_snapshots set day=day-1,profile=jsonb_set(profile,'{day}',to_jsonb((day-1)::text)) where user_id=$1",[who]);
+  d=await call(db,'read');assert.equal(d.profile.adaptability,100,'a new daily snapshot recalculates published skills');
+ }finally{await db.close()}
+});
+
+test('precision becomes visible after the final measured level, without changing existing consistency',async()=>{
+ const db=await database();try{
+  for(const level of modes)for(let i=0;i<3;i++)await db.query("insert into shapes_social_runs values($1,$2,$3,now(),'completed',10000)",[crypto.randomUUID(),who,level]);
+  let d=await call(db,'read');assert.equal(d.profile.consistency,100);assert.equal(d.profile.precision,null);
+  await seed(db,who,12);d=await call(db,'read');assert.equal(d.profile.precision,83.3);assert.equal(d.profile.consistency,100);
+ }finally{await db.close()}
+});

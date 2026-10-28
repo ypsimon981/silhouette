@@ -92,7 +92,7 @@
    svg.querySelector('desc').textContent=names.map((n,i)=>n+': '+format(scores[i])).join('. ');
    let status=root.querySelector('#cognitiveStatus');if(!status){status=document.createElement('p');status.id='cognitiveStatus';status.setAttribute('role','status');root.querySelector('.cognitiveIntro').after(status);}
    const ready=(d?.counts||[]).filter(v=>v.completed>=3).length;
-   status.textContent=d?(!d.unlocked?ready+'/10 livelli con almeno 3 completamenti.':!unlocked?'Requisiti raggiunti: il profilo si attiverà al prossimo aggiornamento giornaliero.':'Profilo del '+p.day.split('-').reverse().join('/')+'. Aggiornamento alla prima apertura di ogni nuova giornata.'):'Collegamento al tuo storico personale…';
+   status.textContent=d?(!d.unlocked?ready+'/10 livelli con almeno 3 completamenti.':!unlocked?'Requisiti raggiunti: aggiornamento del profilo in corso.':'Profilo del '+p.day.split('-').reverse().join('/')+'. Le nuove capacità compaiono appena pronte; i valori già visibili vengono ricalcolati a giornata conclusa, alla prima apertura successiva.'):'Collegamento al tuo storico personale…';
    if(unlocked&&p.precision===null)status.textContent+=' Precisione: '+(p.precision_levels||0)+'/10 livelli con almeno 3 completamenti misurati.';
    let coverage=root.querySelector('#cognitiveCoverage');if(!coverage){coverage=document.createElement('p');coverage.id='cognitiveCoverage';status.after(coverage);}
    coverage.textContent=(d?.counts||[]).map((v,i)=>'L'+(i+1)+': '+Math.min(3,v.completed)+'/3').join(' · ');
@@ -101,7 +101,7 @@
    trial.querySelector('p').textContent='Tre livelli casuali: uno tra L1–L3, uno tra L4–L6 e uno tra L7–L10. '+remaining+' tentativi disponibili oggi. Uscire, riavviare o chiudere la pagina consuma il tentativo. La prova richiede una connessione attiva.';
    trial.querySelector('button').disabled=busy||!d?.unlocked||remaining===0;
    trial.querySelector('button').textContent=busy?'Preparazione…':'Inizia la prova quotidiana';
-   const last=d?.last_trial;trial.querySelector('.cognitiveTrialResult').textContent=last?.status==='completed'?'Ultima prova: '+format(last.score)+'. Entrerà nel profilo dal prossimo aggiornamento giornaliero.':last?.status==='failed'?'Ultima prova interrotta o non completata: tentativo consumato.':last?.status==='saving'?'Prova completata: salvataggio in corso.':'';
+   const last=d?.last_trial;trial.querySelector('.cognitiveTrialResult').textContent=last?.status==='completed'?'Ultima prova: '+format(last.score)+'. Se è la prima valutazione, compare subito; le successive entrano nel prossimo aggiornamento giornaliero.':last?.status==='failed'?'Ultima prova interrotta o non completata: tentativo consumato.':last?.status==='saving'?'Prova completata: salvataggio in corso.':'';
    root.querySelector('.cognitiveRules h4').textContent='Come viene calcolato';
    root.querySelector('.cognitiveRules p').textContent='Almeno 3 partite completate in ciascuno dei 10 livelli ordinari. Le classifiche restano accessibili da subito. Le prove di adattabilità non modificano record, classifiche o riferimenti delle partite ordinarie.';
    root.querySelectorAll('.cognitiveRules p')[1].textContent='Scala personale 0–100, versione 1. Ogni livello pesa allo stesso modo per precisione e costanza. Apri le capacità per leggere le formule. Dati e storico sono privati e salvati nel tuo profilo; le nuove misurazioni offline restano in attesa sul dispositivo.';
@@ -112,3 +112,4 @@
   return {record,setIdentity,finish,show(){identity=own(bridge.identity());shown=true;render();void sync();},hide(){shown=false;},sync};
  }};
 })();
+

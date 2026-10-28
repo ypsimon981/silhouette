@@ -6,7 +6,7 @@ La scala 0–100 descrive soltanto le prestazioni nel gioco. Non è una misura c
 
 Servono almeno tre completamenti per ciascuno dei dieci livelli ordinari (modi 1, 2, 4, 7, 8, 9, 10, 11, 12, 13). I vecchi completamenti verificati sono riutilizzati per costanza e sblocco, senza inventare rilasci mancanti. Animali, Fiori e prove di adattabilità non alimentano questi riferimenti. Le tappe ordinarie di Overall con misurazioni nuove possono alimentarle.
 
-Il server crea una fotografia alla prima apertura di ogni giornata, nel fuso del profilo. Altre partite e prove entrano nella fotografia del giorno successivo. Le fotografie precedenti e i dati grezzi sono conservati; la versione dell'algoritmo permette futuri ricalcoli. Le classifiche restano sempre accessibili.
+Ogni capacità compare immediatamente al raggiungimento dei propri requisiti, anche se la fotografia della giornata esiste già. Da quel momento il valore visibile rimane stabile per il resto della giornata. A giornata conclusa, la prima apertura successiva crea la nuova fotografia nel fuso del profilo. Le capacità ancora prive di dati restano senza punteggio. Le fotografie precedenti e i dati grezzi sono conservati; la versione dell'algoritmo permette futuri ricalcoli. Le classifiche restano sempre accessibili.
 
 ## Precisione
 
@@ -34,3 +34,4 @@ Le tre nuove tabelle hanno RLS attiva, nessun privilegio per anon/authenticated 
 
 - `npm test`: include i test SQL del profilo.
 - `npm run test:cognitive:ui`: browser con SQL reale in PGlite e API/Auth di fixture. Nessuna richiesta di produzione. `CHROMIUM_EXECUTABLE` è facoltativo.
+
