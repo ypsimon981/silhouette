@@ -20,7 +20,7 @@ export async function handle(req: Request): Promise<Response> {
     const cognitive=['cognitive_read','cognitive_sync','cognitive_trial_start','cognitive_trial_finish'].includes(body.action);
     const best=body.action==='challenge_best',sectors=body.action==='performance_sectors';
     if(sectors&&(!Array.isArray(body.data.sectors)||body.data.sectors.length!==3||!body.data.sectors.every((n:unknown)=>Number.isInteger(n)&&Number(n)>0&&Number(n)<=60000)))return reply({error:'Intertempi non validi'},400);
-    if(best&&(!Number.isInteger(body.data.level)||![1,2,4,7,8,9,10,11,12,13,17,18].includes(body.data.level)))return reply({error:'Livello non valido'},400);
+    if(best&&(!Number.isInteger(body.data.level)||![1,2,4,7,8,9,10,11,12,13,17,18,19].includes(body.data.level)))return reply({error:'Livello non valido'},400);
     const result=await fetch(url+'/rest/v1/rpc/'+(cognitive?'shapes_cognitive_action':sectors?'shapes_performance_submit':best?'shapes_social_best_challenge':'shapes_social_action'),{
       method:'POST',headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'application/json'},
       body:JSON.stringify(cognitive?{who:user.id,p_action:body.action,p_data:body.data}:sectors?{who:user.id,run:body.data.id,parts:body.data.sectors}:best?{who:user.id,mode_id:body.data.level}:{p_user:user.id,p_action:body.action,p_data:body.data}),signal:AbortSignal.timeout(15000)

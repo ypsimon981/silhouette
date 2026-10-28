@@ -35,6 +35,22 @@ test('Flowers migration allows verified runs, dedicated rankings and challenges'
  }finally{await db.exec('rollback')}
 
 });
+test('Shells supports verified records, ranking and challenges without admitting unknown modes',async()=>{
+ await db.exec('begin');try{
+ await db.exec('alter table public.ten_shapes_scores add constraint ten_shapes_scores_level_check check(level between 1 and 16)');
+ for(const name of ['official-animals','official-flowers','official-shells'])await db.exec(fs.readFileSync('backend/'+name+'.sql','utf8'));
+ const shell=await run(A,20420,null,19);assert.equal(shell.result.saved,true);
+ const ranking=(await db.query("select public.shapes_social_rank_read(19,'world',$1,'IT',null) result",[A])).rows[0].result;
+ assert.equal(ranking.total,1);assert.equal(ranking.my_rank,1);
+ const challenge=(await db.query('select public.shapes_social_best_challenge($1,19) result',[A])).rows[0].result;
+ assert.equal(challenge.level,19);assert.equal((await action(B,'challenge_get',{code:challenge.code})).level,19);
+ assert.equal((await run(B,19900,challenge.code,19)).result.outcome,'won');
+ const legacy=(await db.query("select public.shapes_social_legacy_score($1,'Marco','IT',19,19420,'right') result",[A])).rows[0].result;
+ assert.equal(legacy.saved,true);
+ for(const mode of [17,18])assert.equal((await run(A,22000,null,mode)).result.saved,true);
+ await assert.rejects(action(A,'run_start',{level:20,rules:'shapes-0.21.27-social1'}));
+ }finally{await db.exec('rollback')}
+});
 test('nickname ownership covers case, whitespace, legacy players and alternate score writes',async()=>{
  await assert.rejects(action(B,'profile',{nickname:' mArCo ',country:'IT',timezone:'Europe/Rome',preferences:prefs}),/Nickname già utilizzato/);
  assert.equal((await db.query('select nickname from public.shapes_social_profiles where user_id=$1',[B])).rows[0].nickname,'Giulia');

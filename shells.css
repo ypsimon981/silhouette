@@ -1,0 +1,19 @@
+/* Four special launch modes remain comfortable tap targets on narrow screens. */
+#app #homePage .seriesModes{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+#app #homePage .seriesModes #shellsLaunch{
+ background-color:#ecdab7!important;
+ background-image:linear-gradient(#fff4dc55,#e6c59522),url('./assets/ui/shells-pattern.svg'),url('./assets/backgrounds/shell-sand.webp')!important;
+ background-size:100% 100%,160px 100px,220px 220px!important;color:#4c2e18!important;border-color:#bfa174!important;
+ text-shadow:0 1px 0 #fff4df!important;
+}
+#app #homePage .seriesModes #shellsLaunch :is(span,small){color:#4c2e18!important}
+/* A pale sand board only for Shells; the existing Animals class marks silhouette rendering. */
+#app #board.game-screen.level-shells::before,
+#app #board.game-screen.level-shells.stage-raised::before,
+#app #board.game-screen.level-shells.countdown-light::before{
+ opacity:1;background-color:#e6d2af;background-image:linear-gradient(#f7e9ce77,#f7e9ce77),url('./assets/backgrounds/shell-sand.webp');
+ background-size:auto,512px 512px;background-position:0 0;background-repeat:repeat;
+}
+#app #board.game-screen.level-shells .slot:not(.done) path.recess-rim{stroke:#765335;stroke-opacity:.9;stroke-width:1.6px;filter:none}
+#app #board.game-screen.level-shells .slot:not(.done) path.recess-floor{fill:#9d8669;stroke:#755c42;stroke-width:.5px;filter:none}
+#app #board.game-screen.level-shells .piece:not(.done) .animal-outline{fill:#fff3d6!important;stroke:#705134!important;stroke-width:1px!important}

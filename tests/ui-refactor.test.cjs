@@ -41,7 +41,7 @@ test('four macrosections, direct levels, real completion, contextual return, ret
  assert.equal(await page.locator('#refresh').isVisible(),true);
  assert.match(await header.locator('.macroBrand').getAttribute('src'),/10potatoes-logo-transparent\.png/);
  assert.equal(await page.locator('#homePage .homeSubtitle').count(),0);
- assert.equal(await page.locator('#homePage .seriesModes button').count(),3);
+ assert.equal(await page.locator('#homePage .seriesModes button').count(),4);
  assert.equal(await page.locator('#trainingModes').isVisible(),false);
  assert.ok(await page.locator('[data-mode="14"]').isVisible());
  await page.locator('[data-mode="4"]').click();assert.match(await page.locator('#levelTitle').innerText(),/3/);
@@ -76,7 +76,7 @@ test('four macrosections, direct levels, real completion, contextual return, ret
  assert.ok(await page.locator('#homePage').isVisible());
  assert.equal(await page.locator('#finish').isVisible(),false);
  // Non-potato appearance and direct launch remain available.
- for(const [mode,css] of [[17,'level-animals'],[18,'level-flowers']]){await page.locator('[data-mode="'+mode+'"]').click();assert.ok(await page.locator('#board').evaluate((e,c)=>e.classList.contains(c),css));await page.locator('#homeButton').click()}
+ for(const [mode,css] of [[17,'level-animals'],[18,'level-flowers'],[19,'level-shells']]){await page.locator('[data-mode="'+mode+'"]').click();assert.ok(await page.locator('#board').evaluate((e,c)=>e.classList.contains(c),css));await page.locator('#homeButton').click()}
  online=false;await page.locator('[data-mode="1"]').click();await play(page);await page.waitForTimeout(50);assert.match(await page.locator('#recordPositions').innerText(),/temporaneamente non disponibile/);
  assert.deepEqual(errors,[]);await page.close();
  }

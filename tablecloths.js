@@ -108,5 +108,11 @@ function applyFlowers(board){
  board.dataset.photoCloth='flower-grass';delete board.dataset.tileCloth;
  return Promise.resolve(true);
 }
-window.Tablecloths=Object.freeze({apply,applyAnimals,applyFlowers,textures});
+function applyShells(board){
+ if(!board)return Promise.resolve(false);
+ selected.set(board,{});
+ board.dataset.photoCloth='shell-sand';delete board.dataset.tileCloth;
+ return Promise.resolve(true);
+}
+window.Tablecloths=Object.freeze({apply,applyAnimals,applyFlowers,applyShells,textures});
 })();

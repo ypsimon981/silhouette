@@ -2,17 +2,18 @@
 (() => {
   'use strict';
   const config = window.SILHOUETTE_SOCIAL_CONFIG;
-  const MODES = [1,2,4,7,8,9,10,11,12,13,17,18];
+  const MODES = [1,2,4,7,8,9,10,11,12,13,17,18,19];
   const KEY = '10shapes_social_';
   const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(KEY+key)) ?? fallback; } catch { return fallback; } };
   const write = (key,value) => { try { localStorage.setItem(KEY+key,JSON.stringify(value)); } catch { /* Browser may deny persistence. */ } };
   const seconds = ms => (Math.round(ms/10)/100).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' s';
   const flowerLabel=()=>({it:'Fiori',en:'Flowers',fr:'Fleurs',es:'Flores',de:'Blumen',pt:'Flores',ja:'花',ko:'꽃','zh-CN':'花卉',id:'Bunga'})[document.documentElement.lang]||'Flowers';
-  const label = mode => mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':'Livello '+String(MODES.indexOf(mode)+1).padStart(2,'0');
+  const shellLabel=()=>({it:'Conchiglie',en:'Shells',fr:'Coquillages',es:'Conchas',de:'Muscheln',pt:'Conchas',ja:'貝殻',ko:'조개','zh-CN':'贝壳',id:'Kerang'})[document.documentElement.lang]||'Shells';
+  const label = mode => mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':'Livello '+String(MODES.indexOf(mode)+1).padStart(2,'0');
   const shareTranslations={"it":["Condividi risultato","Condividi immagine","Scarica immagine","Copia link del gioco","Fai alla svelta o sei fritto!","10 patate. Riesci a battermi?","Livello","mondiale","Nuovo record personale","Il link viene condiviso come testo separato: alcune app accettano solo l’immagine. Puoi copiarlo qui."],"en":["Share result","Share image","Download image","Copy game link","Hurry up or you're fried!","10 potatoes. Can you beat me?","Level","worldwide","New personal best","The link is shared separately as text. Some apps accept only the image. Copy it here."],"es":["Compartir resultado","Compartir imagen","Descargar imagen","Copiar enlace del juego","¡Date prisa o acabarás frito!","10 patatas. ¿Puedes superarme?","Nivel","mundial","Nuevo récord personal","El enlace se comparte como texto aparte. Algunas apps solo aceptan imágenes. Cópialo aquí."],"fr":["Partager le résultat","Partager l’image","Télécharger l’image","Copier le lien du jeu","Dépêche-toi ou tu es frit !","10 patates. Tu peux me battre ?","Niveau","mondial","Nouveau record personnel","Le lien est partagé séparément. Certaines applis n’acceptent que l’image. Copie-le ici."],"de":["Ergebnis teilen","Bild teilen","Bild herunterladen","Spiellink kopieren","Beeil dich, sonst wirst du frittiert!","10 Kartoffeln. Schlägst du mich?","Level","weltweit","Neue persönliche Bestzeit","Der Link wird separat als Text geteilt. Manche Apps akzeptieren nur das Bild. Kopiere ihn hier."],"pt":["Partilhar resultado","Partilhar imagem","Descarregar imagem","Copiar ligação do jogo","Despacha-te ou ficas frito!","10 batatas. Consegues superar-me?","Nível","mundial","Novo recorde pessoal","A ligação é partilhada em texto separado. Algumas apps só aceitam imagens. Copia-a aqui."],"ja":["結果をシェア","画像をシェア","画像を保存","ゲームのリンクをコピー","急がないとフライドポテトに！","ジャガイモ10個。勝てるかな？","レベル","世界","自己ベスト更新","リンクは別のテキストとして共有されます。画像のみ対応のアプリもあります。"],"ko":["결과 공유","이미지 공유","이미지 저장","게임 링크 복사","서두르지 않으면 튀겨진다!","감자 10개. 나를 이길 수 있어?","레벨","세계","개인 최고 기록","링크는 별도 텍스트로 공유됩니다. 일부 앱은 이미지만 지원합니다."],"zh-CN":["分享成绩","分享图片","下载图片","复制游戏链接","快点，不然就炸熟啦！","10个土豆。你能打败我吗？","关卡","全球","个人新纪录","链接将作为单独文字分享，部分应用仅支持图片。"],"id":["Bagikan hasil","Bagikan gambar","Unduh gambar","Salin tautan game","Cepat, atau kamu jadi kentang goreng!","10 kentang. Bisa kalahkan aku?","Level","dunia","Rekor pribadi baru","Tautan dibagikan terpisah sebagai teks. Beberapa aplikasi hanya menerima gambar."]};
   const shareLanguage=()=>{const raw=window.PotatoesI18n?.language||localStorage.getItem('10potatoes_language')||navigator.language||'en';const code=String(raw).replace('_','-').toLowerCase();return code.startsWith('zh')?'zh-CN':(shareTranslations[code.split('-')[0]]?code.split('-')[0]:'en');};
   const tr=(i)=>shareTranslations[shareLanguage()][i];
-  const levelName=mode=>mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':tr(6)+' '+String(MODES.indexOf(mode)+1).padStart(2,'0');
+  const levelName=mode=>mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':tr(6)+' '+String(MODES.indexOf(mode)+1).padStart(2,'0');
   const logoWords={it:'POTATOES',en:'POTATOES',es:'PATATAS',fr:'PATATES',de:'KARTOFFELN',pt:'BATATAS',ja:'ポテト',ko:'감자','zh-CN':'土豆',id:'KENTANG'};
   const extraShare={it:['Chiudi','Formato immagine','Verticale','Quadrato','Anteprima del risultato'],en:['Close','Image format','Portrait','Square','Result preview'],es:['Cerrar','Formato de imagen','Vertical','Cuadrado','Vista previa del resultado'],fr:['Fermer','Format de l’image','Portrait','Carré','Aperçu du résultat'],de:['Schließen','Bildformat','Hochformat','Quadratisch','Ergebnisvorschau'],pt:['Fechar','Formato da imagem','Vertical','Quadrado','Pré-visualização do resultado'],ja:['閉じる','画像形式','縦長','正方形','結果のプレビュー'],ko:['닫기','이미지 형식','세로','정사각형','결과 미리보기'],'zh-CN':['关闭','图片格式','竖版','方形','成绩预览'],id:['Tutup','Format gambar','Potret','Persegi','Pratinjau hasil']};
   const tx=i=>extraShare[shareLanguage()][i];
@@ -176,7 +177,7 @@
     if(state==='loading'){note.textContent='Caricamento del tuo record…';return;}
     if(!score){note.textContent=state==='error'?'Record online temporaneamente non disponibile.':'Completa una partita online per sfidare un amico con il tuo record in questo livello.';return;}
     rankingTarget={mode,time_ms:score.time_ms};share.disabled=false;
-    note.textContent=(mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':'Liv. '+(MODES.indexOf(mode)+1))+' · Il tuo record: '+seconds(score.time_ms);
+    note.textContent=(mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':'Liv. '+(MODES.indexOf(mode)+1))+' · Il tuo record: '+seconds(score.time_ms);
     send.textContent='Sfida un amico';send.disabled=!config.enabled;
   }
   async function challengeFromRanking(){
