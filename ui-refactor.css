@@ -186,3 +186,14 @@
 #app #myProgress .cognitiveStatsBody{display:flex;flex-direction:column;gap:10px;padding:0 10px 14px;min-width:0}
 #app #myProgress :is(.cognitiveSkill,#cognitiveGameStats)>summary:focus-visible{outline:2px solid #f2cf8b;outline-offset:2px;border-radius:10px}
 @media(max-width:350px){#app #myProgress #cognitiveOverview{padding:12px}#app #myProgress .cognitiveIdentity{flex-wrap:wrap}#app #myProgress #cognitiveHeading{font-size:18px}}
+
+/* Live personal scores; missing population axes remain unplotted. */
+#app #myProgress .cognitiveSkill summary>span:first-child{flex:1;min-width:0}
+#app #myProgress .cognitiveScore{flex:none;font-size:16px;white-space:nowrap;color:#ffe4a2}
+#app #myProgress #cognitiveStatus,#app #myProgress #cognitiveSaveStatus{font-size:12px;line-height:1.5}
+#app #myProgress #cognitiveTraining{margin-top:16px;padding:14px 0;border-top:1px solid #89927066}
+#app #myProgress #cognitiveTraining h4{margin:0;font-size:15px}
+#app #myProgress #cognitiveTraining p{font-size:12px;line-height:1.6}
+#app #myProgress #cognitiveTraining button{min-height:48px;width:100%;font-size:13px;padding:10px}
+#app #myProgress #cognitiveTraining button:disabled{opacity:.55;cursor:default}
+#app #myProgress .cognitiveRadar>svg{overflow:visible}

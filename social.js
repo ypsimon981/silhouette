@@ -293,8 +293,9 @@
     rankArea.append(recordNote,rankActions);document.getElementById('rankSpotlight').after(rankArea);
     window.addEventListener('hashchange',()=>{const c=getCode();if(bridge.playing()){pendingCode=c;toast(c?'Il link verrà aperto dopo la partita.':'Link della sfida non valido.');return;}if(c)openChallenge(c);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');});
     const c=getCode();if(c)setTimeout(()=>openChallenge(c),0);else if(location.hash.startsWith('#c'))toast('Link della sfida non valido.');
-    return {begin,requiresOnlineStart:()=>!!active,finish,leave,resetAttempt,score,profile,history,ranking,openPending:()=>{const c=getCode();if(c)openChallenge(c);}};
+    return {cognitive:async(action,data={},owner)=>{await ensureProfile();const s=read('session',null);if(owner&&s?.user?.id!==owner)throw Error('Profilo cambiato');return api('cognitive_'+action,data);},currentRunId:()=>ticket?.id||null,begin,requiresOnlineStart:()=>!!active,finish,leave,resetAttempt,score,profile,history,ranking,openPending:()=>{const c=getCode();if(c)openChallenge(c);}};
   }
   window.SilhouetteSocial={init};
 })();
+
 

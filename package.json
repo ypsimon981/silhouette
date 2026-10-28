@@ -2,10 +2,11 @@
   "name": "silhouette-social-web",
   "private": true,
   "scripts": {
-    "test": "node --test tests/backend.test.cjs tests/dom.test.cjs tests/sharing.test.cjs tests/sectors.test.cjs tests/behavior.test.cjs tests/potatoes.test.cjs tests/voices.test.cjs tests/flowers.test.cjs",
+    "test": "node --test tests/backend.test.cjs tests/dom.test.cjs tests/sharing.test.cjs tests/sectors.test.cjs tests/behavior.test.cjs tests/potatoes.test.cjs tests/voices.test.cjs tests/flowers.test.cjs tests/cognitive.test.cjs",
     "test:ui": "node --test tests/ui.test.cjs",
     "test:potatoes:ui": "node --test tests/potatoes-ui.test.cjs",
-    "test:kitchen:ui": "node --test tests/kitchen-ui.test.cjs"
+    "test:kitchen:ui": "node --test tests/kitchen-ui.test.cjs",
+    "test:cognitive:ui": "node --test tests/cognitive-ui.test.cjs"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.10",
