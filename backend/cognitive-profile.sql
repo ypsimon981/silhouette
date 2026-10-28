@@ -33,7 +33,7 @@ alter table public.shapes_cognitive_snapshots enable row level security;
 revoke all on public.shapes_cognitive_events,public.shapes_cognitive_trials,public.shapes_cognitive_snapshots from public,anon,authenticated;
 grant select,insert on public.shapes_cognitive_events to service_role;
 grant select,insert,update on public.shapes_cognitive_trials to service_role;
-grant select,insert on public.shapes_cognitive_snapshots to service_role;
+grant select,insert,update on public.shapes_cognitive_snapshots to service_role;
 
 -- Merge historical verified runs with new measured games, once per online run.
 create or replace function public.shapes_cognitive_samples(who uuid)
@@ -111,9 +111,9 @@ begin
   return jsonb_build_object('trial',to_jsonb(trial),'user_id',who);
  elsif p_action<>'cognitive_read' then raise exception 'Operazione non valida';end if;
 
- -- A daily snapshot changes only at the first opening of a new calendar day.
+ -- Missing capabilities appear immediately; already published values remain frozen for the day.
  select profile into snapshot from public.shapes_cognitive_snapshots where user_id=who and day=today and version=1;
- if snapshot is null then
+ if snapshot is null or snapshot->>'precision' is null or snapshot->>'consistency' is null or snapshot->>'adaptability' is null then
   with measured as (
    select *,row_number() over(partition by level order by at_ms desc,id) rn from public.shapes_cognitive_samples(who) where releases is not null
   ), per_level as (
@@ -137,9 +137,13 @@ begin
    adaptability_value=raw_adapt*greatest(.7,1-.3*greatest(0,days_idle-3)/27.0);
   end if;
   if not unlocked then precision_value=null;consistency_value=null;adaptability_value=null;end if;
+  precision_value=coalesce((snapshot->>'precision')::double precision,precision_value);
+  consistency_value=coalesce((snapshot->>'consistency')::double precision,consistency_value);
+  adaptability_value=coalesce((snapshot->>'adaptability')::double precision,adaptability_value);
   snapshot=jsonb_build_object('day',today,'version',1,'precision',round(precision_value::numeric,1),'consistency',round(consistency_value::numeric,1),
-   'adaptability',round(adaptability_value::numeric,1),'precision_levels',coalesce(coverage,0),'counts',counts,'unlocked',unlocked);
-  insert into public.shapes_cognitive_snapshots(user_id,day,profile) values(who,today,snapshot);
+   'adaptability',round(adaptability_value::numeric,1),'precision_levels',coalesce(coverage,0),'counts',coalesce(snapshot->'counts',counts),'unlocked',unlocked);
+  insert into public.shapes_cognitive_snapshots(user_id,day,profile) values(who,today,snapshot)
+   on conflict(user_id,day,version) do update set profile=excluded.profile;
  end if;
  select count(*) into used from public.shapes_cognitive_trials where user_id=who and day=today;
  return jsonb_build_object('user_id',who,'profile',snapshot,'counts',counts,'unlocked',unlocked,'used',used,'day',today,
@@ -147,3 +151,4 @@ begin
 end $$;
 revoke all on function public.shapes_cognitive_action(uuid,text,jsonb) from public,anon,authenticated;
 grant execute on function public.shapes_cognitive_action(uuid,text,jsonb) to service_role;
+
