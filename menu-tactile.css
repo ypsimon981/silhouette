@@ -68,13 +68,13 @@
 }
 @media(prefers-reduced-motion:reduce){#app #homePage :is(.levelGrid,.seriesModes) button,#app.macro-view>header .macroNavigation button{transition:none}}
 
-/* Keep every Animals label readable over both light and dark fur stripes. */
-#app #homePage .seriesModes #animalsLaunch{isolation:isolate;text-shadow:none!important}
-#app #homePage .seriesModes #animalsLaunch:before{
- content:""!important;display:block!important;position:absolute;inset:5px 9%;z-index:-1;pointer-events:none;
- border-radius:10px;background:#f8e5bd;border:1px solid #b78b55;
- box-shadow:inset 0 1px 2px #fff5d9,0 1px 3px #43200c40;
+/* Dark fur keeps the cream lettering legible without a separate label plate. */
+#app #homePage .seriesModes #animalsLaunch{
+ background-image:linear-gradient(180deg,#ffffff0a,#00000020),url('./assets/ui/animal-dark-fur.webp')!important;
+ background-size:100% 100%,cover!important;background-position:center!important;
+ background-color:#201810!important;border-color:#6a4a2e!important;color:#fff1d1!important;
+ text-shadow:0 1px 2px #120b06!important;
 }
 #app #homePage .seriesModes #animalsLaunch :is(span,small,.seriesIcon){
- color:#41200c!important;text-shadow:none!important;filter:none;
+ color:#fff1d1!important;text-shadow:0 1px 2px #120b06!important;filter:none;
 }
