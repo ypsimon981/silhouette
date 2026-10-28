@@ -152,6 +152,9 @@
 
 /* Cognitive overview: page content only; no gameplay selectors or score calculation. */
 #app #myProgress #cognitiveOverview{flex:none;min-width:0;padding:16px;border:1px solid #b2a57466;border-radius:16px;background:#24352de6;color:#f6edd5}
+#app #myProgress #cognitiveOverview p{color:#dfd6bd!important}
+#app #myProgress #cognitiveOverview .cognitiveEyebrow,#app #myProgress #cognitiveOverview .cognitiveFootnote{color:#c7bea3!important}
+#app #myProgress #cognitiveOverview svg text{fill:#e9d7aa!important}
 #app #myProgress .cognitiveIdentity{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 #app #myProgress .cognitiveIdentity>div{min-width:0}
 #app #myProgress .cognitiveEyebrow{margin:0 0 6px;font-size:10px;letter-spacing:1px;color:#d0c39d}
