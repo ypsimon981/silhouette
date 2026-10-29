@@ -1,0 +1,7 @@
+const {PGlite}=require('@electric-sql/pglite'),fs=require('node:fs');
+const who='11111111-1111-4111-8111-111111111111',other='22222222-2222-4222-8222-222222222222';
+async function database(){const db=new PGlite();await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;create table auth.users(id uuid primary key);create table shapes_social_profiles(user_id uuid primary key references auth.users(id),nickname text,country text);grant usage on schema public to service_role;grant select on shapes_social_profiles to service_role;`);await db.exec(fs.readFileSync('backend/precision-ranking.sql','utf8'));return db;}
+async function player(db,id,nick='Player',country='IT'){await db.query('insert into auth.users values($1) on conflict do nothing',[id]);await db.query('insert into shapes_social_profiles values($1,$2,$3) on conflict do nothing',[id,nick,country]);}
+const call=async(db,action,data={},id=who)=>(await db.query('select shapes_precision_action($1,$2,$3::jsonb) v',[id,'precision_'+action,JSON.stringify(data)])).rows[0].v;
+async function score(db,id,placed,errors){const t=await call(db,'start',{id:crypto.randomUUID()},id);await db.query("update shapes_precision_runs set started_at=now()-interval '33 seconds' where id=$1",[t.id]);await call(db,'finish',{id:t.id,placed,errors},id);return t.id;}
+module.exports={database,player,call,score,who,other};

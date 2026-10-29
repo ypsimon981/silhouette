@@ -59,3 +59,36 @@ test('30-second challenge: real placements, errors, deadline, local record, retr
   assert.deepEqual(errors,[]);
  }finally{await browser.close();await new Promise(r=>server.close(r));}
 });
+
+test('authenticated completion uploads both values and exposes world/national ranking with shared ties',async()=>{
+ const {database,player,call,score,who,other}=require('./precision-ranking-fixture.cjs');const db=await database();
+ const {browser,server,url}=await fixture();
+ try{
+  await player(db,who,'You');await player(db,other,'One error');const top=crypto.randomUUID(),tied=crypto.randomUUID();await player(db,top,'More forms','FR');await player(db,tied,'Same result');
+  await score(db,top,2,10);await score(db,other,1,2);await score(db,tied,1,0);
+  const page=await browser.newPage({viewport:{width:390,height:844}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.addInitScript(id=>{localStorage.setItem('10shapes_profile_setup','yes');localStorage.setItem('10shapes_music','off');localStorage.setItem('10shapes_nick','Fixture');localStorage.setItem('10shapes_player_id',id);localStorage.setItem('10shapes_social_session',JSON.stringify({user:{id},access_token:'fixture',expires_at:Math.floor(Date.now()/1000)+3600}));},who);
+  await page.route(/^https:\/\//,async r=>{try{
+   const req=r.request();if(!req.url().includes('supabase.co'))return r.abort();
+   let result={};if(req.method()==='GET')result={scores:[],total:0,my_context:[]};else{const {action,data}=req.postDataJSON();
+    if(action==='profile')result={preferences:{analytics:false}};
+    else if(action==='ranking_changes')result={changes:[]};
+    else if(action==='cognitive_read')result={user_id:who,unlocked:false,counts:[],used:0};
+    else if(action?.startsWith('precision_')){result=await call(db,action.slice(10),data);if(action==='precision_start')await db.query("update shapes_precision_runs set started_at=now()-interval '33 seconds' where id=$1",[result.id]);}
+   }await r.fulfill({json:result,headers:{'access-control-allow-origin':'*'}});
+  }catch(e){await r.fulfill({status:400,json:{error:e.message},headers:{'access-control-allow-origin':'*'}});}});
+  await page.goto(url);await page.locator('#precisionLaunch').click();await page.locator('#startButton').click();await page.waitForSelector('.piece');await drag(page,'target');await page.evaluate(()=>precisionTest.expire());
+  await page.waitForFunction(()=>document.getElementById('precisionOnlineStatus').textContent==='Risultato registrato in classifica.');
+  assert.equal((await call(db,'rank')).my_score.placed,1);assert.equal((await call(db,'rank')).my_score.errors,0);
+  await page.locator('#finishRanking').click();await page.waitForSelector('#myRankingRow');
+  assert.match(await page.locator('#rankMetricValue').innerText(),/2 \/ 4/);assert.match(await page.locator('#myRankingRow').innerText(),/1 forma · 0 errori/);
+  assert.match(await page.locator('#rankRows .rankline').first().innerText(),/2 forme · 10 errori/);assert.ok(await page.locator('#precisionRankRules').isVisible());
+  await page.locator('[data-scope="national"]').click();await page.waitForFunction(()=>document.getElementById('rankMetricValue').textContent==='N° 1 / 3');
+  for(const width of [320,390,430]){await page.setViewportSize({width,height:844});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth||document.getElementById('ranking').scrollWidth>document.getElementById('ranking').clientWidth),false);}
+  await page.locator('#ranking').screenshot({path:'test-results/precision-speed-ranking.png'});
+  await page.locator('#closeRanking').click();assert.ok(await page.locator('#precisionResults').isVisible());
+  await page.locator('#finishHome').click();await page.locator('[data-section="rankings"]').click();await page.locator('[data-rank="20"]').click();await page.waitForSelector('#myRankingRow');
+  await page.locator('[data-rank="1"]').click();assert.equal(await page.locator('#precisionRankRules').isVisible(),false);
+  assert.deepEqual(errors,[]);
+ }finally{await browser.close();await new Promise(r=>server.close(r));await db.close();}
+});
