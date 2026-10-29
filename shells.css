@@ -2,8 +2,8 @@
 #app #homePage .seriesModes{grid-template-columns:minmax(0,1fr)!important}
 #app #homePage .seriesModes #shellsLaunch{
  background-color:#ecdab7!important;
- background-image:linear-gradient(#fff4dc55,#e6c59522),url('./assets/ui/shells-pattern.svg'),url('./assets/backgrounds/shell-sand.webp')!important;
- background-size:100% 100%,160px 100px,220px 220px!important;color:#4c2e18!important;border-color:#bfa174!important;
+ background-image:url('./assets/ui/shells-banner-wide.webp')!important;
+ background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;color:#4c2e18!important;border-color:#bfa174!important;
  text-shadow:0 1px 0 #fff4df!important;
 }
 #app #homePage .seriesModes #shellsLaunch :is(span,small){color:#4c2e18!important}
