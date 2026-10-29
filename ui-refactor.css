@@ -249,3 +249,15 @@
  #app.game-finished:has(#board.complete:not(.level-animals):not(.level-flowers):not(.level-shells)) #adSlot{min-height:61.6px}
 }
 @media(prefers-reduced-motion:reduce){#recordConfetti{display:none!important}}
+
+/* Standalone 30-second precision challenge. */
+#precisionResults[hidden]{display:none!important}
+#app #board.precision-speed #precisionResults{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%;margin:14px 0}
+#app #board.precision-speed #precisionResults>div{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 4px;border-radius:14px;background:#f0dfbd;border:1px solid #c4a477;color:#52351e}
+#app #board.precision-speed #precisionResults strong{font-size:clamp(25px,8vw,38px);line-height:1.2;font-variant-numeric:tabular-nums}
+#app #board.precision-speed #precisionResults span{font-size:11px;line-height:1.35;text-align:center}
+#app #board.precision-speed #preGameDetail{max-width:290px;white-space:normal;line-height:1.5}
+#app.game-toolbar:has(#board.precision-speed) #levelTitle{font-size:clamp(12px,3.4vw,17px)}
+#app #board.precision-speed.game-screen.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish #finishCommands :is(#previousLevel,#nextLevel,#finishRanking,#finishProgress,#social-actions,#social-result){display:none!important}
+#app #board.precision-speed.game-screen.complete:not(.level-animals):not(.level-flowers):not(.level-shells) #finish{gap:16px}
+#app #board.precision-speed #finishScore h2{font-size:clamp(24px,6.5vw,32px)!important}

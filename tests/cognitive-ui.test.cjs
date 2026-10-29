@@ -57,7 +57,7 @@ test('mobile profile, real precision capture, three-stage unranked training, int
  for(const width of [320,390,430]){
   await page.setViewportSize({width,height:844});
   const boxes=await page.locator('.seriesModes button').evaluateAll(buttons=>buttons.map(b=>{const r=b.getBoundingClientRect();return {x:r.x,width:r.width,y:r.y};}));
-  assert.equal(boxes.length,4);assert.ok(boxes.every(b=>Math.abs(b.width-boxes[0].width)<1&&Math.abs(b.x-boxes[0].x)<1));
+  assert.equal(boxes.length,5);assert.ok(boxes.every(b=>Math.abs(b.width-boxes[0].width)<1&&Math.abs(b.x-boxes[0].x)<1));
   assert.ok(boxes.every((b,i)=>!i||b.y>boxes[i-1].y));
  }
  await page.screenshot({path:'test-results/levels-daily-measurement.png'});
