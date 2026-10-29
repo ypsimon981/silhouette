@@ -78,3 +78,11 @@
 #app #homePage .seriesModes #animalsLaunch :is(span,small,.seriesIcon){
  color:#fff1d1!important;text-shadow:0 1px 2px #120b06!important;filter:none;
 }
+
+/* Full-width special levels and shared daily measurement state. */
+#app #homePage .seriesModes{grid-template-columns:minmax(0,1fr)!important}
+#app #homePage .seriesModes button{width:100%;min-width:0;min-height:68px;padding:10px 12px;box-sizing:border-box}
+#app #homePage .seriesModes #adaptabilityLaunch{background-image:linear-gradient(135deg,#c7acf0,#8b64c2)!important;color:#301c49!important;text-shadow:0 1px 0 #ffffff55}
+#app #homePage .seriesModes #adaptabilityLaunch>span{font-size:clamp(14px,3.8vw,18px);line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+#app #homePage .seriesModes #adaptabilityLaunch small{font-size:11px;line-height:1.3}
+#app #homePage .seriesModes #adaptabilityLaunch.measurement-used{filter:saturate(.15);opacity:.8}

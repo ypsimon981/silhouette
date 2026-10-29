@@ -48,12 +48,28 @@ test('mobile profile, real precision capture, three-stage unranked training, int
  assert.equal((await db.query('select count(*)::int n from shapes_cognitive_events')).rows[0].n,before);
  assert.deepEqual(await page.evaluate(()=>Object.fromEntries(Object.entries(localStorage).filter(([k])=>k.startsWith('silhouette_record_')))),recordKeys);
  assert.equal(await page.locator('.cognitiveScore').nth(3).innerText(),'100/100','first adaptability score appears immediately');
- await page.locator('#cognitiveTraining button').click();await page.locator('#restart').click();await page.locator('#homeButton').click();await page.locator('[data-section="cognitive"]').click();
- await page.waitForFunction(()=>document.querySelector('.cognitiveTrialResult')?.textContent.includes('tentativo consumato'));
- await page.locator('#cognitiveTraining button').click();await page.waitForFunction(()=>document.getElementById('levelTitle').textContent.startsWith('ADATTABILITÀ'));await page.reload();await page.locator('[data-section="cognitive"]').click();
- await page.waitForFunction(()=>document.querySelector('#cognitiveTraining p')?.textContent.includes('0 tentativi'));
  assert.ok(await page.locator('#cognitiveTraining button').isDisabled());
- await page.waitForTimeout(200);const statuses=(await db.query('select status from shapes_cognitive_trials order by ordinal')).rows.map(r=>r.status);assert.deepEqual(statuses,['completed','failed','failed']);
+ await page.locator('[data-section="levels"]').click();
+ assert.match(await page.locator('#adaptabilityLaunch').innerText(),/Misurazione effettuata : 100/);
+ assert.match(await page.locator('#adaptabilityLaunch small').innerText(),/Domani/);
+ assert.ok(await page.locator('#adaptabilityLaunch').isDisabled());
+ assert.equal(await page.locator('[data-mode="14"],[data-rank="14"],[data-stat="14"]').count(),0);
+ for(const width of [320,390,430]){
+  await page.setViewportSize({width,height:844});
+  const boxes=await page.locator('.seriesModes button').evaluateAll(buttons=>buttons.map(b=>{const r=b.getBoundingClientRect();return {x:r.x,width:r.width,y:r.y};}));
+  assert.equal(boxes.length,4);assert.ok(boxes.every(b=>Math.abs(b.width-boxes[0].width)<1&&Math.abs(b.x-boxes[0].x)<1));
+  assert.ok(boxes.every((b,i)=>!i||b.y>boxes[i-1].y));
+ }
+ await page.screenshot({path:'test-results/levels-daily-measurement.png'});
+ // A new server day re-enables both entrances; restarting consumes that day's test.
+ await db.exec("update shapes_cognitive_trials set day=day-1");
+ await page.reload();await page.waitForFunction(()=>!document.getElementById('adaptabilityLaunch').disabled);
+ await page.locator('#adaptabilityLaunch').click();await page.waitForFunction(()=>document.getElementById('levelTitle').textContent.startsWith('ADATTABILITÀ'));
+ await page.locator('#restart').click();await page.locator('#homeButton').click();
+ await page.waitForFunction(()=>document.getElementById('adaptabilityLaunch').textContent.includes('Misurazione effettuata : 0'));
+ await page.reload();await page.waitForFunction(()=>document.getElementById('adaptabilityLaunch').textContent.includes('Misurazione effettuata : 0'));
+ assert.ok(await page.locator('#adaptabilityLaunch').isDisabled());
+ const statuses=(await db.query('select status from shapes_cognitive_trials order by started_at')).rows.map(r=>r.status);assert.deepEqual(statuses,['completed','failed']);
  assert.deepEqual(errors,[]);
  }finally{await browser?.close();await new Promise(r=>server.close(r));await db.close()}
 });

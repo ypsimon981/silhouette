@@ -33,8 +33,9 @@ test('real client initializes, preserves random retries and exposes sharing only
   w.__game.fail();assert.equal(w.document.querySelector('#social-actions').hidden,true);
   w.document.querySelector('[data-stat="9"]').click();assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca di nuovo livello 6');
   w.document.querySelector('#playAnalyzedLevel').click();assert.match(w.document.querySelector('#levelTitle').textContent,/LIVELLO 6/);assert.equal(w.document.querySelector('#myProgress').style.display,'none');
-  w.document.querySelector('[data-stat="14"]').click();assert.equal(w.document.querySelector('#playAnalyzedLevel').textContent,'▶ Gioca di nuovo Overall');
-  w.document.querySelector('#playAnalyzedLevel').click();assert.match(w.document.querySelector('#levelTitle').textContent,/OVERALL/);
+  assert.equal(w.document.querySelector('[data-stat="14"],[data-rank="14"],[data-mode="14"]'),null);
+  const beforeRemovedMode=w.document.querySelector('#levelTitle').textContent;
+  w.__game.setLevel(14);assert.equal(w.document.querySelector('#levelTitle').textContent,beforeRemovedMode);
   assert.equal(w.document.querySelector('#rankingProfile'),null);
   w.document.querySelector('#profileButton').click();
   assert.equal(w.document.querySelector('#profileOverlay').hidden,false);

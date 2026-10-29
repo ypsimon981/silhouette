@@ -12,16 +12,17 @@ test('personal formulas, coverage, daily freeze, ownership and immutable idempot
   const denied=await db.query("select has_table_privilege('authenticated','shapes_cognitive_events','select') allowed,has_function_privilege('anon','shapes_cognitive_action(uuid,text,jsonb)','execute') rpc");assert.equal(denied.rows[0].allowed,false);assert.equal(denied.rows[0].rpc,false);
  }finally{await db.close()}
 });
-test('three server-owned trials, strata, frozen baselines, scores, failure, replay and limit',async()=>{
+test('one daily server-owned trial, strata, frozen baselines, scores, failure, replay and limit',async()=>{
  const db=await database();try{await seed(db);let t=(await call(db,'trial_start')).trial;
  assert.ok([1,2,4].includes(t.levels[0]));assert.ok([7,8,9].includes(t.levels[1]));assert.ok([10,11,12,13].includes(t.levels[2]));assert.deepEqual(t.baseline,[10000,10000,10000]);
  await db.query("update shapes_cognitive_trials set started_at=now()-interval '90 seconds' where id=$1",[t.id]);
  let r=await call(db,'trial_finish',{id:t.id,outcome:'completed',times:[20000,20000,20000]});assert.equal(r.trial.score,50);
  r=await call(db,'trial_finish',{id:t.id,outcome:'completed',times:[1,1,1]});assert.equal(r.trial.score,50);
  await assert.rejects(()=>call(db,'trial_finish',{id:t.id,outcome:'completed',times:[1,1,1]},other),/non trovata/);
- t=(await call(db,'trial_start')).trial;const third=(await call(db,'trial_start')).trial;
- assert.equal((await db.query('select status from shapes_cognitive_trials where id=$1',[t.id])).rows[0].status,'failed');
- await call(db,'trial_finish',{id:third.id,outcome:'failed'});await assert.rejects(()=>call(db,'trial_start'),/3 tentativi/);
+ await assert.rejects(()=>call(db,'trial_start'),/Domani/);
+ await db.exec("update shapes_cognitive_trials set day=day-1");
+ t=(await call(db,'trial_start')).trial;assert.equal(t.ordinal,1);
+ await call(db,'trial_finish',{id:t.id,outcome:'failed'});await assert.rejects(()=>call(db,'trial_start'),/Domani/);
  }finally{await db.close()}
 });
 test('daily best and thirty-day window with inactivity decay; no population dependency',async()=>{
@@ -73,10 +74,11 @@ test('first appearance unlocks each missing skill immediately, while existing sc
   d=await call(db,'read');assert.equal(d.profile.unlocked,true);assert.equal(d.profile.consistency,100);assert.equal(d.profile.precision,83.3);assert.equal(d.profile.adaptability,null);
   let t=(await call(db,'trial_start')).trial;await db.query("update shapes_cognitive_trials set started_at=now()-interval '90 seconds' where id=$1",[t.id]);
   await call(db,'trial_finish',{id:t.id,outcome:'completed',times:[20000,20000,20000]});d=await call(db,'read');assert.equal(d.profile.adaptability,50);
+  await assert.rejects(()=>call(db,'trial_start'),/Domani/);
+  await db.query("update shapes_cognitive_trials set day=day-1 where user_id=$1",[who]);
+  await db.query("update shapes_cognitive_snapshots set day=day-1 where user_id=$1",[who]);
   t=(await call(db,'trial_start')).trial;await db.query("update shapes_cognitive_trials set started_at=now()-interval '90 seconds' where id=$1",[t.id]);
-  await call(db,'trial_finish',{id:t.id,outcome:'completed',times:[5000,5000,5000]});d=await call(db,'read');assert.equal(d.profile.adaptability,50,'a better second trial does not replace the first score during the day');
-  await db.query("update shapes_cognitive_snapshots set day=day-1,profile=jsonb_set(profile,'{day}',to_jsonb((day-1)::text)) where user_id=$1",[who]);
-  d=await call(db,'read');assert.equal(d.profile.adaptability,100,'a new daily snapshot recalculates published skills');
+  await call(db,'trial_finish',{id:t.id,outcome:'completed',times:[5000,5000,5000]});d=await call(db,'read');assert.equal(d.profile.adaptability,75,'next day includes both daily measurements');
  }finally{await db.close()}
 });
 
@@ -85,5 +87,14 @@ test('precision becomes visible after the final measured level, without changing
   for(const level of modes)for(let i=0;i<3;i++)await db.query("insert into shapes_social_runs values($1,$2,$3,now(),'completed',10000)",[crypto.randomUUID(),who,level]);
   let d=await call(db,'read');assert.equal(d.profile.consistency,100);assert.equal(d.profile.precision,null);
   await seed(db,who,12);d=await call(db,'read');assert.equal(d.profile.precision,83.3);assert.equal(d.profile.consistency,100);
+ }finally{await db.close()}
+});
+
+
+test('daily measurement deployment patch is repeatable and preserves the limit',async()=>{
+ const db=await database();try{
+  const patch=fs.readFileSync('backend/cognitive-daily-measurement.sql','utf8');await db.exec(patch);await db.exec(patch);
+  await seed(db);await call(db,'trial_start');await assert.rejects(()=>call(db,'trial_start'),/Domani/);
+  assert.equal((await call(db,'read')).timezone,'UTC');
  }finally{await db.close()}
 });

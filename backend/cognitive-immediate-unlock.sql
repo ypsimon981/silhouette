@@ -35,7 +35,7 @@ begin
  if p_action='cognitive_trial_start' then
   if not unlocked then raise exception 'Completa almeno 3 partite in ciascuno dei 10 livelli';end if;
   select count(*) into used from public.shapes_cognitive_trials where user_id=who and day=today;
-  if used>=3 then raise exception 'Hai usato i 3 tentativi di oggi';end if;
+  if used>=1 then raise exception 'Domani potrai effettuare di nuovo il test.';end if;
   update public.shapes_cognitive_trials set status='failed',score=0,finished_at=now() where user_id=who and status='running';
   seq=array[(array[1,2,4])[1+floor(random()*3)::int],(array[7,8,9])[1+floor(random()*3)::int],(array[10,11,12,13])[1+floor(random()*4)::int]];
   select array_agg(reference order by ord) into refs from (
@@ -98,7 +98,7 @@ begin
    on conflict(user_id,day,version) do update set profile=excluded.profile;
  end if;
  select count(*) into used from public.shapes_cognitive_trials where user_id=who and day=today;
- return jsonb_build_object('user_id',who,'profile',snapshot,'counts',counts,'unlocked',unlocked,'used',used,'day',today,
+ return jsonb_build_object('user_id',who,'profile',snapshot,'counts',counts,'unlocked',unlocked,'used',used,'day',today,'timezone',tz,
   'last_trial',(select to_jsonb(t) from public.shapes_cognitive_trials t where user_id=who order by started_at desc,id limit 1));
 end $$;
 revoke all on function public.shapes_cognitive_action(uuid,text,jsonb) from public,anon,authenticated;

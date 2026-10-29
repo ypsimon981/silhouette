@@ -9,11 +9,11 @@
   const seconds = ms => (Math.round(ms/10)/100).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2})+' s';
   const flowerLabel=()=>({it:'Fiori',en:'Flowers',fr:'Fleurs',es:'Flores',de:'Blumen',pt:'Flores',ja:'花',ko:'꽃','zh-CN':'花卉',id:'Bunga'})[document.documentElement.lang]||'Flowers';
   const shellLabel=()=>({it:'Conchiglie',en:'Shells',fr:'Coquillages',es:'Conchas',de:'Muscheln',pt:'Conchas',ja:'貝殻',ko:'조개','zh-CN':'贝壳',id:'Kerang'})[document.documentElement.lang]||'Shells';
-  const label = mode => mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':'Livello '+String(MODES.indexOf(mode)+1).padStart(2,'0');
+  const label = mode => mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':'Livello '+String(MODES.indexOf(mode)+1).padStart(2,'0');
   const shareTranslations={"it":["Condividi risultato","Condividi immagine","Scarica immagine","Copia link del gioco","Fai alla svelta o sei fritto!","10 patate. Riesci a battermi?","Livello","mondiale","Nuovo record personale","Il link viene condiviso come testo separato: alcune app accettano solo l’immagine. Puoi copiarlo qui."],"en":["Share result","Share image","Download image","Copy game link","Hurry up or you're fried!","10 potatoes. Can you beat me?","Level","worldwide","New personal best","The link is shared separately as text. Some apps accept only the image. Copy it here."],"es":["Compartir resultado","Compartir imagen","Descargar imagen","Copiar enlace del juego","¡Date prisa o acabarás frito!","10 patatas. ¿Puedes superarme?","Nivel","mundial","Nuevo récord personal","El enlace se comparte como texto aparte. Algunas apps solo aceptan imágenes. Cópialo aquí."],"fr":["Partager le résultat","Partager l’image","Télécharger l’image","Copier le lien du jeu","Dépêche-toi ou tu es frit !","10 patates. Tu peux me battre ?","Niveau","mondial","Nouveau record personnel","Le lien est partagé séparément. Certaines applis n’acceptent que l’image. Copie-le ici."],"de":["Ergebnis teilen","Bild teilen","Bild herunterladen","Spiellink kopieren","Beeil dich, sonst wirst du frittiert!","10 Kartoffeln. Schlägst du mich?","Level","weltweit","Neue persönliche Bestzeit","Der Link wird separat als Text geteilt. Manche Apps akzeptieren nur das Bild. Kopiere ihn hier."],"pt":["Partilhar resultado","Partilhar imagem","Descarregar imagem","Copiar ligação do jogo","Despacha-te ou ficas frito!","10 batatas. Consegues superar-me?","Nível","mundial","Novo recorde pessoal","A ligação é partilhada em texto separado. Algumas apps só aceitam imagens. Copia-a aqui."],"ja":["結果をシェア","画像をシェア","画像を保存","ゲームのリンクをコピー","急がないとフライドポテトに！","ジャガイモ10個。勝てるかな？","レベル","世界","自己ベスト更新","リンクは別のテキストとして共有されます。画像のみ対応のアプリもあります。"],"ko":["결과 공유","이미지 공유","이미지 저장","게임 링크 복사","서두르지 않으면 튀겨진다!","감자 10개. 나를 이길 수 있어?","레벨","세계","개인 최고 기록","링크는 별도 텍스트로 공유됩니다. 일부 앱은 이미지만 지원합니다."],"zh-CN":["分享成绩","分享图片","下载图片","复制游戏链接","快点，不然就炸熟啦！","10个土豆。你能打败我吗？","关卡","全球","个人新纪录","链接将作为单独文字分享，部分应用仅支持图片。"],"id":["Bagikan hasil","Bagikan gambar","Unduh gambar","Salin tautan game","Cepat, atau kamu jadi kentang goreng!","10 kentang. Bisa kalahkan aku?","Level","dunia","Rekor pribadi baru","Tautan dibagikan terpisah sebagai teks. Beberapa aplikasi hanya menerima gambar."]};
   const shareLanguage=()=>{const raw=window.PotatoesI18n?.language||localStorage.getItem('10potatoes_language')||navigator.language||'en';const code=String(raw).replace('_','-').toLowerCase();return code.startsWith('zh')?'zh-CN':(shareTranslations[code.split('-')[0]]?code.split('-')[0]:'en');};
   const tr=(i)=>shareTranslations[shareLanguage()][i];
-  const levelName=mode=>mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':tr(6)+' '+String(MODES.indexOf(mode)+1).padStart(2,'0');
+  const levelName=mode=>mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':tr(6)+' '+String(MODES.indexOf(mode)+1).padStart(2,'0');
   const logoWords={it:'POTATOES',en:'POTATOES',es:'PATATAS',fr:'PATATES',de:'KARTOFFELN',pt:'BATATAS',ja:'ポテト',ko:'감자','zh-CN':'土豆',id:'KENTANG'};
   const extraShare={it:['Chiudi','Formato immagine','Verticale','Quadrato','Anteprima del risultato'],en:['Close','Image format','Portrait','Square','Result preview'],es:['Cerrar','Formato de imagen','Vertical','Cuadrado','Vista previa del resultado'],fr:['Fermer','Format de l’image','Portrait','Carré','Aperçu du résultat'],de:['Schließen','Bildformat','Hochformat','Quadratisch','Ergebnisvorschau'],pt:['Fechar','Formato da imagem','Vertical','Quadrado','Pré-visualização do resultado'],ja:['閉じる','画像形式','縦長','正方形','結果のプレビュー'],ko:['닫기','이미지 형식','세로','정사각형','결과 미리보기'],'zh-CN':['关闭','图片格式','竖版','方形','成绩预览'],id:['Tutup','Format gambar','Potret','Persegi','Pratinjau hasil']};
   const tx=i=>extraShare[shareLanguage()][i];
@@ -82,7 +82,7 @@
     if(!/^[0-9a-f]{32}$/.test(code)){toast('Link della sfida non valido.');return;}
     const d=dialog('Sfida ricevuta');const status=node('p','Caricamento…');d.append(status);
     try{
-      await ensureProfile();const c=await api('challenge_get',{code});if(!d.isConnected)return;
+      await ensureProfile();const c=await api('challenge_get',{code});if(!d.isConnected)return;if(!MODES.includes(c.level))throw Error('Questa modalità non è più disponibile.');
       status.textContent=(c.nickname||'Un giocatore')+' vuole metterti alla prova';
       d.append(node('div',label(c.level).toUpperCase(),'target-level'),node('p','TEMPO DA BATTERE','target-level'),node('div',seconds(c.time_ms),'target-time'),node('p','Riesci a fare meglio? Ogni tentativo usa nuove forme casuali.','social-note'));
       d.append(button('ACCETTA LA SFIDA',()=>{active=c;d.close();bridge.play(c.level);}),button('GIOCA PIÙ TARDI',()=>{
@@ -140,7 +140,7 @@
     if(!config.enabled)return undefined;
     if(!series&&last&&last.mode===mode&&Math.round(last.ms)===Math.round(ms))return submitting?await submitting:null;
     if(!series)return null;
-    // Overall and stage scores keep the existing rules and authenticated ranking endpoint.
+    // Scores use the existing authenticated ranking endpoint.
     try{
       await ensureProfile();const s=await session(),p=bridge.profile();
       return await json(config.supabaseUrl+'/functions/v1/ten-shapes-ranking',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+s.access_token},body:JSON.stringify({action:'score',player_id:s.user.id,nickname:p.nickname,country:p.country,level:mode,time_ms:Math.round(ms),playing_hand:p.hand})});
@@ -177,7 +177,7 @@
     if(state==='loading'){note.textContent='Caricamento del tuo record…';return;}
     if(!score){note.textContent=state==='error'?'Record online temporaneamente non disponibile.':'Completa una partita online per sfidare un amico con il tuo record in questo livello.';return;}
     rankingTarget={mode,time_ms:score.time_ms};share.disabled=false;
-    note.textContent=(mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':mode===14?'Overall':'Liv. '+(MODES.indexOf(mode)+1))+' · Il tuo record: '+seconds(score.time_ms);
+    note.textContent=(mode===19?shellLabel():mode===18?flowerLabel():mode===17?'Animali':'Liv. '+(MODES.indexOf(mode)+1))+' · Il tuo record: '+seconds(score.time_ms);
     send.textContent='Sfida un amico';send.disabled=!config.enabled;
   }
   async function challengeFromRanking(){
@@ -259,14 +259,14 @@
     try{
       await ensureProfile();const data=await api('inbox');if(!d.isConnected)return;
       status.textContent='Avvisi nel gioco. Le notifiche push non sono ancora disponibili.';
-      for(const n of data.notices){const row=node('div',undefined,'social-item');row.append(node('strong',n.title),node('p',n.body));if(n.code)row.append(button('Gioca la rivincita',()=>openChallenge(n.code)));else row.append(button('Analisi performance',()=>{d.close();bridge.performance();}));d.append(row);}
-      for(const a of data.achievements){const row=node('div',undefined,'social-item');row.append(node('strong',a.title+' · '+label(a.level)),button('Condividi traguardo',()=>shareResult(a.title,{won:true,mode:a.level,ms:a.time_ms})));d.append(row);}
+      for(const n of data.notices.filter(n=>!/overall/i.test(n.title+' '+n.body))){const row=node('div',undefined,'social-item');row.append(node('strong',n.title),node('p',n.body));if(n.code)row.append(button('Gioca la rivincita',()=>openChallenge(n.code)));else row.append(button('Analisi performance',()=>{d.close();bridge.performance();}));d.append(row);}
+      for(const a of data.achievements.filter(a=>MODES.includes(a.level))){const row=node('div',undefined,'social-item');row.append(node('strong',a.title+' · '+label(a.level)),button('Condividi traguardo',()=>shareResult(a.title,{won:true,mode:a.level,ms:a.time_ms})));d.append(row);}
       if(!data.notices.length&&!data.achievements.length)status.textContent+='\nCompleta una partita online per iniziare.';
     }catch(e){status.textContent=errorText(e);}
   }
   async function history(){
     const area=document.getElementById('social-history');area.textContent='Ranking rispetto a 24 ore fa: caricamento…';
-    try{await ensureProfile();const d=await api('ranking_changes');area.textContent='Ranking mondiale · ultime 24 ore\n'+(d.changes.length?d.changes.map(x=>label(x.level)+': '+(x.delta>0?'+':'')+x.delta+' posizioni ('+x.before_rank+' → '+x.rank+')'+(x.band_before!==x.band?' · '+(x.band?'Top '+x.band+'%':'uscita dalla Top 10%'):'')).join('\n'):'Nessuna variazione, oppure storico di 24 ore non ancora sufficiente.');}catch(e){area.textContent=errorText(e);}
+    try{await ensureProfile();const d=await api('ranking_changes');d.changes=d.changes.filter(x=>MODES.includes(x.level));area.textContent='Ranking mondiale · ultime 24 ore\n'+(d.changes.length?d.changes.map(x=>label(x.level)+': '+(x.delta>0?'+':'')+x.delta+' posizioni ('+x.before_rank+' → '+x.rank+')'+(x.band_before!==x.band?' · '+(x.band?'Top '+x.band+'%':'uscita dalla Top 10%'):'')).join('\n'):'Nessuna variazione, oppure storico di 24 ore non ancora sufficiente.');}catch(e){area.textContent=errorText(e);}
   }
   function init(game){
     bridge=game;
